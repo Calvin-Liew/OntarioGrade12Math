@@ -1,1 +1,3 @@
-
+# [Ontario Grade 12 Math Problem Generator: Python libraries]
+mpmath  # Automatically installed by sympy
+sympy
