@@ -17,6 +17,7 @@ from sympy.abc import x
 def generate_polynomial(degree: int, coefficient_range: typing.Tuple[int, int]):
     """
     Generates polynomial function
+    
     Preconditions:
     - degree > 0
     - coefficient_range != ()
@@ -76,6 +77,7 @@ def end_behaviour(first_quadrant: str, second_quadrant: str, coefficient_range: 
     if first_quadrant not in quadrant_list or second_quadrant not in quadrant_list:
         return 'Wrong Input'
     else:
+        # Inefficient - Can change later
         if (first_quadrant == 'Q1' and second_quadrant == 'Q2') or (first_quadrant == 'Q2' and second_quadrant == 'Q1'):
             # Even function
             degree = random.randrange(2, 7, 2)  # Degree 2, 4, 6
@@ -128,34 +130,56 @@ def leading_coeff(polynomial) -> int:
 # TODO: domain range of given equation
 
 
-def function_domain(polynomial) -> sympy.polys.domains.integerring.IntegerRing:
-    """
-    Returns domain of polynomial
+# def function_domain(polynomial) -> str:
+#     """
+#     Returns domain of polynomial
 
-    Preconditions:
-    - polynomial is a valid polynomial function from <generate_polynomial>
+#     Preconditions:
+#     - polynomial is a valid polynomial function from <generate_polynomial>
 
-    >>> function_domain(x**2 + 1)
-    ZZ
-    """
-    p = sympy.Poly(polynomial)
-    return p.domain
+#     # >>> function_domain(x**2 + 1)
+#     # ZZ
+#     """
+#     # p = sympy.Poly(polynomial, x)
+#     # return p.domain
+#     domain = sympy.calculus.util.continuous_domain(polynomial, x, sympy.S.Reals)
+#     return sympy.printing.pretty.pretty(domain)
 
 
-def function_range(polynomial, domain) -> sympy.polys.domains.integerring.IntegerRing | sympy.sets.sets.Interval:
-    """
-    Returns range of polynomial
+# def function_range(polynomial, domain) -> sympy.polys.domains.integerring.IntegerRing | sympy.sets.sets.Interval:
+#     """
+#     Returns range of polynomial
 
-    Preconditions:
-    - polynomial is a valid polynomial function from <generate_polynomial>
-    """
-    return sympy.calculus.util.function_range(polynomial, x, domain)
+#     Preconditions:
+#     - polynomial is a valid polynomial function from <generate_polynomial>
+#     """
+#     return sympy.calculus.util.function_range(polynomial, x, domain)
 
 # TODO: table of intervals of given equation
 
 # TODO: generate image of graph given equation, into image file. (should keep track of both image and the equation)
 
 # TODO: number of turning points of given equation
+def turning_points(polynomial: sympy.Function) -> int:
+    """
+    Returns the number of turning points of a polynomial
+
+    Preconditions:
+    - polynomial is a valid polynomial function from <generate_polynomial>
+    """
+    x = sympy.symbols('x')
+
+    count = 0
+    derivative = sympy.diff(polynomial, x)
+    second_derivative = sympy.diff(derivative, x)
+    critical_points = sympy.solveset(derivative, x)
+
+    for point in critical_points:
+        # NOTE: If the second derivative is 0 its not a turning point
+        if (second_derivative.subs(x, point) > 0 
+            or second_derivative.subs(x, point) < 0):
+            count += 1;
+    return count
 
 # TODO: intercepts of given function
 
@@ -200,6 +224,19 @@ def y_int(polynomial) -> list[int | float]:
 # TODO: Given equation, write word descriptions about the function ie. x-intercept at x=, y-intercept at blah,
 #  domain, range, points
 
+# def characteristic(polynomial) -> str:
+#     """
+#     Returns a basic description about the function in the format of:
+#     x-int: -1, 1
+#     y-int: -1
+#     domain: 
+#     """
+#     x_intercept = x_int(polynomial)
+#     y_intercept = y_int(polynomial)
+#     domain = function_domain(polynomial)
+#     range = function_range(polynomial, domain)
+#     turning_points = turning_points(polynomial)
+
 # TODO: Given variables that transform a function, return the equation, a,k,c,d values
 # This has the same problems with factorable polynomials where the creating the vertex form isn't always equally defined
 # for functions of varying degrees
@@ -209,6 +246,12 @@ def y_int(polynomial) -> list[int | float]:
 
 # TODO: return number of x-intercepts, turning points, least possible degree, any symmtery intervals
 # where graph is positive or negative
+
+# TODO: Average rate of change, given a function and two points, find the AROC
+
+# TODO: Instantaneous rate of change, given a fucntion and one point find the IROC
+
+# TODO: Insert Questions functions to do 
 
 
 if __name__ == "__main__":
