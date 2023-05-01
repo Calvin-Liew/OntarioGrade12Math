@@ -160,14 +160,13 @@ def leading_coeff(polynomial) -> int:
 # TODO: generate image of graph given equation, into image file. (should keep track of both image and the equation)
 
 # TODO: number of turning points of given equation
-def turning_points(polynomial: sympy.Function) -> int:
+def turning_points(polynomial: sympy.Poly) -> int:
     """
     Returns the number of turning points of a polynomial
 
     Preconditions:
     - polynomial is a valid polynomial function from <generate_polynomial>
     """
-    x = sympy.symbols('x')
 
     count = 0
     derivative = sympy.diff(polynomial, x)
@@ -176,8 +175,8 @@ def turning_points(polynomial: sympy.Function) -> int:
 
     for point in critical_points:
         # NOTE: If the second derivative is 0 its not a turning point
-        if (second_derivative.subs(x, point) > 0 
-            or second_derivative.subs(x, point) < 0):
+        if (not point.has(sympy.I) and (second_derivative.subs(x, point) > 0 
+            or second_derivative.subs(x, point) < 0)):
             count += 1;
     return count
 
