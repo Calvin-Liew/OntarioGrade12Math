@@ -8,6 +8,7 @@ This module contains code for Unit 1 functions
 import random
 import typing
 import sympy
+from sympy import degree
 from sympy.abc import x
 
 # from sympy import symbols, Function, Symbol
@@ -215,6 +216,20 @@ def y_int(polynomial) -> list[int | float]:
 
 
 # TODO: least possible degree of given function ie. degree of polynomial function
+# For questions that will give a image of a graph, student will have to see what the 
+# least possible degree is. 
+
+def polynomial_degree(polynomial) -> list[int | float]:
+    """
+    Returns the degree of a polynomial. 
+    
+    Preconditons: 
+    Polynomial is a valid polynomial from <generate_polynomial>
+    
+    >>> polynomial_degree(x**2+x+3)
+    [2]
+    """
+    return [degree(polynomial)]
 
 # Finite differences stuff
 
