@@ -233,7 +233,24 @@ def polynomial_degree(polynomial) -> list[int | float]:
 
 # Finite differences stuff
 
-# TODO: Given a equation, generate x and y values for a simple range ie. -4-4 or -6-6
+# TODO: Given a equation, generate x and y values for a simple range ie
+# First 5 differences 
+def points_of_polynomial(polynomial) -> list[set]:
+    """ 
+    Returns a list of points of a polynomial with x's from -6 to 6.
+    
+    Preconditions:
+    Polynomial is a valid polynomial from <generate_polynomial>
+    
+    >>> points_of_polynomial(x**2+4)
+    [(-6, 40.000), (-5, 29.000), (-4, 20.000), (-3, 13.000), (-2, 8.0000), (-1, 5.0000), (0, 4.0000), (1, 5.0000), (2, 8.0000), (3, 13.000), (4, 20.000), (5, 29.000), (6, 40.000)]
+    """
+    points = []
+    for i in range(-6, 7):
+        point = (i, polynomial.evalf(5, subs={x:i}))
+        points.append(point)
+    return points
+        
 
 # TODO: Given a list of y's, find differences until its constant N. N is the degree of the polynomial.
 
