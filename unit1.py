@@ -237,22 +237,45 @@ def polynomial_degree(polynomial) -> list[int | float]:
 # First 5 differences 
 def points_of_polynomial(polynomial) -> list[set]:
     """ 
-    Returns a list of points of a polynomial with x's from -6 to 6.
+    Returns a list of points of a polynomial with x's from -7 to 7.
     
     Preconditions:
     Polynomial is a valid polynomial from <generate_polynomial>
     
     >>> points_of_polynomial(x**2+4)
-    [(-6, 40.000), (-5, 29.000), (-4, 20.000), (-3, 13.000), (-2, 8.0000), (-1, 5.0000), (0, 4.0000), (1, 5.0000), (2, 8.0000), (3, 13.000), (4, 20.000), (5, 29.000), (6, 40.000)]
+    [(-7, 53.000), (-6, 40.000), (-5, 29.000), (-4, 20.000), (-3, 13.000), (-2, 8.0000), (-1, 5.0000), (0, 4.0000), (1, 5.0000), (2, 8.0000), (3, 13.000), (4, 20.000), (5, 29.000), (6, 40.000), (7, 53.000)]
+    
     """
     points = []
-    for i in range(-6, 7):
+    for i in range(-7, 8):
         point = (i, polynomial.evalf(5, subs={x:i}))
         points.append(point)
     return points
         
 
 # TODO: Given a list of y's, find differences until its constant N. N is the degree of the polynomial.
+
+def all_differences(n, points):
+    """
+    Given a degree of a polynomial and some points of a polynomial, find all the differences
+    until the constant differences and put them into a list of lists.
+    
+    >>> n = 3
+    >>> points = [(1, 1), (2, 4), (3, 9), (4, 16)]
+    >>> all_diffs = all_differences(n, points)
+    >>> all_diffs
+    [[1, 4, 9, 16], [3, 5, 7], [2, 2], [0]]
+    """
+    differences = []
+    for i in range(n+1):
+        diff = []
+        for j in range(n-i+1):
+            if i == 0:
+                diff.append(points[j][1])
+            else:
+                diff.append(differences[-1][j+1] - differences[-1][j])
+        differences.append(diff)
+    return differences
 
 # TODO: Given equation find which finite difference is constant (ie. the degree of leading coffcient), find the value
 # The value is the leading coffeicnet, A multiplied by the degree N factorial. N! x A
