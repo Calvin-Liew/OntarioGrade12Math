@@ -8,7 +8,7 @@ This module contains code for Unit 1 functions
 import random
 import typing
 import sympy
-from sympy import degree
+from sympy import degree, factorial
 from sympy.abc import x
 
 # from sympy import symbols, Function, Symbol
@@ -258,14 +258,6 @@ def points_of_polynomial(polynomial) -> list[set]:
 def all_differences(degree, points):
     """
     Computes all the differences for a given polynomial of a given degree, evaluated at the given points.
-
-    Parameters:
-    degree (int): the degree of the polynomial
-    points (list): a list of (x, y) tuples representing the points of the polynomial, from x=-7 to x=7
-
-    Returns:
-    list: a list of lists, containing all the differences from the first to the constant differences
-    float: the constant difference
     """
     n = len(points)
     result = [[y for x, y in points]]
@@ -289,8 +281,18 @@ def all_differences(degree, points):
 # TODO: Given equation find which finite difference is constant (ie. the degree of leading coffcient), find the value
 # The value is the leading coffeicnet, A multiplied by the degree N factorial. N! x A
 
-
-
+def finite_difference(polynomial):
+    """Return the finite difference given a polynomial
+    
+    >>> finite_difference(-2*x**4+8)
+    -48
+    """
+    leading_coefficent = sympy.LC(polynomial)
+    degree = polynomial_degree(polynomial)
+    degree = degree[0]
+    multiplier = factorial(degree)
+    return multiplier*leading_coefficent
+    
 # TODO: Given equation, write word descriptions about the function ie. x-intercept at x=, y-intercept at blah,
 #  domain, range, points
 
