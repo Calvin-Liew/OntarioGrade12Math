@@ -255,30 +255,41 @@ def points_of_polynomial(polynomial) -> list[set]:
 
 # TODO: Given a list of y's, find differences until its constant N. N is the degree of the polynomial.
 
-def all_differences(n, points):
+def all_differences(degree, points):
     """
-    Given a degree of a polynomial and some points of a polynomial, find all the differences
-    until the constant differences and put them into a list of lists.
-    
-    >>> n = 3
-    >>> points = [(1, 1), (2, 4), (3, 9), (4, 16)]
-    >>> all_diffs = all_differences(n, points)
-    >>> all_diffs
-    [[1, 4, 9, 16], [3, 5, 7], [2, 2], [0]]
+    Computes all the differences for a given polynomial of a given degree, evaluated at the given points.
+
+    Parameters:
+    degree (int): the degree of the polynomial
+    points (list): a list of (x, y) tuples representing the points of the polynomial, from x=-7 to x=7
+
+    Returns:
+    list: a list of lists, containing all the differences from the first to the constant differences
+    float: the constant difference
     """
+    n = len(points)
+    result = [[y for x, y in points]]
+
+    for level in range(1, n):
+        row = []
+        for i in range(n - level):
+            j = i + level
+            diff = result[level - 1][i + 1] - result[level - 1][i]
+            row.append(diff)
+        result.append(row)
+
     differences = []
-    for i in range(n+1):
-        diff = []
-        for j in range(n-i+1):
-            if i == 0:
-                diff.append(points[j][1])
-            else:
-                diff.append(differences[-1][j+1] - differences[-1][j])
-        differences.append(diff)
-    return differences
+    for i in range(n - 1):
+        differences.append(result[i])
+        if len(result[i]) == n-degree:
+            break
+
+    return differences, result[i][-1]
 
 # TODO: Given equation find which finite difference is constant (ie. the degree of leading coffcient), find the value
 # The value is the leading coffeicnet, A multiplied by the degree N factorial. N! x A
+
+
 
 # TODO: Given equation, write word descriptions about the function ie. x-intercept at x=, y-intercept at blah,
 #  domain, range, points
