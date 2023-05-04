@@ -8,7 +8,7 @@ This module contains code for Unit 1 functions
 import random
 import typing
 import sympy
-from sympy import degree, factorial
+from sympy import degree, factorial, symbols, simplify, Eq
 from sympy.abc import x
 
 # from sympy import symbols, Function, Symbol
@@ -69,7 +69,7 @@ def discriminant(polynomial, coefficient_range):
         discriminant = (coeff_list[1])**2 * (coeff_list[2])**2 - 4 * coeff_list[0] * (coeff_list[2]) ** 3 - 4 * (coeff_list[2])**3 * coeff_list[3] - 27 * (coeff_list[0]) ** 2 * (coeff_list[3]) ** 2 + 18 * coeff_list[0] * coeff_list[1] * coeff_list[2] * coeff_list[3]
         return discriminant
     else:   # Degree 4
-        discriminant = 256 * (coeff_list[0]) ** 3 * (coeff_list[4]) ** 3 - 192 * (coeff_list[0]) ** 2 * coeff_list[1] * coeff_list[3] * (coeff_list[4]) ** 2 - 128 * (coeff_list[0]) ** 2 * (coeff_list[2]) ** 2 * (coeff_list[4]) ** 2 + 144 * (coeff_list[0]) ** 2 * coeff_list[2] * (coeff_list[3]) ** 2 * coeff_list[4] - 27 * (coeff_list[0]) ** 2 * (coeff_list[3]) ** 4 
+        discriminant = 256 * (coeff_list[0]) ** 3 * (coeff_list[4]) ** 3 - 192 * (coeff_list[0]) ** 2 * coeff_list[1] * coeff_list[3] * (coeff_list[4]) ** 2 - 128 * (coeff_list[0]) ** 2 * (coeff_list[2]) ** 2 * (coeff_list[4]) ** 2 + 144 * (coeff_list[0]) ** 2 * coeff_list[2] * (coeff_list[3]) ** 2 * coeff_list[4] - 27 * (coeff_list[0]) ** 2 * (coeff_list[3]) ** 4 + 144 * coeff_list[0] * (coeff_list[1]) ** 2 * coeff_list[2] * (coeff_list[4]) ** 2 - 6 * coeff_list[0] * (coeff_list[1]) ** 2 * (coeff_list[3]) ** 2 * coeff_list[4]
 
 def sympy_to_mathjax(polynomial) -> str:
     """
@@ -353,9 +353,9 @@ def average_rate_of_change(polynomial, x1, x2):
     """ 
     
     """
-    y1 = (x1, polynomial.evalf(subs={x:x1}))
-    y2 = (x2, polynomial.evalf(subs={x:x2}))
-    return ((y2-y1)/(x2-x1))
+    point1 = (x1, polynomial.evalf(subs={x:x1}))
+    point2 = (x2, polynomial.evalf(subs={x:x2}))
+    return (point1[1]-point2[1])/(point1[0]-point2[0])
 
 # TODO: Instantaneous rate of change, given a fucntion and one point find the IROC
 
