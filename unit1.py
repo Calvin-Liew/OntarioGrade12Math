@@ -129,8 +129,17 @@ def end_behaviour(first_quadrant: str, second_quadrant: str, coefficient_range: 
 
 # Even or odd function, provide another return showing a quick proof of why the function is even or odd or neither
 # TODO: function doesnt work
-def even_or_odd_function(polynomial) -> str:
-    pass
+def even_or_odd(f):
+    x = symbols('x')
+    f_of_neg_x = f.subs(x, -x)
+    evenness = simplify(f - f_of_neg_x)
+    oddness = simplify(f + f_of_neg_x)
+    if evenness.equals(0):
+        return "The function is even"
+    elif oddness.equals(0):
+        return "The function is odd"
+    else:
+        return "The function is neither even nor odd"
 
 
 # TODO: coefficent of given equation
