@@ -277,7 +277,6 @@ def all_differences(degree, points):
     for level in range(1, n):
         row = []
         for i in range(n - level):
-            j = i + level
             diff = result[level - 1][i + 1] - result[level - 1][i]
             row.append(diff)
         result.append(row)
@@ -341,6 +340,12 @@ def finite_difference(polynomial):
 # where graph is positive or negative
 
 # TODO: Average rate of change, given a function and two points, find the AROC
+
+def average_rate_of_change(polynomial, x1, x2):
+    """ 
+    
+    """
+    
 
 # TODO: Instantaneous rate of change, given a fucntion and one point find the IROC
 
