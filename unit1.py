@@ -36,16 +36,25 @@ def generate_polynomial(degree: int, coefficient_range: typing.Tuple[int, int]):
 # TODO: Generate factorable polynomial and/or prefactored polynomial
 # Disciminant is defined differently for different degree functions
 # So we might need to put a limit to degree
-# def generate_factorable_polynomial(degree: int, coefficient_range: typing.Tuple[int, int]):
-#     """
-#     Generates factorable polynomial.
-#     Will just return a non-factored polynomial if the generated
-#
-#     Preconditions:
-#     - degree > 1
-#     - coefficient_range != ()
-#     """
-#     possible_factorable = sympy.factor(generate_polynomial(degree, coefficient_range))
+def generate_factorable_polynomial(degree: int, coefficient_range: typing.Tuple[int, int]):
+    """
+    Generates factorable polynomial where the degree is less than or equal to 6
+
+    Preconditions:
+    - degree > 1
+    - coefficient_range != ()
+    """
+    # possible_function = generate_polynomial(degree, coefficient_range)
+    # expr = sympy.Poly(possible_function, x)
+    # coeff_list = expr.all_coeffs()
+    # while True:
+    #     if sympy.degree(possible_function) == 2:
+    #         discriminant = (coeff_list[1])**2 - 4 * coeff_list[0] * coeff_list[2]
+    #         if discriminant >= 0:   # Either 1 or 2 solutions
+    #             return sympy.solve(possible_function, x)
+
+# TODO: Create a helper function for discriminant
+def discriminant(polynomial):
 
 
 def sympy_to_mathjax(polynomial) -> str:
@@ -216,16 +225,16 @@ def y_int(polynomial) -> list[int | float]:
 
 
 # TODO: least possible degree of given function ie. degree of polynomial function
-# For questions that will give a image of a graph, student will have to see what the 
-# least possible degree is. 
+# For questions that will give a image of a graph, student will have to see what the
+# least possible degree is.
 
 def polynomial_degree(polynomial) -> list[int | float]:
     """
-    Returns the degree of a polynomial. 
-    
-    Preconditons: 
+    Returns the degree of a polynomial.
+
+    Preconditons:
     Polynomial is a valid polynomial from <generate_polynomial>
-    
+
     >>> polynomial_degree(x**2+x+3)
     [2]
     """
@@ -234,24 +243,27 @@ def polynomial_degree(polynomial) -> list[int | float]:
 # Finite differences stuff
 
 # TODO: Given a equation, generate x and y values for a simple range ie
-# First 5 differences 
+# First 5 differences
+
+
 def points_of_polynomial(polynomial) -> list[set]:
-    """ 
+    """
     Returns a list of points of a polynomial with x's from -7 to 7.
-    
+
     Preconditions:
     Polynomial is a valid polynomial from <generate_polynomial>
-    
+
     >>> points_of_polynomial(x**2+4)
-    [(-7, 53.000), (-6, 40.000), (-5, 29.000), (-4, 20.000), (-3, 13.000), (-2, 8.0000), (-1, 5.0000), (0, 4.0000), (1, 5.0000), (2, 8.0000), (3, 13.000), (4, 20.000), (5, 29.000), (6, 40.000), (7, 53.000)]
-    
+    [(-7, 53.000), (-6, 40.000), (-5, 29.000), (-4, 20.000), (-3, 13.000), (-2, 8.0000), (-1, 5.0000), (0, 4.0000),
+    (1, 5.0000), (2, 8.0000), (3, 13.000), (4, 20.000), (5, 29.000), (6, 40.000), (7, 53.000)]
+
     """
     points = []
     for i in range(-7, 8):
         point = (i, polynomial.evalf(5, subs={x:i}))
         points.append(point)
     return points
-        
+
 
 # TODO: Given a list of y's, find differences until its constant N. N is the degree of the polynomial.
 
@@ -283,7 +295,7 @@ def all_differences(degree, points):
 
 def finite_difference(polynomial):
     """Return the finite difference given a polynomial
-    
+
     >>> finite_difference(-2*x**4+8)
     -48
     """
@@ -292,7 +304,7 @@ def finite_difference(polynomial):
     degree = degree[0]
     multiplier = factorial(degree)
     return multiplier*leading_coefficent
-    
+
 # TODO: Given equation, write word descriptions about the function ie. x-intercept at x=, y-intercept at blah,
 #  domain, range, points
 
