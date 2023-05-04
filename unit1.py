@@ -38,10 +38,10 @@ def generate_polynomial(degree: int, coefficient_range: typing.Tuple[int, int]):
 # So we might need to put a limit to degree
 def generate_factorable_polynomial(degree: int, coefficient_range: typing.Tuple[int, int]):
     """
-    Generates factorable polynomial where the degree is less than or equal to 6
+    Generates factorable polynomial where the degree is less than or equal to 4
 
     Preconditions:
-    - degree > 1
+    - 1 < degree <= 4
     - coefficient_range != ()
     """
     # possible_function = generate_polynomial(degree, coefficient_range)
@@ -54,8 +54,22 @@ def generate_factorable_polynomial(degree: int, coefficient_range: typing.Tuple[
     #             return sympy.solve(possible_function, x)
 
 # TODO: Create a helper function for discriminant
-def discriminant(polynomial):
-
+def discriminant(polynomial, coefficient_range):
+    """"
+    Helper function for <generate_factorable_polynomial>.
+    Calculates discriminants up to polynomial functions where the degree is less than or equal to 4.
+    """
+    possible_function = generate_polynomial(degree, coefficient_range)
+    expr = sympy.Poly(possible_function, x)
+    coeff_list = expr.all_coeffs()
+    if sympy.degree(possible_function) == 2:
+        discriminant = (coeff_list[1])**2 - 4 * coeff_list[0] * coeff_list[2]
+        return discriminant
+    elif sympy.degree(possible_function) == 3:
+        discriminant = (coeff_list[1])**2 * (coeff_list[2])**2 - 4 * coeff_list[0] * (coeff_list[2]) ** 3 - 4 * (coeff_list[2])**3 * coeff_list[3] - 27 * (coeff_list[0]) ** 2 * (coeff_list[3]) ** 2 + 18 * coeff_list[0] * coeff_list[1] * coeff_list[2] * coeff_list[3]
+        return discriminant
+    else:   # Degree 4
+        discriminant = 256 * (coeff_list[0]) ** 3 * (coeff_list[4]) ** 3 - 192 * (coeff_list[0]) ** 2 * coeff_list[1] * coeff_list[3] * (coeff_list[4]) ** 2 - 128 * (coeff_list[0]) ** 2 * (coeff_list[2]) ** 2 * (coeff_list[4]) ** 2 + 144 * (coeff_list[0]) ** 2 * coeff_list[2] * (coeff_list[3]) ** 2 * coeff_list[4] - 27 * (coeff_list[0]) ** 2 * (coeff_list[3]) ** 4 
 
 def sympy_to_mathjax(polynomial) -> str:
     """
@@ -115,14 +129,8 @@ def end_behaviour(first_quadrant: str, second_quadrant: str, coefficient_range: 
 
 # Even or odd function, provide another return showing a quick proof of why the function is even or odd or neither
 # TODO: function doesnt work
-# def even_or_odd_function(polynomial) -> str:
-#   f = Function('f')
-#   if f(-polynomial) == f(polynomial):
-#     return 'Even'
-#   elif f(-polynomial) == -f(polynomial):
-#     return 'Odd'
-#   else:
-#     return 'None'
+def even_or_odd_function(polynomial) -> str:
+    pass
 
 
 # TODO: coefficent of given equation
@@ -345,9 +353,19 @@ def average_rate_of_change(polynomial, x1, x2):
     """ 
     
     """
-    
+    y1 = (x1, polynomial.evalf(subs={x:x1}))
+    y2 = (x2, polynomial.evalf(subs={x:x2}))
+    return ((y2-y1)/(x2-x1))
 
 # TODO: Instantaneous rate of change, given a fucntion and one point find the IROC
+
+def instant_rate_of_change(polynomial, x1):
+    """
+    
+    """
+    derivative = sympy.diff(polynomial, x)
+    slope = derivative.evalf(subs={x:x1})
+    return slope
 
 # TODO: Insert Questions functions to do
 
