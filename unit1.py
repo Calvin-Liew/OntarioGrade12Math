@@ -71,6 +71,7 @@ def discriminant(polynomial, coefficient_range):
     else:   # Degree 4
         discriminant = 256 * (coeff_list[0]) ** 3 * (coeff_list[4]) ** 3 - 192 * (coeff_list[0]) ** 2 * coeff_list[1] * coeff_list[3] * (coeff_list[4]) ** 2 - 128 * (coeff_list[0]) ** 2 * (coeff_list[2]) ** 2 * (coeff_list[4]) ** 2 + 144 * (coeff_list[0]) ** 2 * coeff_list[2] * (coeff_list[3]) ** 2 * coeff_list[4] - 27 * (coeff_list[0]) ** 2 * (coeff_list[3]) ** 4 + 144 * coeff_list[0] * (coeff_list[1]) ** 2 * coeff_list[2] * (coeff_list[4]) ** 2 - 6 * coeff_list[0] * (coeff_list[1]) ** 2 * (coeff_list[3]) ** 2 * coeff_list[4]
 
+
 def sympy_to_mathjax(polynomial) -> str:
     """
     Converts sympy polynomial function to mathjax syntax
@@ -82,12 +83,7 @@ def sympy_to_mathjax(polynomial) -> str:
     Preconditions:
     - polynomial is a valid polynomial function from <generate_polynomial>
     """
-    txt = str(polynomial)
-    x = txt.replace("**", "^")
-    y = x.replace("*", "")
-
-    # return (y)
-    return y
+    return sympy.latex(polynomial)
 
 
 def end_behaviour(first_quadrant: str, second_quadrant: str, coefficient_range: typing.Tuple[int, int]):
