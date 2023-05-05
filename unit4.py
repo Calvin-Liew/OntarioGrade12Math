@@ -58,3 +58,33 @@ def degree_to_rad(degree: int) -> int:
 #     """Evaluates sin function
 #     """
 #     return syp.cot(radian)
+
+#Unit 4 Planning 
+
+#TODO: Generate random angle in radian or degree. Maybe we need to specific range
+
+#TODO: Trig ratios of a given angle 
+
+#TODO: Provide a simple diagram of an angle? Might be tough 
+
+#TODO: Convert degree to radian and vice versa showing work 
+
+#TODO: Angular velocity questions 
+# In format of The hard disk in a personal computer rotates at x rpm (revolutions per minute), determien its 
+# angular velocity 
+
+#TODO: Find the related acute angle and the principal angle and give diagram 
+
+#TODO: given some random radian find the exact value of sinx or tanx or cosx or cscx secx cotx
+#TODO: a helper function to show simple work for the function above
+
+#TODO: Genrate a equation of a combination of random trig functions and simplfy it in exact values 
+
+#TODO: Trig word problem, kite flying or ladder leaning on wall, or some other scenario that requires someone to look
+# for the distance or heieght etc
+
+
+
+
+
+ 
