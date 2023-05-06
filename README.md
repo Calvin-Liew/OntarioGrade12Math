@@ -1,4 +1,4 @@
-# ** Ontario Grade 12 Math Problem Generator**
+# Ontario Grade 12 Math Problem Generator
 
 ```
 Project by Wonjae Lee, Calvin Liew and Yong Le
