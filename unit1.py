@@ -11,6 +11,8 @@ import sympy
 from sympy import degree, factorial, symbols, simplify, Eq
 from sympy.abc import x
 
+from prettytable import PrettyTable
+
 # from sympy import symbols, Function, Symbol
 # from sympy.plotting import plot
 
@@ -53,8 +55,9 @@ def generate_factorable_polynomial(degree: int, coefficient_range: typing.Tuple[
     #         if discriminant >= 0:   # Either 1 or 2 solutions
     #             return sympy.solve(possible_function, x)
 
+
 # TODO: Create a helper function for discriminant
-def discriminant(polynomial, coefficient_range):
+def find_discriminant(degree, coefficient_range):
     """"
     Helper function for <generate_factorable_polynomial>.
     Calculates discriminants up to polynomial functions where the degree is less than or equal to 4.
@@ -63,25 +66,31 @@ def discriminant(polynomial, coefficient_range):
     expr = sympy.Poly(possible_function, x)
     coeff_list = expr.all_coeffs()
     if sympy.degree(possible_function) == 2:
-        discriminant = (coeff_list[1])**2 - 4 * coeff_list[0] * coeff_list[2]
+        discriminant = (coeff_list[1]) ** 2 - 4 * coeff_list[0] * coeff_list[2]
         return discriminant
     elif sympy.degree(possible_function) == 3:
-        discriminant = (coeff_list[1])**2 * (coeff_list[2])**2 - 4 * coeff_list[0] * (coeff_list[2]) ** 3 - 4 * (coeff_list[2])**3 * coeff_list[3] - 27 * (coeff_list[0]) ** 2 * (coeff_list[3]) ** 2 + 18 * coeff_list[0] * coeff_list[1] * coeff_list[2] * coeff_list[3]
+        discriminant = (coeff_list[1]) ** 2 * (coeff_list[2]) ** 2 - 4 * coeff_list[0] * (coeff_list[2]) ** 3 - 4 * (
+        coeff_list[2]) ** 3 * coeff_list[3] - 27 * (coeff_list[0]) ** 2 * (coeff_list[3]) ** 2 + 18 * coeff_list[0] * \
+                       coeff_list[1] * coeff_list[2] * coeff_list[3]
         return discriminant
-    else:   # Degree 4
-        discriminant = 256 * (coeff_list[0]) ** 3 * (coeff_list[4]) ** 3 - 192 * (coeff_list[0]) ** 2 * coeff_list[1] * coeff_list[3] * (coeff_list[4]) ** 2 - 128 * (coeff_list[0]) ** 2 * (coeff_list[2]) ** 2 * (coeff_list[4]) ** 2 + 144 * (coeff_list[0]) ** 2 * coeff_list[2] * (coeff_list[3]) ** 2 * coeff_list[4] - 27 * (coeff_list[0]) ** 2 * (coeff_list[3]) ** 4 + 144 * coeff_list[0] * (coeff_list[1]) ** 2 * coeff_list[2] * (coeff_list[4]) ** 2 - 6 * coeff_list[0] * (coeff_list[1]) ** 2 * (coeff_list[3]) ** 2 * coeff_list[4]
+    else:  # Degree 4
+        discriminant = 256 * (coeff_list[0]) ** 3 * (coeff_list[4]) ** 3 - 192 * (coeff_list[0]) ** 2 * coeff_list[1] * \
+                       coeff_list[3] * (coeff_list[4]) ** 2 - 128 * (coeff_list[0]) ** 2 * (coeff_list[2]) ** 2 * (
+                       coeff_list[4]) ** 2 + 144 * (coeff_list[0]) ** 2 * coeff_list[2] * (coeff_list[3]) ** 2 * \
+                       coeff_list[4] - 27 * (coeff_list[0]) ** 2 * (coeff_list[3]) ** 4 + 144 * coeff_list[0] * (
+                       coeff_list[1]) ** 2 * coeff_list[2] * (coeff_list[4]) ** 2 - 6 * coeff_list[0] * (
+                       coeff_list[1]) ** 2 * (coeff_list[3]) ** 2 * coeff_list[4]
 
 
 def sympy_to_mathjax(polynomial) -> str:
     """
     Converts sympy polynomial function to mathjax syntax
-    # >>> from sympy import symbols
-    # >>> polynomial = x**3 + 7*x**2 + 4*x + 3
-    # >>> sympy_to_mathjax(polynomial)
-    # 'x^3 + 7x^2 + 4x + 3'
 
     Preconditions:
     - polynomial is a valid polynomial function from <generate_polynomial>
+
+    >>> sympy_to_mathjax(x**3 + 7*x**2 + 4*x + 3)
+    'x^{3} + 7 x^{2} + 4 x + 3'
     """
     return sympy.latex(polynomial)
 
@@ -123,9 +132,23 @@ def end_behaviour(first_quadrant: str, second_quadrant: str, coefficient_range: 
             function = generate_polynomial(degree, coefficient_range)
             return - + function
 
+
 # Even or odd function, provide another return showing a quick proof of why the function is even or odd or neither
 # TODO: function doesnt work
 def even_or_odd(f):
+    """
+    Determines whether the function is even or odd
+
+    Preconditions:
+    - f is a valid polynomial function from <generate_polynomial>
+
+    >>> even_or_odd(x**2 + x**4 + x**6)
+    'The function is even'
+    >>> even_or_odd(x**3 - 8*x)
+    'The function is odd'
+    >>> even_or_odd(1 + x + x**2)
+    'The function is neither even nor odd'
+    """
     x = symbols('x')
     f_of_neg_x = f.subs(x, -x)
     evenness = simplify(f - f_of_neg_x)
@@ -186,6 +209,12 @@ def function_range(polynomial) -> str:
 
 
 # TODO: table of intervals of given equation
+# def table_of_intervals(polynomial):
+#     # factored = sympy.factor(polynomial)
+#     myTable = PrettyTable([])
+#
+#     roots_list = sympy.real_roots(polynomial)
+
 
 # TODO: generate image of graph given equation, into image file. (should keep track of both image and the equation)
 
@@ -206,7 +235,7 @@ def turning_points(polynomial) -> int:
     for point in critical_points:
         # NOTE: If the second derivative is 0 its not a turning point
         if (not point.has(sympy.I) and (second_derivative.subs(x, point) > 0
-            or second_derivative.subs(x, point) < 0)):
+                                        or second_derivative.subs(x, point) < 0)):
             count += 1
     return count
 
@@ -253,6 +282,7 @@ def polynomial_degree(polynomial) -> list[int | float]:
     """
     return [degree(polynomial)]
 
+
 # Finite differences stuff
 
 # TODO: Given a equation, generate x and y values for a simple range ie
@@ -273,7 +303,7 @@ def points_of_polynomial(polynomial) -> list[set]:
     """
     points = []
     for i in range(-7, 8):
-        point = (i, polynomial.evalf(5, subs={x:i}))
+        point = (i, polynomial.evalf(5, subs={x: i}))
         points.append(point)
     return points
 
@@ -297,10 +327,11 @@ def all_differences(degree, points):
     differences = []
     for i in range(n - 1):
         differences.append(result[i])
-        if len(result[i]) == n-degree:
+        if len(result[i]) == n - degree:
             break
 
     return differences, result[i][-1]
+
 
 # TODO: Given equation find which finite difference is constant (ie. the degree of leading coffcient), find the value
 # The value is the leading coffeicnet, A multiplied by the degree N factorial. N! x A
@@ -315,7 +346,8 @@ def finite_difference(polynomial):
     degree = polynomial_degree(polynomial)
     degree = degree[0]
     multiplier = factorial(degree)
-    return multiplier*leading_coefficent
+    return multiplier * leading_coefficent
+
 
 # TODO: Given equation, write word descriptions about the function ie. x-intercept at x=, y-intercept at blah,
 #  domain, range, points
@@ -355,11 +387,12 @@ def transformation_of_function(parent, a: float, k: float, c: float, d: float) -
     d: horizontal shift factor
     '''
 
-    new_func = parent.subs(x, k * x - d) ## Horizontal shift and strech
-    new_func = a * new_func ## Vertical strech
-    new_func = new_func + c ## Vertical shift
-    
+    new_func = parent.subs(x, k * x - d)  ## Horizontal shift and strech
+    new_func = a * new_func  ## Vertical strech
+    new_func = new_func + c  ## Vertical shift
+
     return new_func
+
 
 # TODO: Given some variables of A, K, C, D return text explaining what each does
 
@@ -370,26 +403,29 @@ def transformation_of_function(parent, a: float, k: float, c: float, d: float) -
 # TODO: Average rate of change, given a function and two points, find the AROC
 
 def average_rate_of_change(polynomial, x1, x2):
-    """ 
-    
     """
-    point1 = (x1, polynomial.evalf(subs={x:x1}))
-    point2 = (x2, polynomial.evalf(subs={x:x2}))
-    return (point1[1]-point2[1])/(point1[0]-point2[0])
+
+    """
+    point1 = (x1, polynomial.evalf(subs={x: x1}))
+    point2 = (x2, polynomial.evalf(subs={x: x2}))
+    return (point1[1] - point2[1]) / (point1[0] - point2[0])
+
 
 # TODO: Instantaneous rate of change, given a fucntion and one point find the IROC
 
 def instant_rate_of_change(polynomial, x1):
     """
-    
+
     """
     derivative = sympy.diff(polynomial, x)
-    slope = derivative.evalf(subs={x:x1})
+    slope = derivative.evalf(subs={x: x1})
     return slope
+
 
 # TODO: Insert Questions functions to do
 
 
 if __name__ == "__main__":
     import doctest
-    doctest.testmod(verbose=True)   # Forcing verbose to be true will provide full details of doctests
+
+    doctest.testmod(verbose=True)  # Forcing verbose to be true will provide full details of doctests
