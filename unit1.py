@@ -11,7 +11,7 @@ import sympy
 from sympy import degree, factorial, symbols, simplify, Eq
 from sympy.abc import x
 
-from prettytable import PrettyTable
+#from prettytable import PrettyTable
 
 # from sympy import symbols, Function, Symbol
 # from sympy.plotting import plot
@@ -46,31 +46,33 @@ def generate_factorable_polynomial(degree: int, coefficient_range: typing.Tuple[
     - 1 < degree <= 4
     - coefficient_range != ()
     """
-    # possible_function = generate_polynomial(degree, coefficient_range)
-    # expr = sympy.Poly(possible_function, x)
-    # coeff_list = expr.all_coeffs()
-    # while True:
-    #     if sympy.degree(possible_function) == 2:
-    #         discriminant = (coeff_list[1])**2 - 4 * coeff_list[0] * coeff_list[2]
-    #         if discriminant >= 0:   # Either 1 or 2 solutions
-    #             return sympy.solve(possible_function, x)
+    while True:
+        possible_function = generate_polynomial(degree, coefficient_range)
+        print(find_discriminant(possible_function))
+        if find_discriminant(possible_function) >= 0:
+            return possible_function
 
 
-# TODO: Create a helper function for discriminant
-def find_discriminant(degree, coefficient_range):
+def find_discriminant(polynomial):
     """"
     Helper function for <generate_factorable_polynomial>.
     Calculates discriminants up to polynomial functions where the degree is less than or equal to 4.
+
+    >>> find_discriminant(x**2 + 2*x + 1)
+    0
+    >>> find_discriminant(x**3 - 3*x + 2)
+    0
+    >>> find_discriminant(x**4 - 4*x**3 + 6*x**2 - 4*x + 1)
+    0
     """
-    possible_function = generate_polynomial(degree, coefficient_range)
-    expr = sympy.Poly(possible_function, x)
+    expr = sympy.Poly(polynomial, x)
     coeff_list = expr.all_coeffs()
-    if sympy.degree(possible_function) == 2:
+    if sympy.degree(polynomial) == 2:    # Degree 2
         discriminant = (coeff_list[1]) ** 2 - 4 * coeff_list[0] * coeff_list[2]
         return discriminant
-    elif sympy.degree(possible_function) == 3:
+    elif sympy.degree(polynomial) == 3:  # Degree 3
         discriminant = (coeff_list[1]) ** 2 * (coeff_list[2]) ** 2 - 4 * coeff_list[0] * (coeff_list[2]) ** 3 - 4 * (
-        coeff_list[2]) ** 3 * coeff_list[3] - 27 * (coeff_list[0]) ** 2 * (coeff_list[3]) ** 2 + 18 * coeff_list[0] * \
+        coeff_list[1]) ** 3 * coeff_list[3] - 27 * (coeff_list[0]) ** 2 * (coeff_list[3]) ** 2 + 18 * coeff_list[0] * \
                        coeff_list[1] * coeff_list[2] * coeff_list[3]
         return discriminant
     else:  # Degree 4
@@ -79,7 +81,12 @@ def find_discriminant(degree, coefficient_range):
                        coeff_list[4]) ** 2 + 144 * (coeff_list[0]) ** 2 * coeff_list[2] * (coeff_list[3]) ** 2 * \
                        coeff_list[4] - 27 * (coeff_list[0]) ** 2 * (coeff_list[3]) ** 4 + 144 * coeff_list[0] * (
                        coeff_list[1]) ** 2 * coeff_list[2] * (coeff_list[4]) ** 2 - 6 * coeff_list[0] * (
-                       coeff_list[1]) ** 2 * (coeff_list[3]) ** 2 * coeff_list[4]
+                       coeff_list[1]) ** 2 * (coeff_list[3]) ** 2 * coeff_list[4] - 80 * coeff_list[0] * coeff_list[1] * (coeff_list[2]) ** 2 * coeff_list[3] * coeff_list[4] + \
+                       18 * coeff_list[0] * coeff_list[1] * coeff_list[2] * (coeff_list[3]) ** 3 + 16 * coeff_list[0] * (coeff_list[2]) ** 4 * coeff_list[4] - \
+                       4 * coeff_list[0] * (coeff_list[2]) ** 3 * (coeff_list[3]) ** 2 - 27 * (coeff_list[1]) ** 4 * (coeff_list[4]) ** 2 + \
+                       18 * (coeff_list[1]) ** 3 * coeff_list[2] * coeff_list[3] * coeff_list[4] - 4 * (coeff_list[1]) ** 3 * (coeff_list[3]) ** 3 - \
+                       4 * (coeff_list[1]) ** 2 * (coeff_list[2]) ** 3 * coeff_list[4] + (coeff_list[1]) ** 2 * (coeff_list[2]) ** 2 * (coeff_list[3]) ** 2
+        return discriminant
 
 
 def sympy_to_mathjax(polynomial) -> str:
@@ -133,8 +140,6 @@ def end_behaviour(first_quadrant: str, second_quadrant: str, coefficient_range: 
             return - + function
 
 
-# Even or odd function, provide another return showing a quick proof of why the function is even or odd or neither
-# TODO: function doesnt work
 def even_or_odd(f):
     """
     Determines whether the function is even or odd
@@ -160,8 +165,6 @@ def even_or_odd(f):
     else:
         return "The function is neither even nor odd"
 
-
-# TODO: coefficent of given equation
 
 def leading_coeff(polynomial) -> int:
     """
@@ -216,9 +219,6 @@ def function_range(polynomial) -> str:
 #     roots_list = sympy.real_roots(polynomial)
 
 
-# TODO: generate image of graph given equation, into image file. (should keep track of both image and the equation)
-
-
 def turning_points(polynomial) -> int:
     """
     Returns the number of turning points of a polynomial
@@ -266,10 +266,6 @@ def y_int(polynomial) -> list[int | float]:
     return [polynomial.coeff(x, 0)]  # return just the y-intercept
 
 
-# TODO: least possible degree of given function ie. degree of polynomial function
-# For questions that will give a image of a graph, student will have to see what the
-# least possible degree is.
-
 def polynomial_degree(polynomial) -> list[int | float]:
     """
     Returns the degree of a polynomial.
@@ -283,11 +279,6 @@ def polynomial_degree(polynomial) -> list[int | float]:
     return [degree(polynomial)]
 
 
-# Finite differences stuff
-
-# TODO: Given a equation, generate x and y values for a simple range ie
-# First 5 differences
-
 
 def points_of_polynomial(polynomial) -> list[set]:
     """
@@ -297,8 +288,8 @@ def points_of_polynomial(polynomial) -> list[set]:
     Polynomial is a valid polynomial from <generate_polynomial>
 
     >>> points_of_polynomial(x**2+4)
-    [(-7, 53.000), (-6, 40.000), (-5, 29.000), (-4, 20.000), (-3, 13.000), (-2, 8.0000), (-1, 5.0000), (0, 4.0000),
-    (1, 5.0000), (2, 8.0000), (3, 13.000), (4, 20.000), (5, 29.000), (6, 40.000), (7, 53.000)]
+    [(-7, 53.000), (-6, 40.000), (-5, 29.000), (-4, 20.000), (-3, 13.000), (-2, 8.0000), (-1, 5.0000), (0, 4.0000), (1, 5.0000),\
+    (2, 8.0000), (3, 13.000), (4, 20.000), (5, 29.000), (6, 40.000), (7, 53.000)]
 
     """
     points = []
@@ -308,11 +299,10 @@ def points_of_polynomial(polynomial) -> list[set]:
     return points
 
 
-# TODO: Given a list of y's, find differences until its constant N. N is the degree of the polynomial.
-
 def all_differences(degree, points):
     """
     Computes all the differences for a given polynomial of a given degree, evaluated at the given points.
+    
     """
     n = len(points)
     result = [[y for x, y in points]]
@@ -332,9 +322,6 @@ def all_differences(degree, points):
 
     return differences, result[i][-1]
 
-
-# TODO: Given equation find which finite difference is constant (ie. the degree of leading coffcient), find the value
-# The value is the leading coffeicnet, A multiplied by the degree N factorial. N! x A
 
 def finite_difference(polynomial):
     """Return the finite difference given a polynomial
@@ -400,22 +387,25 @@ def transformation_of_function(parent, a: float, k: float, c: float, d: float) -
 # TODO: return number of x-intercepts, turning points, least possible degree, any symmtery intervals
 # where graph is positive or negative
 
-# TODO: Average rate of change, given a function and two points, find the AROC
 
-def average_rate_of_change(polynomial, x1, x2):
+def average_rate_of_change(polynomial, x1, x2) -> float:
     """
-
+    Returns the average rate of change of a polynomial given two x-values
+    
+    >>> average_rate_of_change(2*x+19, 3, 7)    
+    2.00000000000000
     """
     point1 = (x1, polynomial.evalf(subs={x: x1}))
     point2 = (x2, polynomial.evalf(subs={x: x2}))
     return (point1[1] - point2[1]) / (point1[0] - point2[0])
 
 
-# TODO: Instantaneous rate of change, given a fucntion and one point find the IROC
-
-def instant_rate_of_change(polynomial, x1):
+def instant_rate_of_change(polynomial, x1) -> float:
     """
-
+    Returns the instantaneous rate of change at a given x in a given polynomial.
+    
+    >>> instant_rate_of_change(x**2, 2)
+    4.00000000000000
     """
     derivative = sympy.diff(polynomial, x)
     slope = derivative.evalf(subs={x: x1})
