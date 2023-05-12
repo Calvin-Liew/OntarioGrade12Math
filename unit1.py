@@ -40,21 +40,21 @@ def generate_polynomial(degree: int, coefficient_range: typing.Tuple[int, int]):
 # So we might need to put a limit to degree
 def generate_factorable_polynomial(degree: int, coefficient_range: typing.Tuple[int, int]):
     """
-    Generates factorable polynomial where the degree is less than or equal to 4
+    Generates factorable polynomial where the degree is 2 to 4
 
     Preconditions:
-    - 1 < degree <= 4
+    - 2 < degree <= 4
     - coefficient_range != ()
     """
     while True:
         possible_function = generate_polynomial(degree, coefficient_range)
-        print(find_discriminant(possible_function))
+        # print(find_discriminant(possible_function))
         if find_discriminant(possible_function) >= 0:
             return possible_function
 
 
 def find_discriminant(polynomial):
-    """"
+    """
     Helper function for <generate_factorable_polynomial>.
     Calculates discriminants up to polynomial functions where the degree is less than or equal to 4.
 
@@ -279,7 +279,6 @@ def polynomial_degree(polynomial) -> list[int | float]:
     return [degree(polynomial)]
 
 
-
 def points_of_polynomial(polynomial) -> list[set]:
     """
     Returns a list of points of a polynomial with x's from -7 to 7.
@@ -302,7 +301,7 @@ def points_of_polynomial(polynomial) -> list[set]:
 def all_differences(degree, points):
     """
     Computes all the differences for a given polynomial of a given degree, evaluated at the given points.
-    
+
     """
     n = len(points)
     result = [[y for x, y in points]]
@@ -391,8 +390,8 @@ def transformation_of_function(parent, a: float, k: float, c: float, d: float) -
 def average_rate_of_change(polynomial, x1, x2) -> float:
     """
     Returns the average rate of change of a polynomial given two x-values
-    
-    >>> average_rate_of_change(2*x+19, 3, 7)    
+
+    >>> average_rate_of_change(2*x+19, 3, 7)
     2.00000000000000
     """
     point1 = (x1, polynomial.evalf(subs={x: x1}))
@@ -403,7 +402,7 @@ def average_rate_of_change(polynomial, x1, x2) -> float:
 def instant_rate_of_change(polynomial, x1) -> float:
     """
     Returns the instantaneous rate of change at a given x in a given polynomial.
-    
+
     >>> instant_rate_of_change(x**2, 2)
     4.00000000000000
     """
