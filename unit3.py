@@ -1,48 +1,81 @@
-# Unit 3 Planning 
+"""Math Problem Generator - Unit 3: Rational Functions
 
-#Generate rational functions 
+Description
+============================================
+This module contains code for Unit 3 functions
+"""
+
+import typing
+import sympy
+from sympy.abc import x
+
+#Generate rational functions
 
 #TODO: Generate any rational function ie. functions with no asymptotes, functions with horzontal asymptote, etc
 
-#TODO: Generate quadractic rational functions 
+#TODO: Generate quadractic rational functions
 
 #TODO: Generate rational function with asymptotes so we just need to have the denominator be a factorable polynomial
 
-#TODO: Generate rational function that has one as the numerator and the deonominator be a simple factorable polynomial for questions asking about what the asymptotes are 
+#TODO: Generate rational function that has one as the numerator and the deonominator be a simple factorable polynomial for questions asking about what the asymptotes are
 
-#TODO: Intervals where function is positive ornegative 
+#TODO: Intervals where function is positive ornegative
 
-#TODO: Intercepts of rational function ie. when the numerator = 0. 
+#TODO: Intercepts of rational function ie. when the numerator = 0.
 
-#TODO: Domain and range of rational function 
 
-#TODO: graph of rational function 
+def rational_domain(rational) -> str:
+    """
+    Returns domain of rational in str format
+
+    Preconditions:
+    - rational is a valid rational function
+
+    >>> rational_domain(1/(x - 1))
+    '(-∞, 1) ∪ (1, ∞)'
+    >>> rational_domain(1/x)
+    '(-∞, 0) ∪ (0, ∞)'
+    """
+    domain = sympy.calculus.util.continuous_domain(rational, x, sympy.S.Reals)
+    return sympy.printing.pretty(domain)
+
+
+def rational_range(polynomial) -> str:
+    """
+    Returns range of rational in str format
+
+    Preconditions:
+    - rational is a valid rational function
+
+    >>> rational_range(1/(x - 1))
+    '(-∞, 0) ∪ (0, ∞)'
+    >>> rational_range(1/x + 1)
+    '(-∞, 1) ∪ (1, ∞)'
+    """
+    Range = sympy.calculus.util.function_range(polynomial, x, sympy.S.Reals)
+    return sympy.printing.pretty(Range)
+
+#TODO: graph of rational function
 
 #TODO: Intervals where the function is increasing/decreasing ie. where the deriviative is above zero and below zero
 
-#TODO: The vertical asympotes of a rational function 
+#TODO: The vertical asympotes of a rational function
 
-#TODO: The horizonal asympotes of a rational function. Ex. As x-> infinity or x->-infinity y->above 0 or below 0 
+#TODO: The horizonal asympotes of a rational function. Ex. As x-> infinity or x->-infinity y->above 0 or below 0
 
-#TODO: The y-intercept, and x-intercepts of a rational function 
+#TODO: The y-intercept, and x-intercepts of a rational function
 
-#TODO: important attributes of rational functions (for graphing questions), ie. x-int, y-int, HA, VA, 
+#TODO: important attributes of rational functions (for graphing questions), ie. x-int, y-int, HA, VA,
 
-#TODO: Generate quotient of linear functions 
+#TODO: Generate quotient of linear functions
 
-#TODO: Generate spceial case function: A function with holes 
+#TODO: Generate spceial case function: A function with holes
 
-#TODO: Generate a rational fucnction with a oblique asymptote. CASE 1. A quadractic over a linear 
+#TODO: Generate a rational fucnction with a oblique asymptote. CASE 1. A quadractic over a linear
 
 #TODO: Generate a rational fucnction with a oblique asymptote. CASE 2. A higher order function over a higher ordeer fucntion
-# Have to solve where the function intersects the HA to graph 
+# Have to solve where the function intersects the HA to graph
 
-#TODO: Inequalities of rational functions 
+#TODO: Inequalities of rational functions
 
-#TODO: Solving rational equations 
-
-
-
-
-
-
+#TODO: Solving rational equations

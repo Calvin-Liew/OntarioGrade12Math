@@ -364,14 +364,14 @@ def finite_difference(polynomial):
 # This has the same problems with factorable polynomials where the creating the vertex form isn't always equally defined
 # for functions of varying degrees
 def transformation_of_function(parent, a: float, k: float, c: float, d: float) -> sympy.Function:
-    '''
+    """
     Return a function after transformation, given the type of function, and the
     constants of transformation:
     a: vertical stretch factor
     k: horizontal stretch factor
     c: vertical shift factor
     d: horizontal shift factor
-    '''
+    """
 
     new_func = parent.subs(x, k * x - d)  ## Horizontal shift and strech
     new_func = a * new_func  ## Vertical strech
