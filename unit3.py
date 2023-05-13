@@ -112,9 +112,15 @@ def y_int(rational) -> int:
     return rational.subs(x, 0)
 
 
-def attribute(rational) -> str:
+def attribute(rational):
     """
     Returns a basic description about the polynomial function
+
+    >>> attribute((2*x + 1) / (x + 2))
+    x-int: -1/2
+    y-int: 1/2
+    VA: -2
+    HA: 2
     """
     x_intercept = x_int(rational)
     y_intercept = y_int(rational)

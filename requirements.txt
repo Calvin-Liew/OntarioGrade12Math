@@ -2,3 +2,5 @@
 mpmath  # Automatically installed by sympy
 sympy
 # prettytable # For creating tables
+
+sqlalchemy

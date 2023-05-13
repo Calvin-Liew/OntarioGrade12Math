@@ -13,13 +13,14 @@ from sqlalchemy.orm import declarative_base, sessionmaker
 from sympy import degree, factorial, symbols, simplify, Eq
 from sympy.abc import x
 
-#from prettytable import PrettyTable
+# from prettytable import PrettyTable
 
 # from sympy import symbols, Function, Symbol
 # from sympy.plotting import plot
 
 engine = create_engine("sqlite:///questions.db", echo=True)
 Base = declarative_base()
+
 
 class Question(Base):
     __tablename__ = "Questions"
@@ -30,20 +31,22 @@ class Question(Base):
     question = Column(String)
     answer = Column(String)
     graph = Column(String)
-    
+
     def __repr__(self):
         return "<Questions(question='%s', answer='%s')>" % (
             self.question,
             self.answer)
+
 
 Base.metadata.create_all(engine)
 Session = sessionmaker(bind=engine)
 Session.configure(bind=engine)
 session = Session()
 
-#test = Question(unit=0, chapter=0, topic='test topic', question='test answer', answer='test answer', graph='test graph')
-#session.add(test)
-#session.commit()
+
+# test = Question(unit=0, chapter=0, topic='test topic', question='test answer', answer='test answer', graph='test graph')
+# session.add(test)
+# session.commit()
 
 
 def generate_polynomial(degree: int, coefficient_range: typing.Tuple[int, int]):
@@ -99,25 +102,31 @@ def find_discriminant(polynomial) -> int:
     """
     expr = sympy.Poly(polynomial, x)
     coeff_list = expr.all_coeffs()
-    if sympy.degree(polynomial) == 2:    # Degree 2
+    if sympy.degree(polynomial) == 2:  # Degree 2
         discriminant = (coeff_list[1]) ** 2 - 4 * coeff_list[0] * coeff_list[2]
         return discriminant
     elif sympy.degree(polynomial) == 3:  # Degree 3
         discriminant = (coeff_list[1]) ** 2 * (coeff_list[2]) ** 2 - 4 * coeff_list[0] * (coeff_list[2]) ** 3 - 4 * (
-        coeff_list[1]) ** 3 * coeff_list[3] - 27 * (coeff_list[0]) ** 2 * (coeff_list[3]) ** 2 + 18 * coeff_list[0] * \
+            coeff_list[1]) ** 3 * coeff_list[3] - 27 * (coeff_list[0]) ** 2 * (coeff_list[3]) ** 2 + 18 * coeff_list[
+                           0] * \
                        coeff_list[1] * coeff_list[2] * coeff_list[3]
         return discriminant
     else:  # Degree 4
         discriminant = 256 * (coeff_list[0]) ** 3 * (coeff_list[4]) ** 3 - 192 * (coeff_list[0]) ** 2 * coeff_list[1] * \
                        coeff_list[3] * (coeff_list[4]) ** 2 - 128 * (coeff_list[0]) ** 2 * (coeff_list[2]) ** 2 * (
-                       coeff_list[4]) ** 2 + 144 * (coeff_list[0]) ** 2 * coeff_list[2] * (coeff_list[3]) ** 2 * \
+                           coeff_list[4]) ** 2 + 144 * (coeff_list[0]) ** 2 * coeff_list[2] * (coeff_list[3]) ** 2 * \
                        coeff_list[4] - 27 * (coeff_list[0]) ** 2 * (coeff_list[3]) ** 4 + 144 * coeff_list[0] * (
-                       coeff_list[1]) ** 2 * coeff_list[2] * (coeff_list[4]) ** 2 - 6 * coeff_list[0] * (
-                       coeff_list[1]) ** 2 * (coeff_list[3]) ** 2 * coeff_list[4] - 80 * coeff_list[0] * coeff_list[1] * (coeff_list[2]) ** 2 * coeff_list[3] * coeff_list[4] + \
-                       18 * coeff_list[0] * coeff_list[1] * coeff_list[2] * (coeff_list[3]) ** 3 + 16 * coeff_list[0] * (coeff_list[2]) ** 4 * coeff_list[4] - \
-                       4 * coeff_list[0] * (coeff_list[2]) ** 3 * (coeff_list[3]) ** 2 - 27 * (coeff_list[1]) ** 4 * (coeff_list[4]) ** 2 + \
-                       18 * (coeff_list[1]) ** 3 * coeff_list[2] * coeff_list[3] * coeff_list[4] - 4 * (coeff_list[1]) ** 3 * (coeff_list[3]) ** 3 - \
-                       4 * (coeff_list[1]) ** 2 * (coeff_list[2]) ** 3 * coeff_list[4] + (coeff_list[1]) ** 2 * (coeff_list[2]) ** 2 * (coeff_list[3]) ** 2
+                           coeff_list[1]) ** 2 * coeff_list[2] * (coeff_list[4]) ** 2 - 6 * coeff_list[0] * (
+                           coeff_list[1]) ** 2 * (coeff_list[3]) ** 2 * coeff_list[4] - 80 * coeff_list[0] * coeff_list[
+                           1] * (coeff_list[2]) ** 2 * coeff_list[3] * coeff_list[4] + \
+                       18 * coeff_list[0] * coeff_list[1] * coeff_list[2] * (coeff_list[3]) ** 3 + 16 * coeff_list[
+                           0] * (coeff_list[2]) ** 4 * coeff_list[4] - \
+                       4 * coeff_list[0] * (coeff_list[2]) ** 3 * (coeff_list[3]) ** 2 - 27 * (coeff_list[1]) ** 4 * (
+                       coeff_list[4]) ** 2 + \
+                       18 * (coeff_list[1]) ** 3 * coeff_list[2] * coeff_list[3] * coeff_list[4] - 4 * (
+                       coeff_list[1]) ** 3 * (coeff_list[3]) ** 3 - \
+                       4 * (coeff_list[1]) ** 2 * (coeff_list[2]) ** 3 * coeff_list[4] + (coeff_list[1]) ** 2 * (
+                       coeff_list[2]) ** 2 * (coeff_list[3]) ** 2
         return discriminant
 
 
@@ -258,6 +267,11 @@ def turning_points(polynomial) -> int:
 
     Preconditions:
     - polynomial is a valid polynomial function from <generate_polynomial>
+
+    >>> turning_points(x**3)
+    0
+    >>> turning_points(x**2)
+    1
     """
 
     count = 0
@@ -368,7 +382,7 @@ def finite_difference(polynomial):
     return multiplier * leading_coefficent
 
 
-def characteristic(polynomial) -> str:
+def characteristic(polynomial):
     """
     Returns a basic description about the polynomial function
 
@@ -388,14 +402,15 @@ def characteristic(polynomial) -> str:
     return_str = 'x-int: '
     for x_point in x_intercept:
         return_str += f'{x_point}, '
-    return_str = return_str[:-2]    # Take out last two elements
+    return_str = return_str[:-2]  # Take out last two elements
     return_str = return_str + '\n'
 
     return_str += f'y-int: {y_intercept} \n'
     return_str += f'Domain: {domain} \n'
     return_str += f'Range: {range} \nTurning Points: {points}'
 
-    print(return_str)   # \n does not work for return
+    print(return_str)  # \n does not work for return
+
 
 # TODO: Given variables that transform a function, return the equation, a,k,c,d values
 # This has the same problems with factorable polynomials where the creating the vertex form isn't always equally defined
@@ -419,17 +434,16 @@ def transformation_of_function(parent, a: float, k: float, c: float, d: float) -
     0.5*(4*(x-0.7))**3 + 0.3
     """
 
-    new_func = parent.subs(x, k * (x - d))  ## Horizontal shift and strech
-    new_func = new_func + c  ## Vertical shift
-    new_func = a * new_func  ## Vertical strech
-
+    new_func = parent.subs(x, k * (x - d))  # Horizontal shift and strech
+    new_func = new_func + c  # Vertical shift
+    new_func = a * new_func  # Vertical strech
 
     return new_func
 
 
 # TODO: Given some variables of A, K, C, D return text explaining what each does
 
-def transformation_explanation(a: float, k: float, c: float, d:float) -> list:
+def transformation_explanation(a: float, k: float, c: float, d: float) -> list:
     """
     Return simple word descriptions of each transformation
 
@@ -514,11 +528,13 @@ def degree_and_leading_coff():
     question = f"What is the degree and the leading coefficient of this polynomial: {polynomial}"
     answer = f"""The degree of this function is the highest exponent in the polynomial which is {degree}. 
     Therefore the leading coefficent is the coefficent of the term that is degree {degree} which is {leading}"""
-    
-    question = Question(unit=1, chapter=1.1, topic='leading coefficient and degree of polynomial function', question=question, answer=answer, graph=None)
+
+    question = Question(unit=1, chapter=1.1, topic='leading coefficient and degree of polynomial function',
+                        question=question, answer=answer, graph=None)
     session.add(question)
     session.commit()
-    
+
+
 # TODO:
 
 if __name__ == "__main__":

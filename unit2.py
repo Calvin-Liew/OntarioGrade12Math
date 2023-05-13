@@ -88,16 +88,20 @@ def generate_poly_big_small2(degree1, degree2, coefficient_range: typing.Tuple[i
             unit1.generate_polynomial(degree2, coefficient_range)]
 
 
-# TODO: Given two functions, one bigger, one smaller, return the remiander. (from plugging in the solution of the smaller
-# function ie. 2 from (x-2) into the bigger function)
 def find_remainder(big_poly, small_poly):
     """Return the remainder of the division of two functions <big_poly> and <small_poly>
 
     Precondition: deg of <big_poly> > deg of <small_poly>
+
+    >>> find_remainder(x**2 - 4, x + 2)
+    0
+    >>> find_remainder(x**2 - 4, x + 1)
+    -3
     """
 
     # Returns in format (quotient, remainder)
     return sympy.div(big_poly, small_poly)[1]
+
 
 # TODO: Generate two functions where the bigger one has a constant K, and with the remainder for questions
 # that ask what the coffeicent is given the constant and the two functions that divide
@@ -113,14 +117,22 @@ and ax-b is a factor if P(b/a) = 0 """
 
 """What we could do is, already create some factors given a degree, than expand it and return the full equation"""
 
+
 def is_factor(polynomial: Poly, factor: float) -> bool:
     """
     Return whether or not <factor> is a factor of the polynomial <polynomial>
 
+    >>> is_factor(x**2, 0)
+    True
+    >>> is_factor(x**2 - 1, 1)
+    True
+    >>> is_factor(x**2, 1)
+    False
     """
     if (polynomial.subs(x, factor) == 0):
         return True
     return False
+
 
 # Series of functions that provide 'factorable' equations such that the person has to divide one or twice and end up
 # with a easily factorable equation (like quadractic or simple linear) to completely factor it
@@ -161,6 +173,7 @@ def generate_quartic(coefficient_range: typing.Tuple[int, int]):
 
     return sympy.expand(f * g * h * k)
 
+
 # TODO: rational zero theorem
 # TODO: given a polynomial fucntion. a is the leading coffeicnet. b is the constant.
 # The possible factors of a function is any combination of facotrs of b/factors of a.
@@ -177,6 +190,15 @@ def compare(polynomial, inequality, value) -> str:
     - polynomial is a valid polynomial function from <generate_polynomial>
     - inequality in ['<', '>', '<=', '>=']
     - value is constant number
+
+    >>> compare(x**2, '<', 3)
+    '(-√3, √3)'
+    >>> compare(x**2, '<=', 4)
+    '[-2, 2]'
+    >>> compare(x**3, '>', 1)
+    '(1, ∞)'
+    >>> compare(x**4, '>=', 4)
+    '(-∞, -√2] ∪ [√2, ∞)'
     """
     if inequality == '<':
         return sympy.printing.pretty(sympy.solveset(polynomial < value, x, sympy.S.Reals))
@@ -186,7 +208,7 @@ def compare(polynomial, inequality, value) -> str:
         return sympy.printing.pretty(sympy.solveset(polynomial <= value, x, sympy.S.Reals))
     else:
         return sympy.printing.pretty(sympy.solveset(polynomial >= value, x, sympy.S.Reals))
-    
+
 
 # TODO: provide the x-intercepts of a factorable polynomial. For questions for people
 # to write the equation of the polynomial given a point or not
