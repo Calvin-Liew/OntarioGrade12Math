@@ -24,6 +24,9 @@ Copyright and Usage Information
 * turning_points, least_possible_degree, transformation_of_function, sympy_to_mathjax by Yong Le
 * Docstring by Calvin Liew, Wonjae Lee, Yong Le
 
+**Unit 2 - Polynomial Equations:**
+* quotient, remainder, generate_poly_big_small1, generate_poly_big_small2 by Wonjae Lee
+
 **Sqlite3 Database**
 
 **Frontend Website**

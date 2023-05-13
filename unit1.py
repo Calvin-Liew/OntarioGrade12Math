@@ -26,6 +26,7 @@ def generate_polynomial(degree: int, coefficient_range: typing.Tuple[int, int]):
     Preconditions:
     - degree > 0
     - coefficient_range != ()
+    - coefficient_range[0] <= coefficient_range[1]
     """
     x_exponent = degree
     expr = random.randint(coefficient_range[0], coefficient_range[1]) * x ** degree
@@ -41,8 +42,9 @@ def generate_factorable_polynomial(degree: int, coefficient_range: typing.Tuple[
     Generates factorable polynomial where the degree is 2 to 4
 
     Preconditions:
-    - 2 < degree <= 4
+    - 2 <= degree <= 4
     - coefficient_range != ()
+    - coefficient_range[0] <= coefficient_range[1]
     """
     while True:
         possible_function = generate_polynomial(degree, coefficient_range)
@@ -51,10 +53,13 @@ def generate_factorable_polynomial(degree: int, coefficient_range: typing.Tuple[
             return possible_function
 
 
-def find_discriminant(polynomial):
+def find_discriminant(polynomial) -> int:
     """
     Helper function for <generate_factorable_polynomial>.
     Calculates discriminants up to polynomial functions where the degree is less than or equal to 4.
+
+    Preconditions:
+    - polynomial is a valid polynomial function from <generate_polynomial>
 
     >>> find_discriminant(x**2 + 2*x + 1)
     0
@@ -108,6 +113,7 @@ def end_behaviour(first_quadrant: str, second_quadrant: str, coefficient_range: 
     - first_quadrant in ['Q1', 'Q2', 'Q3', 'Q4']
     - second_quadrant in ['Q1', 'Q2', 'Q3', 'Q4']
     - coefficient_range != ()
+    - coefficient_range[0] <= coefficient_range[1]
     """
     quadrant_list = ['Q1', 'Q2', 'Q3', 'Q4']
     if first_quadrant not in quadrant_list or second_quadrant not in quadrant_list:
@@ -138,7 +144,7 @@ def end_behaviour(first_quadrant: str, second_quadrant: str, coefficient_range: 
             return - + function
 
 
-def even_or_odd(f):
+def even_or_odd(f) -> str:
     """
     Determines whether the function is even or odd
 
@@ -251,7 +257,7 @@ def x_int(polynomial) -> sympy.Set:
     return sympy.solveset(polynomial, x)
 
 
-def y_int(polynomial) -> list[int | float]:
+def y_int(polynomial) -> int:
     """
     Returns y-intercept of polynomial
 
@@ -259,9 +265,9 @@ def y_int(polynomial) -> list[int | float]:
     - polynomial is a valid polynomial function from <generate_polynomial>
 
     >>> y_int(x**2 - 1)
-    [-1]
+    -1
     """
-    return [polynomial.coeff(x, 0)]  # return just the y-intercept
+    return polynomial.subs(x, 0)
 
 
 def polynomial_degree(polynomial) -> list[int | float]:
@@ -338,9 +344,9 @@ def finite_difference(polynomial):
 
 def characteristic(polynomial) -> str:
     """
-    Returns a basic description about the function 
-    
-    >>> characteristic(x**2-1)   
+    Returns a basic description about the function
+
+    >>> characteristic(x**2-1)
     x-int: -1, 1
     y-int: -1
     Domain: ℝ
@@ -357,15 +363,11 @@ def characteristic(polynomial) -> str:
     for x_point in x_intercept:
         return_str += f'{x_point}, '
     return_str = return_str[:-2]    # Take out last two elements
-    return_str = return_str + '\n' + 'y-int: '
-
-    for y_point in y_intercept:
-        return_str += f'{y_point}, '
-    return_str = return_str[:-2]
     return_str = return_str + '\n'
-    
-    return_str += f'Domain: {domain}'
-    return_str += f'Range: {range} \n Turning Points: {points}'
+
+    return_str += f'y-int: {y_intercept} \n'
+    return_str += f'Domain: {domain} \n'
+    return_str += f'Range: {range} \nTurning Points: {points}'
 
     print(return_str)   # \n does not work for return
 
@@ -393,17 +395,17 @@ def transformation_of_function(parent, a: float, k: float, c: float, d: float) -
 
 def transformation_explanation(a: float, k: float, c: float, d:float) -> list:
     """
-    Return simple word descriptions of each transformation 
-    
+    Return simple word descriptions of each transformation
+
     >>> transformation_explanation(-3, 2, 5, -1)
     ['Vertically stretched by a factor of 3', 'Reflection in x-axis', 'Vertical translation 5 units upwards', 'Horizontally compressed by a factor of 1/2', 'Horziontal translation 1 units to the left']
     """
     desc = []
     if abs(a) > 1:
         desc.append(f"Vertically stretched by a factor of {abs(a)}")
-    elif 0 < abs(a) < 1: 
+    elif 0 < abs(a) < 1:
         desc.append(f"Vertically compressed by a factor of {abs(a)}")
-    if a < 0: 
+    if a < 0:
         desc.append(f"Reflection in x-axis")
     if c > 0:
         desc.append(f"Vertical translation {abs(c)} units upwards")
@@ -420,7 +422,7 @@ def transformation_explanation(a: float, k: float, c: float, d:float) -> list:
     elif d < 0:
         desc.append(f"Horziontal translation {abs(d)} units to the left")
     return desc
-        
+
 
 # TODO: return number of x-intercepts, turning points, least possible degree, any symmtery intervals
 # where graph is positive or negative
@@ -461,15 +463,15 @@ def instant_rate_of_change(polynomial, x1) -> float:
 
 # TODO: Insert Questions functions to do
 # NOTE: Our current schema is in the form of (id, unit, chapter, topic, answer, graph_equation)
-# NOTE: Confirm that we can put equations and points into desmo api 
+# NOTE: Confirm that we can put equations and points into desmo api
 
 
 
-# Function will return the question and the answer in the best way 
+# Function will return the question and the answer in the best way
 def degree_and_leading_coff():
-    # NOTE: This will be unit 1, chapter 1, topic 1, 
-    # NOTE: Answer will be in one big latex with the answers plus some form of instructions on how to solve it 
-    # but not in depth 
+    # NOTE: This will be unit 1, chapter 1, topic 1,
+    # NOTE: Answer will be in one big latex with the answers plus some form of instructions on how to solve it
+    # but not in depth
     # NOTE: The question will also be in one big latex. If the question contains a graph
     pass
 
