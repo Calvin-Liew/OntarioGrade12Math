@@ -5,6 +5,7 @@ Description
 This module contains code for Unit 3 functions
 """
 
+import unit1
 import typing
 import sympy
 from sympy.abc import x
@@ -59,11 +60,56 @@ def rational_range(polynomial) -> str:
 
 #TODO: Intervals where the function is increasing/decreasing ie. where the deriviative is above zero and below zero
 
-#TODO: The vertical asympotes of a rational function
 
-#TODO: The horizonal asympotes of a rational function. Ex. As x-> infinity or x->-infinity y->above 0 or below 0
+def vertical_asymptote(rational) -> sympy.Set:
+    """
+    Returns vertical asymptotes of rational
 
-#TODO: The y-intercept, and x-intercepts of a rational function
+    >>> vertical_asymptote(1/(x-5))
+    {5}
+    >>> vertical_asymptote(3/(x**2 - 1))
+    {-1, 1}
+    """
+    n, d = sympy.fraction(rational)
+    return sympy.solveset(d, x)
+
+
+def horizontal_asymptote(rational) -> int:
+    """
+    Returns horizontal asymptote of rational
+
+    >>> horizontal_asymptote((2*x + 1) / (x + 2))
+    2
+    """
+    # right_limit = sympy.limit(rational, x, sympy.oo)
+    # left_limit = sympy.limit(rational, x, -sympy.oo)
+    return sympy.limit(rational, x, sympy.oo)
+
+
+def x_int(rational) -> sympy.Set:
+    """
+    Returns x-intercept of rational
+
+    Preconditions:
+
+    >>> x_int(1/(x**2 + 2*x - 3))
+    EmptySet
+    >>> x_int((2*x + 1) / (x + 2))
+    {-1/2}
+    """
+    return sympy.solveset(rational, x)
+
+
+def y_int(rational) -> int:
+    """
+    Returns y-intercept of rational
+
+    Preconditions:
+
+    >>> y_int((2*x + 1) / (x + 2))
+    1/2
+    """
+    return rational.subs(x, 0)
 
 #TODO: important attributes of rational functions (for graphing questions), ie. x-int, y-int, HA, VA,
 
@@ -79,3 +125,9 @@ def rational_range(polynomial) -> str:
 #TODO: Inequalities of rational functions
 
 #TODO: Solving rational equations
+
+
+if __name__ == "__main__":
+    import doctest
+
+    doctest.testmod(verbose=True)  # Forcing verbose to be true will provide full details of doctests

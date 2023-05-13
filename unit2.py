@@ -84,7 +84,8 @@ def generate_poly_big_small2(degree1, degree2, coefficient_range: typing.Tuple[i
     - coefficient_range != ()
     - coefficient_range[0] <= coefficient_range[1]
     """
-    return [unit1.generate_polynomial(degree1, coefficient_range), unit1.generate_polynomial(degree2, coefficient_range)]
+    return [unit1.generate_polynomial(degree1, coefficient_range),
+            unit1.generate_polynomial(degree2, coefficient_range)]
 
 
 # TODO: Given two functions, one bigger, one smaller, return the remiander. (from plugging in the solution of the smaller
@@ -127,3 +128,9 @@ and ax-b is a factor if P(b/a) = 0 """
 
 # TODO: provide the x-intercepts of a factorable polynomial. For questions for people
 # to write the equation of the polynomial given a point or not
+
+
+if __name__ == "__main__":
+    import doctest
+
+    doctest.testmod(verbose=True)  # Forcing verbose to be true will provide full details of doctests
