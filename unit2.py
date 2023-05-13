@@ -52,7 +52,7 @@ def factorable(degree: int, coefficient_range: Tuple[int, int]) -> Dict:
     return {expand(function_so_far): solve(function_so_far)}
 
 
-# TODO: Generating one polynomial function, one bionomial function(degree 1), one with a bigger degree than the other so that we can divide them
+# TODO: Generating one polynomial function, one linear function(degree 1), one with a bigger degree than the other so that we can divide them
 # Ex. degree 3 and degree 1
 
 # TODO: Generate two polynomial funcntions, one with a bigger degree than the other

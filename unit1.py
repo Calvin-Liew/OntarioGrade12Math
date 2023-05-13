@@ -35,9 +35,7 @@ def generate_polynomial(degree: int, coefficient_range: typing.Tuple[int, int]):
     return expr
 
 
-# TODO: Generate factorable polynomial and/or prefactored polynomial
-# Disciminant is defined differently for different degree functions
-# So we might need to put a limit to degree
+# TODO: Put a failsafe in case there is no possible factorable function (if it loops 100 times then return false)
 def generate_factorable_polynomial(degree: int, coefficient_range: typing.Tuple[int, int]):
     """
     Generates factorable polynomial where the degree is 2 to 4
@@ -338,27 +336,38 @@ def finite_difference(polynomial):
 # TODO: Given equation, write word descriptions about the function ie. x-intercept at x=, y-intercept at blah,
 #  domain, range, points
 
-# def characteristic(polynomial) -> str:
-#     """
-#     Returns a basic description about the function in the format of:
-#     x-int: -1, 1
-#     y-int: -1
-#     domain: 'ℝ'
-#     """
-#     x_intercept = x_int(polynomial)
-#     y_intercept = y_int(polynomial)
-#     domain = function_domain(polynomial)
-#     range = function_range(polynomial)
-#     points = turning_points(polynomial)
-#
-#     return_str = 'x-int: '
-#     for x_point in x_intercept:
-#         return_str += f'{x_point}, '
-#     return_str = return_str[:-2]    # Take out last two elements
-#     return_str = return_str + '\n y-int: '
-#     # for y_point in y_intercept:
-#
-#     return return_str
+def characteristic(polynomial) -> str:
+    """
+    Returns a basic description about the function 
+    
+    >>> characteristic(x**2-1)   
+    x-int: -1, 1
+    y-int: -1
+    Domain: ℝ
+    Range: [-1, ∞)
+    Turning Points: 1
+    """
+    x_intercept = x_int(polynomial)
+    y_intercept = y_int(polynomial)
+    domain = function_domain(polynomial)
+    range = function_range(polynomial)
+    points = turning_points(polynomial)
+
+    return_str = 'x-int: '
+    for x_point in x_intercept:
+        return_str += f'{x_point}, '
+    return_str = return_str[:-2]    # Take out last two elements
+    return_str = return_str + '\n' + 'y-int: '
+
+    for y_point in y_intercept:
+        return_str += f'{y_point}, '
+    return_str = return_str[:-2]
+    return_str = return_str + '\n'
+    
+    return_str += f'Domain: {domain}'
+    return_str += f'Range: {range} \n Turning Points: {points}'
+
+    print(return_str)   # \n does not work for return
 
 # TODO: Given variables that transform a function, return the equation, a,k,c,d values
 # This has the same problems with factorable polynomials where the creating the vertex form isn't always equally defined
@@ -382,9 +391,48 @@ def transformation_of_function(parent, a: float, k: float, c: float, d: float) -
 
 # TODO: Given some variables of A, K, C, D return text explaining what each does
 
+def transformation_explanation(a: float, k: float, c: float, d:float) -> list:
+    """
+    Return simple word descriptions of each transformation 
+    
+    >>> transformation_explanation(-3, 2, 5, -1)
+    ['Vertically stretched by a factor of 3', 'Reflection in x-axis', 'Vertical translation 5 units upwards', 'Horizontally compressed by a factor of 1/2', 'Horziontal translation 1 units to the left']
+    """
+    desc = []
+    if abs(a) > 1:
+        desc.append(f"Vertically stretched by a factor of {abs(a)}")
+    elif 0 < abs(a) < 1: 
+        desc.append(f"Vertically compressed by a factor of {abs(a)}")
+    if a < 0: 
+        desc.append(f"Reflection in x-axis")
+    if c > 0:
+        desc.append(f"Vertical translation {abs(c)} units upwards")
+    elif c < 0:
+        desc.append(f"Vertical translation of {abs(c)} units downwards")
+    if abs(k) > 1:
+        desc.append(f"Horizontally compressed by a factor of 1/{abs(k)}")
+    elif 0 < abs(k) < 1:
+        desc.append(f"Horizontally stretched by a factor of 1/{abs(k)}")
+    if k < 0:
+        desc.append(f"Reflection in y-axis")
+    if d > 0:
+        desc.append(f"Horizontal translation {abs(d)} units to the right")
+    elif d < 0:
+        desc.append(f"Horziontal translation {abs(d)} units to the left")
+    return desc
+        
 
 # TODO: return number of x-intercepts, turning points, least possible degree, any symmtery intervals
 # where graph is positive or negative
+def least_possible_degree(polynomial) -> int:
+    """
+    Given a polynomial function <polynomial>, return the least possible
+    degree of the function if one were to just see the graph. (ie: turning points)
+
+    >>> least_possible_degree(x**8)
+    2
+    """
+    return turning_points(polynomial) + 1
 
 
 def average_rate_of_change(polynomial, x1, x2) -> float:
@@ -412,6 +460,18 @@ def instant_rate_of_change(polynomial, x1) -> float:
 
 
 # TODO: Insert Questions functions to do
+# NOTE: Our current schema is in the form of (id, unit, chapter, topic, answer, graph_equation)
+# NOTE: Confirm that we can put equations and points into desmo api 
+
+
+
+# Function will return the question and the answer in the best way 
+def degree_and_leading_coff():
+    # NOTE: This will be unit 1, chapter 1, topic 1, 
+    # NOTE: Answer will be in one big latex with the answers plus some form of instructions on how to solve it 
+    # but not in depth 
+    # NOTE: The question will also be in one big latex. If the question contains a graph
+    pass
 
 
 if __name__ == "__main__":
