@@ -111,7 +111,34 @@ def y_int(rational) -> int:
     """
     return rational.subs(x, 0)
 
-#TODO: important attributes of rational functions (for graphing questions), ie. x-int, y-int, HA, VA,
+
+def attribute(rational) -> str:
+    """
+    Returns a basic description about the polynomial function
+    """
+    x_intercept = x_int(rational)
+    y_intercept = y_int(rational)
+    v_asymptotes = vertical_asymptote(rational)
+    h_asympototes = horizontal_asymptote(rational)
+
+    return_str = 'x-int: '
+    for x_point in x_intercept:
+        return_str += f'{x_point}, '
+    return_str = return_str[:-2]    # Take out last two elements
+    return_str = return_str + '\n'
+
+    return_str += f'y-int: {y_intercept} \n'
+
+    return_str += 'VA: '
+    for va in v_asymptotes:
+        return_str += f'{va}, '
+    return_str = return_str[:-2]    # Take out last two elements
+    return_str = return_str + '\n'
+
+    return_str += f'HA: {h_asympototes}'
+
+    print(return_str)
+
 
 #TODO: Generate quotient of linear functions
 

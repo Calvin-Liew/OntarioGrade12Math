@@ -1,7 +1,7 @@
 # Ontario Grade 12 Math Problem Generator #
 
 ```
-Project by Wonjae Lee, Calvin Liew and Yong Le
+Project by Wonjae Lee, Calvin Liew and Yong Le He
 Copyright and Usage Information
 =================================
 (Idk if we need this)
@@ -25,9 +25,15 @@ Copyright and Usage Information
 * Docstring by Calvin Liew, Wonjae Lee, Yong Le
 
 **Unit 2 - Polynomial Equations:**
-* quotient, remainder, generate_poly_big_small1, generate_poly_big_small2 by Wonjae Lee
+* quotient, remainder, generate_poly_big_small1, generate_poly_big_small2, generate_cubic, generate_quartic, compare by Wonjae Lee
+* is_factor, find_remainder by Yong Le He
+
+**Unit 3 - Rational Functions:**
+* rational_domain, rational_range, vertical_asymptote, horizontal_asymptote, x_int, y_int, attribute by Wonjae Lee
+
 
 **Sqlite3 Database**
+* Database setup, degree_and_leading_coeff by Calvin Liew
 
 **Frontend Website**
 
@@ -72,3 +78,18 @@ May 12, 2023
 * characteristic
 * transformation_explanantion
 * least_possible_degree
+
+May 13, 2023
+* Setting up SQL Database
+* rational_domain 
+* rational_range 
+* vertical_asymptote
+* horizontal_asymptote 
+* x_int for Unit 3
+* y_int for Unit 3
+* compare
+* generate_cubic
+* is_factor
+* generate_quartic
+* attribute
+* degree_and_leading_coeff

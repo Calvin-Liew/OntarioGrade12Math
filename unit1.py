@@ -8,6 +8,8 @@ This module contains code for Unit 1 functions
 import random
 import typing
 import sympy
+from sqlalchemy import create_engine, Column, Integer, String
+from sqlalchemy.orm import declarative_base, sessionmaker
 from sympy import degree, factorial, symbols, simplify, Eq
 from sympy.abc import x
 
@@ -15,6 +17,33 @@ from sympy.abc import x
 
 # from sympy import symbols, Function, Symbol
 # from sympy.plotting import plot
+
+engine = create_engine("sqlite:///questions.db", echo=True)
+Base = declarative_base()
+
+class Question(Base):
+    __tablename__ = "Questions"
+    id = Column(Integer, primary_key=True)
+    unit = Column(Integer)
+    chapter = Column(Integer)
+    topic = Column(String)
+    question = Column(String)
+    answer = Column(String)
+    graph = Column(String)
+    
+    def __repr__(self):
+        return "<Questions(question='%s', answer='%s')>" % (
+            self.question,
+            self.answer)
+
+Base.metadata.create_all(engine)
+Session = sessionmaker(bind=engine)
+Session.configure(bind=engine)
+session = Session()
+
+#test = Question(unit=0, chapter=0, topic='test topic', question='test answer', answer='test answer', graph='test graph')
+#session.add(test)
+#session.commit()
 
 
 def generate_polynomial(degree: int, coefficient_range: typing.Tuple[int, int]):
@@ -339,12 +368,9 @@ def finite_difference(polynomial):
     return multiplier * leading_coefficent
 
 
-# TODO: Given equation, write word descriptions about the function ie. x-intercept at x=, y-intercept at blah,
-#  domain, range, points
-
 def characteristic(polynomial) -> str:
     """
-    Returns a basic description about the function
+    Returns a basic description about the polynomial function
 
     >>> characteristic(x**2-1)
     x-int: -1, 1
@@ -382,11 +408,21 @@ def transformation_of_function(parent, a: float, k: float, c: float, d: float) -
     k: horizontal stretch factor
     c: vertical shift factor
     d: horizontal shift factor
+
+    >>> transformation_of_function(x, 0, 0, 0, 0)
+    0
+    >>> transformation_of_function(x**(1/2), 1, 1, 1, 1)
+    x**(1/2)
+    >>> transformation_of_function(x, -1, -1, -1 , -1)
+    x+2
+    >>> transformation_of_function(x**3, 0.5, 0.25, 0.3, 0.7)
+    0.5*(4*(x-0.7))**3 + 0.3
     """
 
-    new_func = parent.subs(x, k * x - d)  ## Horizontal shift and strech
-    new_func = a * new_func  ## Vertical strech
+    new_func = parent.subs(x, k * (x - d))  ## Horizontal shift and strech
     new_func = new_func + c  ## Vertical shift
+    new_func = a * new_func  ## Vertical strech
+
 
     return new_func
 
@@ -465,16 +501,25 @@ def instant_rate_of_change(polynomial, x1) -> float:
 # NOTE: Our current schema is in the form of (id, unit, chapter, topic, answer, graph_equation)
 # NOTE: Confirm that we can put equations and points into desmo api
 
-
-
 # Function will return the question and the answer in the best way
 def degree_and_leading_coff():
     # NOTE: This will be unit 1, chapter 1, topic 1,
     # NOTE: Answer will be in one big latex with the answers plus some form of instructions on how to solve it
     # but not in depth
     # NOTE: The question will also be in one big latex. If the question contains a graph
-    pass
-
+    degree = random.randint(2, 4)
+    coeffcient_range = (-10, 10)
+    polynomial = generate_polynomial(degree, coeffcient_range)
+    leading = leading_coeff(polynomial)
+    question = f"What is the degree and the leading coefficient of this polynomial: {polynomial}"
+    answer = f"""The degree of this function is the highest exponent in the polynomial which is {degree}. 
+    Therefore the leading coefficent is the coefficent of the term that is degree {degree} which is {leading}"""
+    
+    question = Question(unit=1, chapter=1.1, topic='leading coefficient and degree of polynomial function', question=question, answer=answer, graph=None)
+    session.add(question)
+    session.commit()
+    
+# TODO:
 
 if __name__ == "__main__":
     import doctest

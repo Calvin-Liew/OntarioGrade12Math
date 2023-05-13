@@ -90,6 +90,14 @@ def generate_poly_big_small2(degree1, degree2, coefficient_range: typing.Tuple[i
 
 # TODO: Given two functions, one bigger, one smaller, return the remiander. (from plugging in the solution of the smaller
 # function ie. 2 from (x-2) into the bigger function)
+def find_remainder(big_poly, small_poly):
+    """Return the remainder of the division of two functions <big_poly> and <small_poly>
+
+    Precondition: deg of <big_poly> > deg of <small_poly>
+    """
+
+    # Returns in format (quotient, remainder)
+    return sympy.div(big_poly, small_poly)[1]
 
 # TODO: Generate two functions where the bigger one has a constant K, and with the remainder for questions
 # that ask what the coffeicent is given the constant and the two functions that divide
@@ -105,26 +113,80 @@ and ax-b is a factor if P(b/a) = 0 """
 
 """What we could do is, already create some factors given a degree, than expand it and return the full equation"""
 
-# TODO: Is factor. Given a factor and a equation, check if its a factor
+def is_factor(polynomial: Poly, factor: float) -> bool:
+    """
+    Return whether or not <factor> is a factor of the polynomial <polynomial>
+
+    """
+    if (polynomial.subs(x, factor) == 0):
+        return True
+    return False
 
 # Series of functions that provide 'factorable' equations such that the person has to divide one or twice and end up
 # with a easily factorable equation (like quadractic or simple linear) to completely factor it
 # TODO: we may have to do a little bit of hardcoding in this one.
 
-# TODO: generate factorable cubic function. generate three factors ie x-4, x-3, 3x+2.
-# combine the three factors into one equation.
 
-# TODO: generate factorable quartic function. Generate four factors, combine the four factors into
-# one equation
+def generate_cubic(coefficient_range: typing.Tuple[int, int]):
+    """
+    Generates a factorable cubic function.
+    First, it generates three linear functions.
+    Then it will simplify the three functions by multiplying them.
+
+    Preconditions:
+    - coefficient_range != ()
+    - coefficient_range[0] <= coefficient_range[1]
+    """
+    f = unit1.generate_polynomial(1, coefficient_range)
+    g = unit1.generate_polynomial(1, coefficient_range)
+    h = unit1.generate_polynomial(1, coefficient_range)
+
+    return sympy.expand(f * g * h)
+
+
+def generate_quartic(coefficient_range: typing.Tuple[int, int]):
+    """
+    Generates a factorable quartic function.
+    First, it generates four linear functions.
+    Then it will simplify the four functions by multiplying them.
+
+    Preconditions:
+    - coefficient_range != ()
+    - coefficient_range[0] <= coefficient_range[1]
+    """
+    f = unit1.generate_polynomial(1, coefficient_range)
+    g = unit1.generate_polynomial(1, coefficient_range)
+    h = unit1.generate_polynomial(1, coefficient_range)
+    k = unit1.generate_polynomial(1, coefficient_range)
+
+    return sympy.expand(f * g * h * k)
 
 # TODO: rational zero theorem
 # TODO: given a polynomial fucntion. a is the leading coffeicnet. b is the constant.
 # The possible factors of a function is any combination of facotrs of b/factors of a.
 
 # TODO: find possible factors rational zero thereom given a function,
-# return a factor ie. if -2 is a factor than return x + 2
+# return a factor ie. if -2 is a factor then return x + 2
 
-# TODO: inequalities of polynomials. (with factorable and nonfactorable(cubic) polynomials)
+
+def compare(polynomial, inequality, value) -> str:
+    """
+    Evaluates inequality by comparing between polynomial and value.
+
+    Preconditions:
+    - polynomial is a valid polynomial function from <generate_polynomial>
+    - inequality in ['<', '>', '<=', '>=']
+    - value is constant number
+    """
+    if inequality == '<':
+        return sympy.printing.pretty(sympy.solveset(polynomial < value, x, sympy.S.Reals))
+    elif inequality == '>':
+        return sympy.printing.pretty(sympy.solveset(polynomial > value, x, sympy.S.Reals))
+    elif inequality == '<=':
+        return sympy.printing.pretty(sympy.solveset(polynomial <= value, x, sympy.S.Reals))
+    else:
+        return sympy.printing.pretty(sympy.solveset(polynomial >= value, x, sympy.S.Reals))
+    
 
 # TODO: provide the x-intercepts of a factorable polynomial. For questions for people
 # to write the equation of the polynomial given a point or not
