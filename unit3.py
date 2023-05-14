@@ -10,19 +10,20 @@ import typing
 import sympy
 from sympy.abc import x
 
-#Generate rational functions
 
-#TODO: Generate any rational function ie. functions with no asymptotes, functions with horzontal asymptote, etc
+# Generate rational functions
 
-#TODO: Generate quadractic rational functions
+# TODO: Generate any rational function ie. functions with no asymptotes, functions with horzontal asymptote, etc
 
-#TODO: Generate rational function with asymptotes so we just need to have the denominator be a factorable polynomial
+# TODO: Generate quadractic rational functions
 
-#TODO: Generate rational function that has one as the numerator and the deonominator be a simple factorable polynomial for questions asking about what the asymptotes are
+# TODO: Generate rational function with asymptotes so we just need to have the denominator be a factorable polynomial
 
-#TODO: Intervals where function is positive ornegative
+# TODO: Generate rational function that has one as the numerator and the deonominator be a simple factorable polynomial for questions asking about what the asymptotes are
 
-#TODO: Intercepts of rational function ie. when the numerator = 0.
+# TODO: Intervals where function is positive ornegative
+
+# TODO: Intercepts of rational function ie. when the numerator = 0.
 
 
 def rational_domain(rational) -> str:
@@ -56,9 +57,10 @@ def rational_range(polynomial) -> str:
     Range = sympy.calculus.util.function_range(polynomial, x, sympy.S.Reals)
     return sympy.printing.pretty(Range)
 
-#TODO: graph of rational function
 
-#TODO: Intervals where the function is increasing/decreasing ie. where the deriviative is above zero and below zero
+# TODO: graph of rational function
+
+# TODO: Intervals where the function is increasing/decreasing ie. where the deriviative is above zero and below zero
 
 
 def vertical_asymptote(rational) -> sympy.Set:
@@ -71,7 +73,7 @@ def vertical_asymptote(rational) -> sympy.Set:
     {-1, 1}
     """
     n, d = sympy.fraction(rational)
-    return sympy.solveset(d, x)
+    return sympy.solveset(d, x, sympy.S.Reals)
 
 
 def horizontal_asymptote(rational) -> int:
@@ -97,7 +99,7 @@ def x_int(rational) -> sympy.Set:
     >>> x_int((2*x + 1) / (x + 2))
     {-1/2}
     """
-    return sympy.solveset(rational, x)
+    return sympy.solveset(rational, x, sympy.S.Reals)
 
 
 def y_int(rational) -> int:
@@ -130,7 +132,7 @@ def attribute(rational):
     return_str = 'x-int: '
     for x_point in x_intercept:
         return_str += f'{x_point}, '
-    return_str = return_str[:-2]    # Take out last two elements
+    return_str = return_str[:-2]  # Take out last two elements
     return_str = return_str + '\n'
 
     return_str += f'y-int: {y_intercept} \n'
@@ -138,7 +140,7 @@ def attribute(rational):
     return_str += 'VA: '
     for va in v_asymptotes:
         return_str += f'{va}, '
-    return_str = return_str[:-2]    # Take out last two elements
+    return_str = return_str[:-2]  # Take out last two elements
     return_str = return_str + '\n'
 
     return_str += f'HA: {h_asympototes}'
@@ -146,18 +148,70 @@ def attribute(rational):
     print(return_str)
 
 
-#TODO: Generate quotient of linear functions
+def linear_quotient(coefficient_range: typing.Tuple[int, int]):
+    """
+    Generate quotient of linear function
 
-#TODO: Generate spceial case function: A function with holes
+    Preconditions:
+    - coefficient_range != ()
+    - coefficient_range[0] <= coefficient_range[1]
+    """
+    return 1 / (unit1.generate_polynomial(1, coefficient_range))
 
-#TODO: Generate a rational fucnction with a oblique asymptote. CASE 1. A quadractic over a linear
 
-#TODO: Generate a rational fucnction with a oblique asymptote. CASE 2. A higher order function over a higher ordeer fucntion
+# TODO: Generate spceial case function: A function with holes
+# def hole_function(coefficient_range: typing.Tuple[int, int]):
+#     """
+#     Generate a function with holes
+#
+#     Preconditions:
+#     - coefficient_range != ()
+#     - coefficient_range[0] <= coefficient_range[1]
+#     """
+#     f = unit1.generate_polynomial(1, coefficient_range)
+#     print(f)
+#     g = unit1.generate_polynomial(1, coefficient_range)
+#     print(g)
+#     fg = sympy.simplify(f * g)
+#     print(fg)
+#     return fg / f
+
+
+# TODO: Generate a rational fucnction with a oblique asymptote. CASE 1. A quadractic over a linear
+
+# TODO: Generate a rational fucnction with a oblique asymptote. CASE 2. A higher order function over a higher ordeer fucntion
 # Have to solve where the function intersects the HA to graph
 
-#TODO: Inequalities of rational functions
 
-#TODO: Solving rational equations
+def compare_rational(rational, inequality, value) -> str:
+    """
+    Evaluates inequality by comparing between rational and value.
+
+    Preconditions:
+    - inequality in ['<', '>', '<=', '>=']
+    - isinstance(value, float) == True
+    """
+    if inequality == '<':
+        return sympy.printing.pretty(sympy.solveset(rational < value, x, sympy.S.Reals))
+    elif inequality == '>':
+        return sympy.printing.pretty(sympy.solveset(rational > value, x, sympy.S.Reals))
+    elif inequality == '<=':
+        return sympy.printing.pretty(sympy.solveset(rational <= value, x, sympy.S.Reals))
+    else:
+        return sympy.printing.pretty(sympy.solveset(rational >= value, x, sympy.S.Reals))
+
+
+def evaluate_rational(rational, value) -> sympy.Set:
+    """
+    Evaluates rational = value
+
+    Preconditions:
+    - isinstance(value, float) == True
+
+    >>> evaluate_rational(1/x, 1/2)
+    {2.0}
+    """
+    return sympy.solveset(rational - value, x, sympy.S.Reals)
 
 
 if __name__ == "__main__":

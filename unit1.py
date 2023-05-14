@@ -277,7 +277,7 @@ def turning_points(polynomial) -> int:
     count = 0
     derivative = sympy.diff(polynomial, x)
     second_derivative = sympy.diff(derivative, x)
-    critical_points = sympy.solveset(derivative, x)
+    critical_points = sympy.solveset(derivative, x, sympy.S.Reals)
 
     for point in critical_points:
         # NOTE: If the second derivative is 0 its not a turning point
@@ -297,7 +297,7 @@ def x_int(polynomial) -> sympy.Set:
     >>> x_int(x**2 - 1)
     {-1, 1}
     """
-    return sympy.solveset(polynomial, x)
+    return sympy.solveset(polynomial, x, sympy.S.Reals)
 
 
 def y_int(polynomial) -> int:

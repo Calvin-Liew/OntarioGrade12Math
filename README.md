@@ -29,8 +29,10 @@ Copyright and Usage Information
 * is_factor, find_remainder by Yong Le He
 
 **Unit 3 - Rational Functions:**
-* rational_domain, rational_range, vertical_asymptote, horizontal_asymptote, x_int, y_int, attribute by Wonjae Lee
+* rational_domain, rational_range, vertical_asymptote, horizontal_asymptote, x_int, y_int, attribute, linear_quotient, compare_rational, evaluate_rational by Wonjae Lee
 
+**Unit 4 - Trigonometry:**
+* sin, cos, tan, csc, sec, cot by Wonjae Lee
 
 **Sqlite3 Database**
 * Database setup, degree_and_leading_coeff by Calvin Liew
@@ -93,3 +95,14 @@ May 13, 2023
 * generate_quartic
 * attribute
 * degree_and_leading_coeff
+
+May 14, 2023
+* sin
+* cos
+* tan
+* csc
+* sec
+* cot
+* linear_quotient
+* compare_rational
+* evaluate_rational

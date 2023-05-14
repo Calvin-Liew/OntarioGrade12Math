@@ -186,10 +186,12 @@ def compare(polynomial, inequality, value) -> str:
     """
     Evaluates inequality by comparing between polynomial and value.
 
+    NOTE: Consider using solve_poly_inequalities instead of solveset
+
     Preconditions:
     - polynomial is a valid polynomial function from <generate_polynomial>
     - inequality in ['<', '>', '<=', '>=']
-    - value is constant number
+    - isinstance(value, float) == True
 
     >>> compare(x**2, '<', 3)
     '(-√3, √3)'
