@@ -525,6 +525,7 @@ def degree_and_leading_coff():
     coeffcient_range = (-10, 10)
     polynomial = generate_polynomial(degree, coeffcient_range)
     leading = leading_coeff(polynomial)
+    polynomial = sympy.latex(polynomial)
     question = f"What is the degree and the leading coefficient of this polynomial: {polynomial}"
     answer = f"""The degree of this function is the highest exponent in the polynomial which is {degree}. 
     Therefore the leading coefficent is the coefficent of the term that is degree {degree} which is {leading}"""
