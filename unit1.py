@@ -536,7 +536,43 @@ def degree_and_leading_coff():
     session.commit()
 
 
-# TODO:
+# TODO: Given Polynomial, what is the end behvaiour?
+
+# TODO: Given image of graph, ask for the end behavior, even or odd, domain and range, symmetry. Table of intervals when function is positive, negative domain and range
+
+# TODO: Given 4 equations and 4 graph images. Match them. See if we want to/able to do matching questions. 
+
+# TODO: Given equation Ask for degree, sign of leading coefficient, end behaviour, possible number of turning points, x intercepts.
+
+# TODO: Given a image of a graph. Ask for leading coefficient, even or odd degree, end behaviour, symmetry, number of turning points, number x-intercepts, last possible degree 
+
+# TODO: Find the value of a leading coefficient given x-differences 
+
+# TODO: Given a function find the value of constant finite differences 
+
+# TODO: Gvien a table of (points function) find the finite differences 
+
+# TODO: Given a factored form of a equation, graph, noting end behavior, leading coefficient, x-intercepts, y-intercepts
+
+# TODO: Write a equation based on  word descriptions, root function and points passed through *gotta figureout details 
+
+# TODO: Write an equation based on images* gotta figure out the details for this one
+
+# TODO: Write a equation based on given transformations 
+
+# TODO: Identify a, k, c, d values of equations and explain what they do
+
+# TODO: Parent equations, write the transformed equations and graph given transformations
+
+# TODO: Show if graph is even or odd symmetry
+
+# TODO: Show algebarcially if a function is odd or even, minimum maximum number of 0s, finite differences 
+
+# TODO: Given graph, write number of x-intercepts, number of turning points, least possible degree, any symmetry, intervals where f(x) <0 or f(x) > 0
+
+# TODO: Given factorable polynomial shown in the form (x-a)(x-b)(x-c), find the details of the graph and graph it
+
+
 
 if __name__ == "__main__":
     import doctest
