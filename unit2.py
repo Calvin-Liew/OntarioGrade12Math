@@ -49,13 +49,15 @@ def remainder(polynomial1, polynomial2):
     return r
 
 
-# def factorable(degree: int, coefficient_range: typing.Tuple[int, int]) -> typing.Dict:
-#     """Returns a polynomial function that is factorable and the answers
-#     """
-#     function_so_far = 1
-#     for _ in range(degree):
-#         function_so_far *= unit1.generate_polynomial(1, coefficient_range)
-#     return {expand(function_so_far): solve(function_so_far)}
+def factorable(degree: int, coefficient_range: typing.Tuple[int, int]) -> typing.Dict:
+    """
+    Returns a polynomial function that is factorable and the answers in the format of:
+    {polynomial: [answers]}
+    """
+    function_so_far = 1
+    for _ in range(degree):
+        function_so_far *= unit1.generate_polynomial(1, coefficient_range)
+    return {expand(function_so_far): solve(function_so_far)}
 
 
 def generate_poly_big_small1(degree, coefficient_range: typing.Tuple[int, int]) -> list:

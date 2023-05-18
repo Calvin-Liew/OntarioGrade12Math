@@ -14,6 +14,18 @@ from sympy.abc import x
 # Generate rational functions
 
 # TODO: Generate any rational function ie. functions with no asymptotes, functions with horzontal asymptote, etc
+# def generate_rational(numerator: float, degree, coefficient_range: typing.Tuple[int, int]):
+#     """
+#     Generates rational function based on numberator, degree and coefficient_range
+#
+#     Preconditions:
+#     - degree > 0
+#     - coefficient_range != ()
+#     - coefficient_range[0] <= coefficient_range[1]
+#     """
+#     denominator = unit1.generate_polynomial(degree, coefficient_range)
+#     return numerator / denominator
+# Probably need to make numerator a polynomial as well
 
 # TODO: Generate quadractic rational functions
 
@@ -22,6 +34,20 @@ from sympy.abc import x
 # TODO: Generate rational function that has one as the numerator and the deonominator be a simple factorable polynomial for questions asking about what the asymptotes are
 
 # TODO: Intervals where function is positive ornegative
+def pos_neg_rational(rational) -> list:
+    """
+    Returns the intervals where the rational function is positive or negative.
+    Will be returned in list format where index 0 is the positive interval
+    and index 1 is the negative interval
+    >>> pos_neg_rational(1/x)
+    ['(0, ∞)', '(-∞, 0)']
+    >>> pos_neg_rational(1/(x - 5) + 2)
+    ['(-∞, 9/2) ∪ (5, ∞)', '(9/2, 5)']
+    """
+
+    return [compare_rational(rational, '>', 0),
+            compare_rational(rational, '<', 0)]
+
 
 # TODO: Intercepts of rational function ie. when the numerator = 0.
 

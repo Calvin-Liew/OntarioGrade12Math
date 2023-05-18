@@ -6,21 +6,32 @@ This module contains code for Unit 4 functions
 """
 
 import sympy
+import random
 from sympy.abc import x
 from sympy import pi
 # from sympy.solvers.inequalities import reduce_rational_inequalities
 
 
-# def rad_to_degree(radian: int) -> int:
-#     """Converts radians to degrees and round to the first decimal point
-#     """
-#     return round(radian * 180 / pi, 1)
-#
-#
-# def degree_to_rad(degree: int) -> int:
-#     """Converts degrees to radians and round to the first decimal point
-#     """
-#     return round(degree * pi / 180, 1)
+def rad_to_degree(radian: int | sympy.core.numbers.Pi) -> int:
+    """
+    Converts radians to degrees
+    Precondition:
+    - radian represents a special angle such as pi, pi / 2, pi / 3, pi / 4, pi / 6 etc.
+    >>> rad_to_degree(pi / 2)
+    90
+    """
+    return round(radian * 180 / pi, 1)
+
+
+def degree_to_rad(degree: int) -> int:
+    """
+    Converts degrees to radians
+    Preconditions:
+    - degree represents a speical angle such as 30, 45, 60, 90 etc.
+    >>> degree_to_rad(90)
+    pi/2
+    """
+    return degree * pi / 180
 
 
 def sin(radian) -> sympy.core.numbers:
@@ -88,6 +99,15 @@ def cot(radian) -> sympy.core.numbers:
 
 #TODO: Generate random angle in radian or degree. Maybe we need to specific range
 # Have the range between 0 degrees and 360 degrees maybe
+def generate_angle():
+    """
+    Generates a random special angle in radians (pi format)
+    """
+    special_angles = [0, pi / 6, pi / 4, pi / 3, pi / 2, 2 * pi / 3, 3 * pi / 4, 5 * pi / 6, pi, 7 * pi / 6, 5 * pi / 4,
+                      4 * pi / 3, 3 * pi / 2, 5 * pi / 3, 11 * pi / 6, 2 * pi]
+    # 0, 30, 45, 60, 90, 120, 135, 150, 180, 210, 225, 240, 270, 300, 330, 360
+    return random.choice(special_angles)
+
 
 #TODO: Trig ratios of a given angle
 
@@ -95,6 +115,29 @@ def cot(radian) -> sympy.core.numbers:
 # Can prob use desmos for this https://www.youtube.com/watch?v=RUm0NevyrlA
 
 #TODO: Convert degree to radian and vice versa showing work
+def rad_to_degree_explain(radian: int | sympy.core.numbers.Pi):
+    """
+    Converts radians to degrees and explains the degree return
+    Precondition:
+    - radian represents a special angle such as pi, pi / 2, pi / 3, pi / 4, pi / 6 etc.
+    """
+    str_so_far = f"When converting {radian} into degree format, we must multiply the radian with 180 / pi. \n" \
+                 f"That means {radian} * 180 / pi will result in {rad_to_degree(radian)}."
+
+    print(str_so_far)
+
+
+def degree_to_rad_explain(degree: int):
+    """
+    Converts degrees to radians
+    Preconditions:
+    - degree represents a speical angle such as 30, 45, 60, 90 etc.
+    """
+    str_so_far = f"When converting {degree} into radian format, we must multiply the degree with pi / 180. \n" \
+                 f"That means {degree} * pi / 180 will result in {degree_to_rad(degree)}."
+
+    print(str_so_far)
+
 
 #TODO: Angular velocity questions
 # In format of The hard disk in a personal computer rotates at x rpm (revolutions per minute), determien its
