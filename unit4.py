@@ -143,7 +143,24 @@ def degree_to_rad_explain(degree: int):
 # In format of The hard disk in a personal computer rotates at x rpm (revolutions per minute), determien its
 # angular velocity
 
+def calculate_angular_velocity(revolutions: int) -> list[int]:
+    """
+    Returns a list where index 0 is the angular velocity in degree and index 1 is the angular
+    velocity in radians
+
+    >>> calculate_angular_velocity(7200)
+    [43200.0, 240*pi]
+    """
+    # Degrees per second
+    dps = revolutions * 360 / 60
+    # Radians per second
+    rps = revolutions * 2 * pi / 60
+
+    return [dps, rps]
+
+
 #TODO: Find the related acute angle and the principal angle and give diagram
+
 
 #TODO: given some random radian find the exact value of sinx or tanx or cosx or cscx secx cotx
 #TODO: a helper function to show simple work for the function above

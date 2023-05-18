@@ -86,7 +86,22 @@ def rational_range(polynomial) -> str:
 
 # TODO: graph of rational function
 
-# TODO: Intervals where the function is increasing/decreasing ie. where the deriviative is above zero and below zero
+
+def inc_dec_rational(rational) -> list:
+    """
+    Returns the intervals where the rational function is increasing or decreasing.
+    Will be returned in list format where index 0 is the increasing interval
+    and index 1 is the decreasing interval
+    >>> inc_dec_rational(1/x)
+    ['∅', '(-∞, 0) ∪ (0, ∞)']
+    >>> inc_dec_rational(x/(x**2 - 9))
+    ['∅', '(-∞, -3) ∪ (-3, 3) ∪ (3, ∞)']
+    >>> inc_dec_rational(-1/(x**2 - 4*x - 5))
+    ['(2, 5) ∪ (5, ∞)', '(-∞, -1) ∪ (-1, 2)']
+    """
+    derivative = sympy.diff(rational, x)
+    return [compare_rational(derivative, '>', 0),
+            compare_rational(derivative, '<', 0)]
 
 
 def vertical_asymptote(rational) -> sympy.Set:
