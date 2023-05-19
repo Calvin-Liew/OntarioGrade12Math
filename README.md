@@ -25,17 +25,17 @@ Copyright and Usage Information
 * Docstring by Calvin Liew, Wonjae Lee, Yong Le
 
 **Unit 2 - Polynomial Equations:**
-* quotient, remainder, generate_poly_big_small1, generate_poly_big_small2, generate_cubic, generate_quartic, compare by Wonjae Lee
+* quotient, remainder, generate_poly_big_small1, generate_poly_big_small2, generate_cubic, generate_quartic, compare, factorable, pos_neg_rational by Wonjae Lee
 * is_factor, find_remainder by Yong Le He
 
 **Unit 3 - Rational Functions:**
-* rational_domain, rational_range, vertical_asymptote, horizontal_asymptote, x_int, y_int, attribute, linear_quotient, compare_rational, evaluate_rational by Wonjae Lee
+* rational_domain, rational_range, vertical_asymptote, horizontal_asymptote, x_int, y_int, attribute, linear_quotient, compare_rational, evaluate_rational, inc_dec_rational, generate_rational, generate_rational_linear, generate_oblique1, generate_oblique2 by Wonjae Lee
 
 **Unit 4 - Trigonometry:**
-* sin, cos, tan, csc, sec, cot by Wonjae Lee
+* sin, cos, tan, csc, sec, cot, rad_to_degree, degree_to_rad, generate_angle, rad_to_degree_explain, degree_to_rad_explain, calculate_angular_velocity by Wonjae Lee
 
 **Sqlite3 Database**
-* Database setup, degree_and_leading_coeff by Calvin Liew
+* Database setup, degree_and_leading_coeff, translate_end_behaviour, end_behaviour_question, end_behaviour_graph_question, odd_or_even, domain_range_polynomial by Calvin Liew
 
 **Frontend Website**
 
@@ -106,3 +106,25 @@ May 14, 2023
 * linear_quotient
 * compare_rational
 * evaluate_rational
+
+May 18, 2023
+* factorable
+* pos_neg_rational
+* rad_to_degree
+* degree_to_rad
+* generate_angle
+* rad_to_degree_explain
+* degree_to_rad_explain
+* inc_dec_rational
+* calculate_angular_velocity
+
+May 19, 2023
+* translate_end_behaviour
+* end_behaviour_question
+* end_behaviour_graph_question
+* odd_or_even
+* domain_range_polynomial
+* generate_rational
+* generate_rational_linear
+* generate_oblique1
+* generate_oblique2
