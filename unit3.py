@@ -209,22 +209,22 @@ def linear_quotient(coefficient_range: typing.Tuple[int, int]):
     return 1 / (unit1.generate_polynomial(1, coefficient_range))
 
 
-# TODO: Generate spceial case function: A function with holes
-# def hole_function(coefficient_range: typing.Tuple[int, int]):
-#     """
-#     Generate a function with holes
-#
-#     Preconditions:
-#     - coefficient_range != ()
-#     - coefficient_range[0] <= coefficient_range[1]
-#     """
-#     f = unit1.generate_polynomial(1, coefficient_range)
-#     print(f)
-#     g = unit1.generate_polynomial(1, coefficient_range)
-#     print(g)
-#     fg = sympy.simplify(f * g)
-#     print(fg)
-#     return fg / f
+def generate_hole(coefficient_range: typing.Tuple[int, int]):
+    """
+    Generate a function with holes
+    Numerator will have a degree of 2 while the denominator will have a degree of 1
+
+    Preconditions:
+    - coefficient_range != ()
+    - coefficient_range[0] <= coefficient_range[1]
+    """
+    f = unit1.generate_polynomial(1, coefficient_range)
+    # print(f)
+    g = unit1.generate_polynomial(1, coefficient_range)
+    # print(g)
+    fg = sympy.expand(f * g)
+    print(fg)
+    return fg / f
 
 
 def generate_oblique1(coefficient_range1: typing.Tuple[int, int], coefficient_range2: typing.Tuple[int, int]):
@@ -237,7 +237,7 @@ def generate_oblique1(coefficient_range1: typing.Tuple[int, int], coefficient_ra
     - coefficient_range1[0] <= coefficient_range1[1] and coefficient_range2[0] <= coefficient_range2[1]
     """
     numerator = unit1.generate_polynomial(2, coefficient_range1)
-    denominator = unit1.generate_polynomial(1, coefficient_range1)
+    denominator = unit1.generate_polynomial(1, coefficient_range2)
     return numerator / denominator
 
 
@@ -251,7 +251,7 @@ def generate_oblique2(degree: int, coefficient_range1: typing.Tuple[int, int], c
     - coefficient_range1[0] <= coefficient_range1[1] and coefficient_range2[0] <= coefficient_range2[1]
     """
     numerator = unit1.generate_polynomial(degree + 1, coefficient_range1)
-    denominator = unit1.generate_polynomial(degree, coefficient_range1)
+    denominator = unit1.generate_polynomial(degree, coefficient_range2)
     return numerator / denominator
 
 
