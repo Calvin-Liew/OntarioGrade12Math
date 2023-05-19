@@ -109,8 +109,6 @@ def generate_angle():
     return random.choice(special_angles)
 
 
-#TODO: Trig ratios of a given angle
-
 #TODO: Provide a simple diagram of an angle? Might be tough
 # Can prob use desmos for this https://www.youtube.com/watch?v=RUm0NevyrlA
 
@@ -169,6 +167,11 @@ def calculate_angular_velocity(revolutions: int) -> list[int]:
 
 #TODO: Trig word problem, kite flying or ladder leaning on wall, or some other scenario that requires someone to look
 # for the distance or heieght etc
+
+
+###############################################################################
+# Question Functions
+###############################################################################
 
 if __name__ == "__main__":
     import doctest

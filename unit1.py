@@ -10,17 +10,18 @@ import typing
 import sympy
 from sqlalchemy import create_engine, Column, Integer, String
 from sqlalchemy.orm import declarative_base, sessionmaker
-from sympy import degree, factorial, symbols, simplify, Eq
+from sympy import degree, factorial, symbols, simplify, Eq, expand
 from sympy.abc import x
+from sympy.printing.latex import latex
 
 # from prettytable import PrettyTable
 
 # from sympy import symbols, Function, Symbol
 # from sympy.plotting import plot
 
+
 engine = create_engine("sqlite:///questions.db", echo=True)
 Base = declarative_base()
-
 
 class Question(Base):
     __tablename__ = "Questions"
@@ -190,22 +191,22 @@ def even_or_odd(f) -> str:
     - f is a valid polynomial function from <generate_polynomial>
 
     >>> even_or_odd(x**2 + x**4 + x**6)
-    'The function is even'
+    'The function is even: $f(x) = x^{2} + x^{4} + x^{6}$, because $f(-x) = f(x)$ algebraically simplifies to $x^{2} + x^{4} + x^{6} = x^{2} + x^{4} + x^{6}$'
     >>> even_or_odd(x**3 - 8*x)
-    'The function is odd'
+    'The function is odd: $f(x) = x^{3} - 8x$, because $f(-x) = -f(x)$ algebraically simplifies to $-x^{3} + 8x = -(x^{3} - 8x)$'
     >>> even_or_odd(1 + x + x**2)
-    'The function is neither even nor odd'
+    'The function is neither even nor odd: $f(x) = 1 + x + x^{2}$, because $f(-x) = -f(x)$ algebraically simplifies to $-(1 + x + x^{2}) \\neq 1 + x + x^{2}$'
     """
     x = symbols('x')
     f_of_neg_x = f.subs(x, -x)
     evenness = simplify(f - f_of_neg_x)
     oddness = simplify(f + f_of_neg_x)
     if evenness.equals(0):
-        return "The function is even"
+        return "The function is even: $f(x) = " + latex(f) + "$, because $f(-x) = f(x)$ algebraically simplifies to $" + latex(expand(f_of_neg_x)) + " = " + latex(expand(f)) + "$"
     elif oddness.equals(0):
-        return "The function is odd"
+        return "The function is odd: $f(x) = " + latex(f) + "$, because $f(-x) = -f(x)$ algebraically simplifies to $" + latex(expand(f_of_neg_x)) + " = -(" + latex(expand(f)) + ")$"
     else:
-        return "The function is neither even nor odd"
+        return "The function is neither even nor odd: $f(x) = " + latex(f) + "$, because $f(-x) = -f(x)$ algebraically simplifies to $" + latex(expand(f_of_neg_x)) + " \\neq " + latex(expand(f)) + "$"
 
 
 def leading_coeff(polynomial) -> int:
@@ -511,10 +512,31 @@ def instant_rate_of_change(polynomial, x1) -> float:
     return slope
 
 
+def translate_end_behavior(quadrant1, quadrant2):
+    # Define the translation mappings
+    quadrant_map = {
+        'Q1': "as x approaches positive infinity, y approaches positive infinity",
+        'Q2': "as x approaches negative infinity, y approaches positive infinity",
+        'Q3': "as x approaches negative infinity, y approaches negative infinity",
+        'Q4': "as x approaches positive infinity, y approaches negative infinity"
+    }
+
+    # Translate the end behavior of each quadrant
+    translation1 = quadrant_map.get(quadrant1, "Invalid quadrant")
+    translation2 = quadrant_map.get(quadrant2, "Invalid quadrant")
+
+    # Return the combined translation
+    return f"For {quadrant1} -> {quadrant2}: {translation1} and {translation2}"
+
+###############################################################################
+# Question Functions
+###############################################################################
+
 # TODO: Insert Questions functions to do
 # NOTE: Our current schema is in the form of (id, unit, chapter, topic, answer, graph_equation)
 # NOTE: Confirm that we can put equations and points into desmo api
 
+# Ask for constant/y-intercept
 # Function will return the question and the answer in the best way
 def degree_and_leading_coff():
     # NOTE: This will be unit 1, chapter 1, topic 1,
@@ -526,7 +548,7 @@ def degree_and_leading_coff():
     polynomial = generate_polynomial(degree, coeffcient_range)
     leading = leading_coeff(polynomial)
     polynomial = sympy.latex(polynomial)
-    question = f"What is the degree and the leading coefficient of this polynomial: {polynomial}"
+    question = f"What is the degree and the leading coefficient of this polynomial: {polynomial}?"
     answer = f"""The degree of this function is the highest exponent in the polynomial which is {degree}. 
     Therefore the leading coefficent is the coefficent of the term that is degree {degree} which is {leading}"""
 
@@ -538,7 +560,73 @@ def degree_and_leading_coff():
 
 # TODO: Given Polynomial, what is the end behvaiour?
 
+def end_behaviour_question():
+    quadrants = ["Q1", "Q2", "Q2", "Q4"]
+    q1 = random.randint(0, 3)
+    q2 = random.randint(0,3)
+    while q1 == q2:
+        q2 = random.randint(0,3)
+    print(q1, q2)
+    end_behaviour_eq = end_behaviour(quadrants[q1], quadrants[q2], (-10, 10))
+    polynomial = sympy.latex(end_behaviour_eq)
+    question = f""""What is the end behaviour of this function {polynomial}?"""
+    end_behaviour_answer = translate_end_behavior(quadrants[q1], quadrants[q2])
+    answer = f"""Find where f(x) approaches when x->∞ and x ->-∞. Answer: {end_behaviour_answer}."""
+    
+    question = Question(unit=1, chapter=1.1, topic='end behaviour', question=question, answer=answer, graph=None)
+    session.add(question)
+    session.commit()
+
+# TODO: given graph polynomial what is the end behavior
+
+def end_behaviour__graph_question():
+    quadrants = ["Q1", "Q2", "Q2", "Q4"]
+    q1 = random.randint(0, 3)
+    q2 = random.randint(0,3)
+    while q1 == q2:
+        q2 = random.randint(0,3)
+    print(q1, q2)
+    end_behaviour_eq = end_behaviour(quadrants[q1], quadrants[q2], (-10, 10))
+    polynomial = sympy.latex(end_behaviour_eq)
+    question = f""""What is the end behaviour of this graph?"""
+    end_behaviour_answer = translate_end_behavior(quadrants[q1], quadrants[q2])
+    answer = f"""Find where f(x) approaches when x->∞ and x ->-∞. Answer: {end_behaviour_answer}."""
+    
+    question = Question(unit=1, chapter=1.1, topic='end behaviour', question=question, answer=answer, graph=polynomial)
+    session.add(question)
+    session.commit()
+
+# TODO: odd or even given a fucntion
+
+def odd_or_even():
+    degree = random.randint(2, 4)
+    coeffcient_range = (-10, 10)
+    polynomial = generate_polynomial(degree, coeffcient_range)
+    answer = even_or_odd(polynomial)
+    polynomial = sympy.latex(polynomial)
+    question = f"""Show that the following function is even, odd or neither: {polynomial}"""
+    question = Question(unit=1, chapter=1.1, topic='odd or even', question=question, answer=answer, graph=None)
+    session.add(question)
+    session.commit()
+
+# TODO: domain and range of a polynomial
+
+#Might need to generate a factorable polynomial for this. otherwise it may be hard for those to findout what the range is for even fucnctions same with characteristics
+def domain_range_polynomial():
+    degree = random.randint(2, 4)
+    coefficent_range = (-10, 10)
+    polynomial = generate_polynomial(degree, coefficent_range)
+    domain = function_domain(polynomial)
+    range = function_domain(polynomial)
+    question = f"""Find the domain and range of the following polynomial (interval notation): {latex(polynomial)}"""
+    answer = f"""Domain: {domain} \n Range: {range}"""
+    
+    
+# TODO: Given the graph, end behavior, x-intercepts, global maximia, 
+    
 # TODO: Given image of graph, ask for the end behavior, even or odd, domain and range, symmetry. Table of intervals when function is positive, negative domain and range
+
+
 
 # TODO: Given 4 equations and 4 graph images. Match them. See if we want to/able to do matching questions. 
 

@@ -218,6 +218,10 @@ def compare(polynomial, inequality, value) -> str:
 # to write the equation of the polynomial given a point or not
 
 
+###############################################################################
+# Question Functions
+###############################################################################
+
 if __name__ == "__main__":
     import doctest
 

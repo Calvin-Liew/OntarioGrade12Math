@@ -11,29 +11,40 @@ import sympy
 from sympy.abc import x
 
 
-# Generate rational functions
+def generate_rational(degree1: int, coefficient_range1: typing.Tuple[int, int], degree2: int, coefficient_range2: typing.Tuple[int, int]):
+    """
+    Generates rational function based on degree and coefficient_range.
+    <degree1> and <coefficient_range1> is for the numerator.
+    <degree2> and <coefficient_range2> is for the denominator.
 
-# TODO: Generate any rational function ie. functions with no asymptotes, functions with horzontal asymptote, etc
-# def generate_rational(numerator: float, degree, coefficient_range: typing.Tuple[int, int]):
-#     """
-#     Generates rational function based on numberator, degree and coefficient_range
-#
-#     Preconditions:
-#     - degree > 0
-#     - coefficient_range != ()
-#     - coefficient_range[0] <= coefficient_range[1]
-#     """
-#     denominator = unit1.generate_polynomial(degree, coefficient_range)
-#     return numerator / denominator
-# Probably need to make numerator a polynomial as well
+    Preconditions:
+    - degree1 > 0 and degree2 > 0
+    - coefficient_range1 != () and coefficient_range2 != ()
+    - coefficient_range1[0] <= coefficient_range1[1] and coefficient_range2[0] <= coefficient_range2[1]
+    """
+    numerator = unit1.generate_polynomial(degree1, coefficient_range1)
+    denominator = unit1.generate_polynomial(degree1, coefficient_range1)
+    return numerator / denominator
 
-# TODO: Generate quadractic rational functions
+
+def generate_rational_linear(constant: int, degree: int, coefficient_range: typing.Tuple[int, int]):
+    """
+    Generates a rational function in the format of constant/polynomial
+
+    Preconditions:
+    - degree > 0
+    - coefficient_range != ()
+    - coefficient_range[0] <= coefficient_range[1]
+    """
+
+    return constant / (unit1.generate_polynomial(degree, coefficient_range))
+
 
 # TODO: Generate rational function with asymptotes so we just need to have the denominator be a factorable polynomial
 
 # TODO: Generate rational function that has one as the numerator and the deonominator be a simple factorable polynomial for questions asking about what the asymptotes are
 
-# TODO: Intervals where function is positive ornegative
+
 def pos_neg_rational(rational) -> list:
     """
     Returns the intervals where the rational function is positive or negative.
@@ -47,9 +58,6 @@ def pos_neg_rational(rational) -> list:
 
     return [compare_rational(rational, '>', 0),
             compare_rational(rational, '<', 0)]
-
-
-# TODO: Intercepts of rational function ie. when the numerator = 0.
 
 
 def rational_domain(rational) -> str:
@@ -92,6 +100,7 @@ def inc_dec_rational(rational) -> list:
     Returns the intervals where the rational function is increasing or decreasing.
     Will be returned in list format where index 0 is the increasing interval
     and index 1 is the decreasing interval
+
     >>> inc_dec_rational(1/x)
     ['∅', '(-∞, 0) ∪ (0, ∞)']
     >>> inc_dec_rational(x/(x**2 - 9))
@@ -218,10 +227,32 @@ def linear_quotient(coefficient_range: typing.Tuple[int, int]):
 #     return fg / f
 
 
-# TODO: Generate a rational fucnction with a oblique asymptote. CASE 1. A quadractic over a linear
+def generate_oblique1(coefficient_range1: typing.Tuple[int, int], coefficient_range2: typing.Tuple[int, int]):
+    """
+    Generates a rational function with a oblique asymptote.
+    Numerator has a degree of 2 while the denominator has a degree of 1.
 
-# TODO: Generate a rational fucnction with a oblique asymptote. CASE 2. A higher order function over a higher ordeer fucntion
-# Have to solve where the function intersects the HA to graph
+    Preconditions:
+    - coefficient_range1 != () and coefficient_range2 != ()
+    - coefficient_range1[0] <= coefficient_range1[1] and coefficient_range2[0] <= coefficient_range2[1]
+    """
+    numerator = unit1.generate_polynomial(2, coefficient_range1)
+    denominator = unit1.generate_polynomial(1, coefficient_range1)
+    return numerator / denominator
+
+
+def generate_oblique2(degree: int, coefficient_range1: typing.Tuple[int, int], coefficient_range2: typing.Tuple[int, int]):
+    """
+    Generates a rational function with a oblique asymptote.
+    Numerator has a degree of <degree> + 1 while the denominator has a degree of <degree>.
+
+    Preconditions:
+    - coefficient_range1 != () and coefficient_range2 != ()
+    - coefficient_range1[0] <= coefficient_range1[1] and coefficient_range2[0] <= coefficient_range2[1]
+    """
+    numerator = unit1.generate_polynomial(degree + 1, coefficient_range1)
+    denominator = unit1.generate_polynomial(degree, coefficient_range1)
+    return numerator / denominator
 
 
 def compare_rational(rational, inequality, value) -> str:
@@ -253,6 +284,11 @@ def evaluate_rational(rational, value) -> sympy.Set:
     {2.0}
     """
     return sympy.solveset(rational - value, x, sympy.S.Reals)
+
+
+###############################################################################
+# Question Functions
+###############################################################################
 
 
 if __name__ == "__main__":
