@@ -578,6 +578,30 @@ def interval_notation_between(num1, symbol1, num2, symbol2):
     interval = left_interval + right_interval
     return interval
 
+def generate_random_equation(variables=['x', 'y'], max_terms=5, max_degree=3):
+    equation = 0
+    
+    num_terms = random.randint(1, max_terms)
+    
+    for _ in range(num_terms):
+        term = random_term(variables, max_degree)
+        equation += term
+    
+    return equation
+
+def random_term(variables, max_degree):
+    term = random.choice(variables)
+    
+    degree = random.randint(1, max_degree)
+    for _ in range(degree):
+        power = random.randint(1, max_degree)
+        term = term + '**' + str(power)
+    
+    coefficient = random.randint(-10, 10)
+    term = coefficient * sympy.sympify(term)
+    
+    return term
+
 ###############################################################################
 # Question Functions
 ###############################################################################
