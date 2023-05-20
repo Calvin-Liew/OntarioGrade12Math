@@ -646,8 +646,11 @@ def generate_points(num_points):
 # NOTE: Our current schema is in the form of (id, unit, chapter, topic, answer, graph_equation)
 # NOTE: Confirm that we can put equations and points into desmo api
 
-# Ask for constant/y-intercept
-# Function will return the question and the answer in the best way
+
+# TODO: Chapter 0
+#Maybe add some more 'chapter 0' questions and answers such as
+#expanding, factoring, exponenet power rules, simplifying, solving 
+#simple quadractic and linear equations, exponent practice, lines
 
 # image of a graph that may or may not be function
 def function_or_not():
