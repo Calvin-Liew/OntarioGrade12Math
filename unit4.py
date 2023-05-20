@@ -137,10 +137,6 @@ def degree_to_rad_explain(degree: int):
     print(str_so_far)
 
 
-#TODO: Angular velocity questions
-# In format of The hard disk in a personal computer rotates at x rpm (revolutions per minute), determien its
-# angular velocity
-
 def calculate_angular_velocity(revolutions: int) -> list[int]:
     """
     Returns a list where index 0 is the angular velocity in degree and index 1 is the angular

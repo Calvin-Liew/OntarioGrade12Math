@@ -35,6 +35,8 @@ Copyright and Usage Information
 * sin, cos, tan, csc, sec, cot, rad_to_degree, degree_to_rad, generate_angle, rad_to_degree_explain, degree_to_rad_explain, calculate_angular_velocity by Wonjae Lee
 
 **Sqlite3 Database**
+
+**Unit 1 - Polynomial Functions:**
 * Database setup, degree_and_leading_coeff, translate_end_behaviour, end_behaviour_question, end_behaviour_graph_question, odd_or_even, domain_range_polynomial by Calvin Liew
 
 **Frontend Website**
