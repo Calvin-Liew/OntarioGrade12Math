@@ -23,6 +23,7 @@ from sympy.printing.latex import latex
 engine = create_engine("sqlite:///questions.db", echo=True)
 Base = declarative_base()
 
+
 class Question(Base):
     __tablename__ = "Questions"
     id = Column(Integer, primary_key=True)
@@ -123,11 +124,11 @@ def find_discriminant(polynomial) -> int:
                        18 * coeff_list[0] * coeff_list[1] * coeff_list[2] * (coeff_list[3]) ** 3 + 16 * coeff_list[
                            0] * (coeff_list[2]) ** 4 * coeff_list[4] - \
                        4 * coeff_list[0] * (coeff_list[2]) ** 3 * (coeff_list[3]) ** 2 - 27 * (coeff_list[1]) ** 4 * (
-                       coeff_list[4]) ** 2 + \
+                           coeff_list[4]) ** 2 + \
                        18 * (coeff_list[1]) ** 3 * coeff_list[2] * coeff_list[3] * coeff_list[4] - 4 * (
-                       coeff_list[1]) ** 3 * (coeff_list[3]) ** 3 - \
+                           coeff_list[1]) ** 3 * (coeff_list[3]) ** 3 - \
                        4 * (coeff_list[1]) ** 2 * (coeff_list[2]) ** 3 * coeff_list[4] + (coeff_list[1]) ** 2 * (
-                       coeff_list[2]) ** 2 * (coeff_list[3]) ** 2
+                           coeff_list[2]) ** 2 * (coeff_list[3]) ** 2
         return discriminant
 
 
@@ -202,11 +203,17 @@ def even_or_odd(f) -> str:
     evenness = simplify(f - f_of_neg_x)
     oddness = simplify(f + f_of_neg_x)
     if evenness.equals(0):
-        return "The function is even: $f(x) = " + latex(f) + "$, because $f(-x) = f(x)$ algebraically simplifies to $" + latex(expand(f_of_neg_x)) + " = " + latex(expand(f)) + "$"
+        return "The function is even: $f(x) = " + latex(
+            f) + "$, because $f(-x) = f(x)$ algebraically simplifies to $" + latex(expand(f_of_neg_x)) + " = " + latex(
+            expand(f)) + "$"
     elif oddness.equals(0):
-        return "The function is odd: $f(x) = " + latex(f) + "$, because $f(-x) = -f(x)$ algebraically simplifies to $" + latex(expand(f_of_neg_x)) + " = -(" + latex(expand(f)) + ")$"
+        return "The function is odd: $f(x) = " + latex(
+            f) + "$, because $f(-x) = -f(x)$ algebraically simplifies to $" + latex(
+            expand(f_of_neg_x)) + " = -(" + latex(expand(f)) + ")$"
     else:
-        return "The function is neither even nor odd: $f(x) = " + latex(f) + "$, because $f(-x) = -f(x)$ algebraically simplifies to $" + latex(expand(f_of_neg_x)) + " \\neq " + latex(expand(f)) + "$"
+        return "The function is neither even nor odd: $f(x) = " + latex(
+            f) + "$, because $f(-x) = -f(x)$ algebraically simplifies to $" + latex(
+            expand(f_of_neg_x)) + " \\neq " + latex(expand(f)) + "$"
 
 
 def leading_coeff(polynomial) -> int:
@@ -528,6 +535,7 @@ def translate_end_behavior(quadrant1, quadrant2):
     # Return the combined translation
     return f"For {quadrant1} -> {quadrant2}: {translation1} and {translation2}"
 
+
 ###############################################################################
 # Question Functions
 ###############################################################################
@@ -563,38 +571,40 @@ def degree_and_leading_coff():
 def end_behaviour_question():
     quadrants = ["Q1", "Q2", "Q2", "Q4"]
     q1 = random.randint(0, 3)
-    q2 = random.randint(0,3)
+    q2 = random.randint(0, 3)
     while q1 == q2:
-        q2 = random.randint(0,3)
+        q2 = random.randint(0, 3)
     print(q1, q2)
     end_behaviour_eq = end_behaviour(quadrants[q1], quadrants[q2], (-10, 10))
     polynomial = sympy.latex(end_behaviour_eq)
     question = f""""What is the end behaviour of this function {polynomial}?"""
     end_behaviour_answer = translate_end_behavior(quadrants[q1], quadrants[q2])
     answer = f"""Find where f(x) approaches when x->∞ and x ->-∞. Answer: {end_behaviour_answer}."""
-    
+
     question = Question(unit=1, chapter=1.1, topic='end behaviour', question=question, answer=answer, graph=None)
     session.add(question)
     session.commit()
+
 
 # TODO: given graph polynomial what is the end behavior
 
 def end_behaviour__graph_question():
     quadrants = ["Q1", "Q2", "Q2", "Q4"]
     q1 = random.randint(0, 3)
-    q2 = random.randint(0,3)
+    q2 = random.randint(0, 3)
     while q1 == q2:
-        q2 = random.randint(0,3)
+        q2 = random.randint(0, 3)
     print(q1, q2)
     end_behaviour_eq = end_behaviour(quadrants[q1], quadrants[q2], (-10, 10))
     polynomial = sympy.latex(end_behaviour_eq)
     question = f""""What is the end behaviour of this graph?"""
     end_behaviour_answer = translate_end_behavior(quadrants[q1], quadrants[q2])
     answer = f"""Find where f(x) approaches when x->∞ and x ->-∞. Answer: {end_behaviour_answer}."""
-    
+
     question = Question(unit=1, chapter=1.1, topic='end behaviour', question=question, answer=answer, graph=polynomial)
     session.add(question)
     session.commit()
+
 
 # TODO: odd or even given a fucntion
 
@@ -609,9 +619,10 @@ def odd_or_even():
     session.add(question)
     session.commit()
 
+
 # TODO: domain and range of a polynomial
 
-#Might need to generate a factorable polynomial for this. otherwise it may be hard for those to findout what the range is for even fucnctions same with characteristics
+# Might need to generate a factorable polynomial for this. otherwise it may be hard for those to findout what the range is for even fucnctions same with characteristics
 def domain_range_polynomial():
     degree = random.randint(2, 4)
     coefficent_range = (-10, 10)
@@ -620,33 +631,32 @@ def domain_range_polynomial():
     range = function_domain(polynomial)
     question = f"""Find the domain and range of the following polynomial (interval notation): {latex(polynomial)}"""
     answer = f"""Domain: {domain} \n Range: {range}"""
-    
-    
-# TODO: Given the graph, end behavior, x-intercepts, global maximia, 
-    
+
+
+# TODO: Given the graph, end behavior, x-intercepts, global maximia,
+
 # TODO: Given image of graph, ask for the end behavior, even or odd, domain and range, symmetry. Table of intervals when function is positive, negative domain and range
 
 
-
-# TODO: Given 4 equations and 4 graph images. Match them. See if we want to/able to do matching questions. 
+# TODO: Given 4 equations and 4 graph images. Match them. See if we want to/able to do matching questions.
 
 # TODO: Given equation Ask for degree, sign of leading coefficient, end behaviour, possible number of turning points, x intercepts.
 
-# TODO: Given a image of a graph. Ask for leading coefficient, even or odd degree, end behaviour, symmetry, number of turning points, number x-intercepts, last possible degree 
+# TODO: Given a image of a graph. Ask for leading coefficient, even or odd degree, end behaviour, symmetry, number of turning points, number x-intercepts, last possible degree
 
-# TODO: Find the value of a leading coefficient given x-differences 
+# TODO: Find the value of a leading coefficient given x-differences
 
-# TODO: Given a function find the value of constant finite differences 
+# TODO: Given a function find the value of constant finite differences
 
-# TODO: Gvien a table of (points function) find the finite differences 
+# TODO: Gvien a table of (points function) find the finite differences
 
 # TODO: Given a factored form of a equation, graph, noting end behavior, leading coefficient, x-intercepts, y-intercepts
 
-# TODO: Write a equation based on  word descriptions, root function and points passed through *gotta figureout details 
+# TODO: Write a equation based on  word descriptions, root function and points passed through *gotta figureout details
 
 # TODO: Write an equation based on images* gotta figure out the details for this one
 
-# TODO: Write a equation based on given transformations 
+# TODO: Write a equation based on given transformations
 
 # TODO: Identify a, k, c, d values of equations and explain what they do
 
@@ -654,12 +664,11 @@ def domain_range_polynomial():
 
 # TODO: Show if graph is even or odd symmetry
 
-# TODO: Show algebarcially if a function is odd or even, minimum maximum number of 0s, finite differences 
+# TODO: Show algebarcially if a function is odd or even, minimum maximum number of 0s, finite differences
 
 # TODO: Given graph, write number of x-intercepts, number of turning points, least possible degree, any symmetry, intervals where f(x) <0 or f(x) > 0
 
 # TODO: Given factorable polynomial shown in the form (x-a)(x-b)(x-c), find the details of the graph and graph it
-
 
 
 if __name__ == "__main__":

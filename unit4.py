@@ -9,6 +9,8 @@ import sympy
 import random
 from sympy.abc import x
 from sympy import pi
+
+
 # from sympy.solvers.inequalities import reduce_rational_inequalities
 
 
@@ -95,10 +97,6 @@ def cot(radian) -> sympy.core.numbers:
     return sympy.cot(radian)
 
 
-#Unit 4 Planning
-
-#TODO: Generate random angle in radian or degree. Maybe we need to specific range
-# Have the range between 0 degrees and 360 degrees maybe
 def generate_angle():
     """
     Generates a random special angle in radians (pi format)
@@ -109,10 +107,10 @@ def generate_angle():
     return random.choice(special_angles)
 
 
-#TODO: Provide a simple diagram of an angle? Might be tough
+# TODO: Provide a simple diagram of an angle? Might be tough
 # Can prob use desmos for this https://www.youtube.com/watch?v=RUm0NevyrlA
 
-#TODO: Convert degree to radian and vice versa showing work
+
 def rad_to_degree_explain(radian: int | sympy.core.numbers.Pi):
     """
     Converts radians to degrees and explains the degree return
@@ -153,15 +151,41 @@ def calculate_angular_velocity(revolutions: int) -> list[int]:
     return [dps, rps]
 
 
-#TODO: Find the related acute angle and the principal angle and give diagram
+# TODO: Find the related acute angle and the principal angle and give diagram
+def find_raa(principal_angle: int | sympy.core.numbers.Pi) -> int | sympy.core.numbers.Pi:
+    """
+    Return the related acute angle from the principal angle
+
+    Preconditions:
+    - principal_angle not in [0, 90, 180, 270, 360, pi / 2, pi, 3 * pi / 2, 2 * pi]
+    - 0 < principal_angle < 360 or 0 < principal_angle < 2 * pi
+    """
+    if isinstance(principal_angle, sympy.core.numbers.Pi):    # When principal angle is in radians
+        if principal_angle < pi / 2:    # Quadrant 1
+            return principal_angle
+        elif principal_angle > pi / 2 and principal_angle < pi:    # Quadrant 2
+            return pi - principal_angle
+        elif principal_angle > pi and principal_angle < 3 * pi / 2:
+            return principal_angle - pi
+        else:   # Quadrant 4
+            return 2 * pi - principal_angle
+    else:   # When principal angle is in degrees
+        if principal_angle < 90:    # Quadrant 1
+            return principal_angle
+        elif principal_angle > 90 and principal_angle < 180:    # Quadrant 2
+            return 180 - principal_angle
+        elif principal_angle > 180 and principal_angle < 270:
+            return principal_angle - 180
+        else:   # Quadrant 4
+            return 360 - principal_angle
 
 
-#TODO: given some random radian find the exact value of sinx or tanx or cosx or cscx secx cotx
-#TODO: a helper function to show simple work for the function above
+# TODO: given some random radian find the exact value of sinx or tanx or cosx or cscx secx cotx
+# TODO: a helper function to show simple work for the function above
 
-#TODO: Genrate a equation of a combination of random trig functions and simplfy it in exact values
+# TODO: Genrate a equation of a combination of random trig functions and simplfy it in exact values
 
-#TODO: Trig word problem, kite flying or ladder leaning on wall, or some other scenario that requires someone to look
+# TODO: Trig word problem, kite flying or ladder leaning on wall, or some other scenario that requires someone to look
 # for the distance or heieght etc
 
 

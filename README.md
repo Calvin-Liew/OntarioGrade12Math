@@ -32,7 +32,7 @@ Copyright and Usage Information
 * rational_domain, rational_range, vertical_asymptote, horizontal_asymptote, x_int, y_int, attribute, linear_quotient, compare_rational, evaluate_rational, inc_dec_rational, generate_rational, generate_rational_linear, generate_oblique1, generate_oblique2, generate_hole by Wonjae Lee
 
 **Unit 4 - Trigonometry:**
-* sin, cos, tan, csc, sec, cot, rad_to_degree, degree_to_rad, generate_angle, rad_to_degree_explain, degree_to_rad_explain, calculate_angular_velocity by Wonjae Lee
+* sin, cos, tan, csc, sec, cot, rad_to_degree, degree_to_rad, generate_angle, rad_to_degree_explain, degree_to_rad_explain, calculate_angular_velocity, find_raa by Wonjae Lee
 
 **Sqlite3 Database**
 
@@ -131,3 +131,6 @@ May 19, 2023
 * generate_oblique1
 * generate_oblique2
 * generate_hole
+
+May 20, 2023
+* find_raa
