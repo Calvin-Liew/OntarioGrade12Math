@@ -535,6 +535,49 @@ def translate_end_behavior(quadrant1, quadrant2):
     # Return the combined translation
     return f"For {quadrant1} -> {quadrant2}: {translation1} and {translation2}"
 
+def interval_notation_single(num, symbol, side):
+    if side == "left":
+        if symbol == "<":
+            interval = "(-∞, " + str(num) + ")"
+        elif symbol == "<=":
+            interval = "(-∞, " + str(num) + "]"
+        elif symbol == ">":
+            interval = "(" + str(num) + ", +∞)"
+        elif symbol == ">=":
+            interval = "[" + str(num) + ", +∞)"
+    elif side == "right":
+        if symbol == "<":
+            interval = "(" + str(num) + ", +∞)"
+        elif symbol == "<=":
+            interval = "[" + str(num) + ", +∞)"
+        elif symbol == ">":
+            interval = "(-∞, " + str(num) + ")"
+        elif symbol == ">=":
+            interval = "(-∞, " + str(num) + "]"
+    return interval
+
+def interval_notation_between(num1, symbol1, num2, symbol2):
+    if symbol1 == "<":
+        left_interval = "(" + str(num1) + ", "
+    elif symbol1 == "<=":
+        left_interval = "[" + str(num1) + ", "
+    elif symbol1 == ">":
+        left_interval = "(" + str(num1) + ", "
+    elif symbol1 == ">=":
+        left_interval = "[" + str(num1) + ", "
+
+    if symbol2 == "<":
+        right_interval = str(num2) + ")"
+    elif symbol2 == "<=":
+        right_interval = str(num2) + "]"
+    elif symbol2 == ">":
+        right_interval = str(num2) + ")"
+    elif symbol2 == ">=":
+        right_interval = str(num2) + "]"
+
+    interval = left_interval + right_interval
+    return interval
+
 
 ###############################################################################
 # Question Functions
