@@ -578,7 +578,6 @@ def interval_notation_between(num1, symbol1, num2, symbol2):
     interval = left_interval + right_interval
     return interval
 
-
 ###############################################################################
 # Question Functions
 ###############################################################################
@@ -589,6 +588,65 @@ def interval_notation_between(num1, symbol1, num2, symbol2):
 
 # Ask for constant/y-intercept
 # Function will return the question and the answer in the best way
+
+def convert_to_interval_notation_single():
+    symbol = [">", "<", ">=", "<="]
+    symbol_latex = [">", "<", "\geq", "\leq"]
+    side = ["left", "right", "center"]
+    num = random.randint(-50, 50)
+    side_num = random.randint(0, 1)
+    symbol_num = random.randint(0, 3)
+    
+    inequality_latex = ""
+    if side[side_num] == "left":
+        inequality_latex += "x " + symbol_latex[symbol_num] + f"{num}" 
+        converted = interval_notation_single(num, symbol[symbol_num], side[side_num])
+        
+    else:
+        inequality_latex += f"{num} " + symbol_latex[symbol_num] + " x"
+        converted = interval_notation_single(num, symbol[symbol_num], side[side_num])
+        
+    question = f"""Convert this inequality into interval notation: {inequality_latex}"""
+    answer = f"""x ∈ {converted}"""
+    question = Question(unit=1, chapter=1.1, topic="interval notation", question=question, answer=answer ,graph=None)
+    session.add(question)
+    session.commit()
+
+def convert_to_interval_notation_double():
+    symbolss = (['<=', '<'], ['>', '>='])
+    symbolss_latex = (['\leq', '<'], ['>', '\geq'])
+    less_or_greater = random.randint(0, 1)
+    symbols = symbolss[less_or_greater]
+    symbols_latex = symbolss_latex[less_or_greater]
+    num_1 = random.randint(-50, 50)
+    num_2 = random.randint(-50, 50)
+    if (symbols == symbolss[0]):
+        while num_1 == num_2 or num_1 > num_2:
+            num_1 = random.randint(-50, 50)
+            num_2 = random.randint(-50, 50)
+    else:
+        while num_1 == num_2 or num_1 < num_2:
+            num_1 = random.randint(-50, 50)
+            num_2 = random.randint(-50, 50)
+        
+    symbol_1_num = random.randint(0, 1)
+    symbol_2_num = random.randint(0, 1)
+    symbol_1 = symbols[symbol_1_num]
+    symbol_2 = symbols[symbol_2_num]
+    symbol_1_latex = symbols_latex[symbol_1_num]
+    symbol_2_latex = symbols_latex[symbol_2_num]
+    inequality = f"""{num_1} {symbol_1_latex} X {symbol_2_latex} {num_2}"""
+    converted = interval_notation_between(num_1, symbol_1, num_2, symbol_2)
+    
+    question = f"""Convert this inequality into interval notation: {inequality}"""
+    answer = f"""X ∈ {converted}"""
+    question = Question(unit=1, chapter=1.1, topic="interval notation", question=question, answer=answer ,graph=None)
+    session.add(question)
+    session.commit()
+    
+    
+    
+
 def degree_and_leading_coff():
     # NOTE: This will be unit 1, chapter 1, topic 1,
     # NOTE: Answer will be in one big latex with the answers plus some form of instructions on how to solve it
