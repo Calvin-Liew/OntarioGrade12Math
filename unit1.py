@@ -10,7 +10,7 @@ import typing
 import sympy
 from sqlalchemy import create_engine, Column, Integer, String
 from sqlalchemy.orm import declarative_base, sessionmaker
-from sympy import degree, factorial, symbols, simplify, Eq, expand
+from sympy import degree, factorial, symbols, simplify, Eq, expand, Add, Mul
 from sympy.abc import x
 from sympy.printing.latex import latex
 
@@ -578,29 +578,65 @@ def interval_notation_between(num1, symbol1, num2, symbol2):
     interval = left_interval + right_interval
     return interval
 
-def generate_random_equation(variables=['x', 'y'], max_terms=5, max_degree=3):
-    equation = 0
-    
-    num_terms = random.randint(1, max_terms)
-    
-    for _ in range(num_terms):
-        term = random_term(variables, max_degree)
-        equation += term
-    
-    return equation
+def generate_equation_fail_vertical_line_test():
+    y = symbols('y')
+    a = random.randint(-10, 10)
+    b = random.randint(-10, 10)
+    c = random.randint(-10, 10)
+    d = random.randint(-10, 10)
+    e = random.randint(-10, 10)
+    f = random.randint(-10, 10)
+    expression = Add(
+        Mul(a, y**2),
+        Mul(b, y),
+        c,
+        Mul(d, y**3),
+        Mul(e, y**2),
+        Mul(f, y)
+    )
+    return expression
 
-def random_term(variables, max_degree):
-    term = random.choice(variables)
-    
-    degree = random.randint(1, max_degree)
-    for _ in range(degree):
-        power = random.randint(1, max_degree)
-        term = term + '**' + str(power)
-    
-    coefficient = random.randint(-10, 10)
-    term = coefficient * sympy.sympify(term)
-    
-    return term
+def generate_failed_vlt_points(num_points, same_x_points):
+    points = set()
+
+    # Generate points with unique x and y values
+    for _ in range(num_points - same_x_points):
+        x = random.randint(-100, 100)  # Adjust the range as needed
+        y = random.randint(-100, 100)  # Adjust the range as needed
+        points.add((x, y))
+
+    # Generate points with the same x but different y values
+    unique_x_values = len(points)
+    if same_x_points > unique_x_values:
+        same_x_points = unique_x_values
+
+    unique_x_values = list({point[0] for point in points})
+    random.shuffle(unique_x_values)
+    for x in unique_x_values[:same_x_points]:
+        y1 = random.randint(-100, 100)  # Adjust the range as needed
+        y2 = random.randint(-100, 100)  # Adjust the range as needed
+        while y2 == y1:
+            y2 = random.randint(-100, 100)  # Adjust the range as needed
+        points.add((x, y1))
+        points.add((x, y2))
+
+    return points
+
+
+def generate_points(num_points):
+    points = set()
+
+    for _ in range(num_points):
+        x = random.randint(0, 100)  # Adjust the range as needed
+
+        while x in {point[0] for point in points}:
+            x = random.randint(0, 100)  # Adjust the range as needed
+
+        y = random.randint(0, 100)  # Adjust the range as needed
+
+        points.add((x, y))
+
+    return points
 
 ###############################################################################
 # Question Functions
@@ -612,6 +648,46 @@ def random_term(variables, max_degree):
 
 # Ask for constant/y-intercept
 # Function will return the question and the answer in the best way
+
+# image of a graph that may or may not be function
+def function_or_not():
+    x = random.randint(0, 1)
+    if x == 0:
+        degree = random.randint(2, 4)
+        coeffcient_range = (-10, 10)
+        polynomial = generate_polynomial(degree, coeffcient_range)
+        graph = latex(polynomial)
+        question=f"""Is this a function: """
+        answer=f"""Yes this passes the vertical line test."""
+        question = Question(unit=1, chapter=1.1, topic="what is a function", question=question, answer=answer, graph=graph)
+        session.add(question)
+        session.commit()
+    else:
+        equation = generate_equation_fail_vertical_line_test()
+        graph = latex(equation)
+        # not latex ing properly
+        question=f"""Is this a function: """
+        answer=f"""No this fails the vertical line test."""
+        question = Question(unit=1, chapter=1.1, topic="is this graph a function?", question=question, answer=answer, graph=graph)
+        session.add(question)
+        session.commit()
+
+def function_or_not_points():
+    x = random.randint(0, 1)
+    if x == 0:
+        points = generate_points(5)
+        question = f"""Determine if the following relation is a function: {points}"""
+        answer = f"""Yes it is a function as there are unique Xs,passing the vertical line test."""
+        question = Question(unit=1, chapter=1.1, topic="is this relation a function?", question=question, answer=answer)
+        session.add(question)
+        session.commit()
+    else:
+        points = generate_failed_vlt_points(5, 1)
+        question = f"""Determine if the following relation is a function: {points}"""
+        answer = f"""No it is not a function as there are multiple Xs that are the same, failing the vertical line test."""
+        question = Question(unit=1, chapter=1.1, topic="is this relation a function?", question=question, answer=answer)
+        session.add(question)
+        session.commit()
 
 def convert_to_interval_notation_single():
     symbol = [">", "<", ">=", "<="]
