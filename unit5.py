@@ -8,7 +8,7 @@ This module contains code for Unit 5 functions
 import sympy
 import random
 from sympy.abc import x
-from sympy import pi
+from sympy import pi, sin, cos, tan, csc, sec, cot
 
 
 # TODOS:
@@ -16,7 +16,7 @@ from sympy import pi
 # Remember period, cycle, amp
 
 
-def generate_trig(trig_function: function, a: float, k: float, c: float, d: float) -> sympy.sin | sympy.cos | sympy.tan:
+def generate_trig(trig_function, a: float, k: float, c: float, d: float) -> sympy.sin | sympy.cos | sympy.tan:
     """
     Generates sin, cos or tan graph equation
 
@@ -24,7 +24,7 @@ def generate_trig(trig_function: function, a: float, k: float, c: float, d: floa
     - trig_function in [sin, cos, tan]
     """
     function_so_far = trig_function(x)
-    function_so_far = function_so_far.subs(x, k * (x - d)) # Horizontal shift and strech
+    function_so_far = function_so_far.subs(x, k * (x - d))  # Horizontal shift and strech
     function_so_far = function_so_far + c  # Vertical shift
     function_so_far = a * function_so_far  # Vertical strech
     return function_so_far
@@ -70,11 +70,17 @@ def generate_cycle_trig():
     """
     raise NotImplementedError
 
+
 # TODO: characteristics of a trig function (cos/tan/sin)
 # Provide attributes of ammplitude, max, min, axis of the curve, PLUS DOMAIN AND RANGE
 def trig_domain(trig_function) -> str:
     """
     Returns domain of <trig_function> in str format
+
+    >>> trig_domain(sin(x))
+    'ℝ'
+    >>> trig_domain(tan(x))
+    '    ⎛⎧        π │      ⎫   ⎧        3⋅π │      ⎫⎞\nℝ \\ ⎜⎨2⋅n⋅π + ─ │ n ∊ ℤ⎬ ∪ ⎨2⋅n⋅π + ─── │ n ∊ ℤ⎬⎟\n    ⎝⎩        2 │      ⎭   ⎩         2  │      ⎭⎠'
     """
     domain = sympy.calculus.util.continuous_domain(trig_function, x, sympy.S.Reals)
     return sympy.printing.pretty(domain)
@@ -83,6 +89,11 @@ def trig_domain(trig_function) -> str:
 def trig_range(trig_function) -> str:
     """
     Returns range of rational in str format
+
+    >>> trig_range(sin(x))
+    '[-1, 1]'
+    >>> trig_range(tan(x))
+    '(-∞, ∞)'
     """
     Range = sympy.calculus.util.function_range(trig_function, x, sympy.S.Reals)
     return sympy.printing.pretty(Range)
@@ -90,7 +101,7 @@ def trig_range(trig_function) -> str:
 
 def trig_characteristic1(trig_function):
     """
-    Prints the characteristics of <trig_function>. 
+    Prints the characteristics of <trig_function>.
     These attributes include amplitude, max, min, axis of the curve, domain and range.
 
     Preconditions:
@@ -103,7 +114,7 @@ def trig_characteristic1(trig_function):
 
 def trig_characteristic2(trig_function):
     """
-    Prints the characteristics of <trig_function>. 
+    Prints the characteristics of <trig_function>.
     These attributes include amplitude, max, min, axis of the curve, domain and range.
 
     Preconditions:
@@ -116,13 +127,16 @@ def trig_characteristic2(trig_function):
 
 # TODO: transformations of trig functions stuff
 
-# TODO: Solving trig functions. SO we have to generate some random 
-# trig equations first 
+# TODO: Solving trig functions. SO we have to generate some random
+# trig equations first
 
 
 def trig_aroc(trig_function, x1, x2) -> float:
     """
     Returns the average rate of change of <trig_function> given two x-values
+
+    >>> trig_aroc(sin(x), pi / 2, 0)
+    2.0/pi
     """
     point1 = (x1, trig_function.evalf(subs={x: x1}))
     point2 = (x2, trig_function.evalf(subs={x: x2}))
@@ -132,6 +146,9 @@ def trig_aroc(trig_function, x1, x2) -> float:
 def trig_iroc(trig_function, x1) -> float:
     """
     Returns the instantaneous rate of change at a given x in <trig_function>.
+
+    >>> trig_iroc(sin(x), pi / 2)
+    -0.e-189
     """
     derivative = sympy.diff(trig_function, x)
     slope = derivative.evalf(subs={x: x1})
@@ -139,8 +156,6 @@ def trig_iroc(trig_function, x1) -> float:
 
 
 # TODO: trig proving stuff
-
-
 
 
 if __name__ == "__main__":
