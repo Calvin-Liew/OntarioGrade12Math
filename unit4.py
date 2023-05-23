@@ -151,7 +151,6 @@ def calculate_angular_velocity(revolutions: int) -> list[int]:
     return [dps, rps]
 
 
-# TODO: Find the related acute angle and the principal angle and give diagram
 def find_raa(principal_angle: int | sympy.core.numbers.Pi) -> int | sympy.core.numbers.Pi:
     """
     Return the related acute angle from the principal angle
@@ -180,18 +179,16 @@ def find_raa(principal_angle: int | sympy.core.numbers.Pi) -> int | sympy.core.n
             return 360 - principal_angle
 
 
+###############################################################################
+# Question Functions
+###############################################################################
+
 # TODO: given some random radian find the exact value of sinx or tanx or cosx or cscx secx cotx
-# TODO: a helper function to show simple work for the function above
 
 # TODO: Genrate a equation of a combination of random trig functions and simplfy it in exact values
 
 # TODO: Trig word problem, kite flying or ladder leaning on wall, or some other scenario that requires someone to look
 # for the distance or heieght etc
-
-
-###############################################################################
-# Question Functions
-###############################################################################
 
 if __name__ == "__main__":
     import doctest

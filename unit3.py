@@ -40,9 +40,29 @@ def generate_rational_linear(constant: int, degree: int, coefficient_range: typi
     return constant / (unit1.generate_polynomial(degree, coefficient_range))
 
 
-# TODO: Generate rational function with asymptotes so we just need to have the denominator be a factorable polynomial
+def generate_factorable_rational(degree1: int, coefficient_range1: typing.Tuple[int, int], degree2: int, coefficient_range2: typing.Tuple[int, int]):
+    """
+    Generates factorable rational function based on degree and coefficient_range.
+    <degree1> and <coefficient_range1> is for the numerator.
+    <degree2> and <coefficient_range2> is for the denominator.
 
-# TODO: Generate rational function that has one as the numerator and the deonominator be a simple factorable polynomial for questions asking about what the asymptotes are
+    Preconditions:
+    - degree1 > 0 and degree2 > 0
+    - coefficient_range1 != () and coefficient_range2 != ()
+    - coefficient_range1[0] <= coefficient_range1[1] and coefficient_range2[0] <= coefficient_range2[1]
+    """
+    i1, i2 = 0, 0
+    numerator = unit1.generate_polynomial(1, coefficient_range1)
+    while i1 < degree1:
+        numerator *= unit1.generate_polynomial(1, coefficient_range1)
+        i1 += 1
+    denominator = unit1.generate_polynomial(1, coefficient_range2)
+    while i2 < degree1:
+        denominator *= unit1.generate_polynomial(1, coefficient_range2)
+        i2 += 1
+    
+    return numerator / denominator
+    
 
 
 def pos_neg_rational(rational) -> list:
@@ -76,7 +96,7 @@ def rational_domain(rational) -> str:
     return sympy.printing.pretty(domain)
 
 
-def rational_range(polynomial) -> str:
+def rational_range(rational) -> str:
     """
     Returns range of rational in str format
 
@@ -88,7 +108,7 @@ def rational_range(polynomial) -> str:
     >>> rational_range(1/x + 1)
     '(-∞, 1) ∪ (1, ∞)'
     """
-    Range = sympy.calculus.util.function_range(polynomial, x, sympy.S.Reals)
+    Range = sympy.calculus.util.function_range(rational, x, sympy.S.Reals)
     return sympy.printing.pretty(Range)
 
 

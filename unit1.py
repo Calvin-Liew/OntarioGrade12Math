@@ -8,9 +8,10 @@ This module contains code for Unit 1 functions
 import random
 import typing
 import sympy
+from math import isqrt
 from sqlalchemy import create_engine, Column, Integer, String
 from sqlalchemy.orm import declarative_base, sessionmaker
-from sympy import degree, factorial, symbols, simplify, Eq, expand, Add, Mul
+from sympy import degree, factorial, symbols, simplify, Eq, expand, Add, Mul,  Rational, sqrt, solve, sympify
 from sympy.abc import x
 from sympy.printing.latex import latex
 
@@ -33,6 +34,9 @@ class Question(Base):
     question = Column(String)
     answer = Column(String)
     graph = Column(String)
+    extra_info_1 = Column(String)
+    extra_info_2 = Column(String)
+    helpful_link = Column(String)
 
     def __repr__(self):
         return "<Questions(question='%s', answer='%s')>" % (
@@ -638,6 +642,120 @@ def generate_points(num_points):
 
     return points
 
+def generate_factorable_quadratic(leading_coefficient=1):
+    x = symbols('x')
+
+    # Randomly select the method to generate the quadratic equation
+    method = random.choice(['gcf', 'difference_of_squares', 'decomposition'])
+
+    if method == 'gcf':
+        # Generate quadratic using GCF method
+        a = random.randint(1, 10)
+        b = random.randint(2, 10) * a
+        c = random.randint(2, 10) * a
+
+        if leading_coefficient > 1:
+            a *= leading_coefficient
+            b *= leading_coefficient
+            c *= leading_coefficient
+
+        equation = a * x**2 + b * x + c
+
+    elif method == 'difference_of_squares':
+        # Generate quadratic using Difference of Squares method
+        a = random.randint(1, 10)
+        b = 2 * random.randint(1, 5) * a
+
+        if leading_coefficient > 1:
+            a *= leading_coefficient
+            b *= leading_coefficient
+
+        equation = a * x**2 - b**2
+
+    else:
+        # Generate quadratic using decomposition method
+        a = random.randint(1, 10)
+        b = random.randint(2, 10) * a
+        c = random.randint(2, 10) * a
+
+        if leading_coefficient > 1:
+            a *= leading_coefficient
+            b *= leading_coefficient
+            c *= leading_coefficient
+
+        equation = a * x**2 + b * x + c
+
+    return expand(equation)
+
+
+def factor_quadratic_equation(equation):
+    factored_equation = sympy.factor(equation)
+    
+    return factored_equation
+
+def is_perfect_square(value):
+    root = 1
+    while root * root <= value:
+        if root * root == value:
+            return True
+        root += 1
+    return False
+
+def quadractic_equation():    
+    a = random.randint(1, 10)
+    b = random.randint(1, 10)
+    c = random.randint(1, 10)
+    d = random.randint(1, 10)
+
+    discriminant = b**2 - 4*a*(c-d)
+
+    while discriminant != 0 and not is_perfect_square(discriminant):
+        a = random.randint(1, 10)
+        b = random.randint(1, 10)
+        c = random.randint(1, 10)
+        d = random.randint(1, 10)
+        discriminant = b**2 - 4*a*(c-d)
+
+    x = symbols('x')
+    equation = Eq(a * x**2 + b * x + c, d)
+    solutions = solve(equation, x)
+    return equation, solutions
+
+def complete_the_square(expr):
+    """
+    Takes a quadratic expression in sympy and completes the square.
+    Returns the completed square form.
+    """
+    x = sympy.symbols('x')
+    
+    # Extract the quadratic coefficients
+    quadratic_coeffs = sympy.Poly(expr, x).all_coeffs()
+    a = quadratic_coeffs[2]
+    b = quadratic_coeffs[1]
+    c = quadratic_coeffs[0]
+
+    if a == 0:
+        print("Error: Not a quadratic expression.")
+        return
+
+    # Calculate the coefficient for completing the square
+    coefficient = b / (2 * a)
+    
+    # Create the completed square form
+    completed_square = a * (x - coefficient) ** 2 + c - (b ** 2) / (4 * a)
+    
+    return completed_square
+
+def points_to_string(points):
+    """
+    Converts a list of points into a string representation.
+    Returns a string of points in the format "(x, y), (x, y), ...".
+    """
+    point_strings = [f"({point[0]}, {point[1]})" for point in points]
+    points_string = ", ".join(point_strings)
+    return points_string
+
+
 ###############################################################################
 # Question Functions
 ###############################################################################
@@ -748,7 +866,29 @@ def convert_to_interval_notation_double():
     session.commit()
     
     
+def factoring():
+    quadractic = generate_factorable_quadratic()
+    solution = factor_quadratic_equation(quadractic)
     
+    question = f"""Factor: {latex(quadractic)}"""
+    answer = f"""{latex(solution)}"""
+    question_to_add = Question(unit=1, chapter=0, topic="factoring quadractic equations", question=question, answer=answer, graph=None)
+    session.add(question_to_add)
+    session.commit()
+    
+def solving_quadractic():
+    equation, answer = quadractic_equation()
+    question = f"""Solve: {latex(equation)}"""
+    answer = f"""Answer: x ∈ {latex(answer)}"""
+    question_to_add = Question(unit=1, chapter=0, topic="solving quadratic equations", question=question, answer=answer, graph=None)
+    session.add(question_to_add)
+    session.commit()
+    
+# TODO: fix
+def complete_the_square_problem():
+    quadractic = generate_factorable_quadratic()
+    completed = complete_the_square(quadractic)
+    print(completed)
 
 def degree_and_leading_coff():
     # NOTE: This will be unit 1, chapter 1, topic 1,
@@ -824,20 +964,81 @@ def odd_or_even():
     session.commit()
 
 
-# TODO: domain and range of a polynomial
+# TODO: domain and range of a function
 
-# Might need to generate a factorable polynomial for this. otherwise it may be hard for those to findout what the range is for even fucnctions same with characteristics
-def domain_range_polynomial():
-    degree = random.randint(2, 4)
-    coefficent_range = (-10, 10)
+def domain_range():
+    types = [x**2, x**(1/2), 1/x]
+    type_num = random.randint(0, 2)
+    function_type = types[type_num]
+    a = random.randint(-20, 20)
+    d = random.randint(-20, 20)
+    c = random.randint(-20, 20)
+    k = random.randint(-20, 20)
+    while a == 0 or d == 0 or c == 0 or k==0:
+        a = random.randint(-20, 20)
+        d = random.randint(-20, 20)
+        c = random.randint(-20, 20)
+        k = random.randint(-20, 20)
+    function = transformation_of_function(function_type, a, k, c ,d)
+    domain = function_domain(function)
+    range = function_range(function)
+    question = f"""What is the domain and range of this function: {latex(function)}"""
+    answer = f"Domain: x ∈ {domain} Range: y ∈ {range}"
+    question_to_add = Question(unit=0, chapter=0, topic='domain and range of functions', question=question, answer=answer, graph=None)
+    session.add(question_to_add)
+    session.commit()
+
+# Points are stored in the graph attribute
+def finite_differences_type_points():
+    types = ['linear', 'quadractic', 'neither']
+    differences = ['first', 'second', "neither first or second"]
+    type_of_graph = random.randint(0, 2)
+    type_of_graph = 0 #delete this
+    coeffcient_range = (1, 4)
+    if types[type_of_graph] == 1:
+        degree = 1
+        polynomial = generate_polynomial(degree, coeffcient_range)
+        points = points_of_polynomial(polynomial)
+        answer = all_differences(1, points)
+    elif types[type_of_graph] == 2:
+        degree = 2
+        
+        polynomial = generate_polynomial(degree, coeffcient_range)
+        points = points_of_polynomial(polynomial)
+        answer = all_differences(1, points)
+    else:
+        degree = 3
+        polynomial = generate_polynomial(degree, coeffcient_range)
+        points = points_of_polynomial(polynomial)
+        answer = all_differences(1, points)
+    points = points_to_string(points)
+    question = f"""Given these points, determine if the function is linear, quadractic or neither. """
+    answer = f"""It is {types[type_of_graph]}. {differences[type_of_graph].title()} diferences are the same. """
+    question_to_add = Question(unit=0, topic="finite differences", question=question, answer=answer, graph=points)
+    session.add(question_to_add)
+    session.commit()
+    
+# degree of polynomial, find the value of leading coefficnet, and sign
+def finite_differences_continued():
+    coefficent_range = (-7, 7)
+    degree = random.randint(1, 4)
     polynomial = generate_polynomial(degree, coefficent_range)
-    domain = function_domain(polynomial)
-    range = function_domain(polynomial)
-    question = f"""Find the domain and range of the following polynomial (interval notation): {latex(polynomial)}"""
-    answer = f"""Domain: {domain} \n Range: {range}"""
+    points = points_of_polynomial(polynomial)
+    answer = all_differences(degree, points)
+    co = finite_difference(polynomial)/factorial(degree)
+    print(answer, co)
+    
 
+def finite_differences_constant():
+    pass
+
+
+# TODO: transformations of quadractic, vertex, charertistics
 
 # TODO: Given the graph, end behavior, x-intercepts, global maximia,
+
+def characteristics_1():
+    pass
 
 # TODO: Given image of graph, ask for the end behavior, even or odd, domain and range, symmetry. Table of intervals when function is positive, negative domain and range
 
