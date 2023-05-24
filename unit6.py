@@ -15,32 +15,35 @@ from sympy import log
 
 # TODO: product law review stuffs
 
-# def product_rule(exp_list: list[float]):
-#     """
-#     Generate simple product rule. <exp_list> is the list of the exponents.
-#     """
-#     return_so_far = 1
-#     for exp in exp_list:
-#         return_so_far *= x ** exp
-#     return [return_so_far, sympy.simplify(return_so_far)]
-#
-#
-# def quotient_rule(exp_list: list[float]):
-#     """
-#     Generate simple quotient rule. <exp_list> is the list of the exponents.
-#     """
-#     return_so_far = 1
-#     for exp in exp_list:
-#         return_so_far /= x ** exp
-#     return [return_so_far, sympy.simplify(return_so_far)]
+def product_rule(exp_list: list[float]):
+    """
+    Generate simple product rule. <exp_list> is the list of the exponents.
+    """
+    # return_so_far = 1
+    # for exp in exp_list:
+    #     return_so_far *= x ** exp
+    # return [return_so_far, sympy.simplify(return_so_far)]
+    raise NotImplementedError
 
 
-# def power_rule(exp_list: list[float]):
-#     """
-#     Generate simple power rule. <exp_list> is the list of the exponents.
-#     Index 0 is the inner exponent while index 1 is the outer exponent.
-#     """
-#     return [(x ** exp_list[0]) ** exp_list[1], sympy.simplify((x ** exp_list[0]) ** exp_list[1])]
+def quotient_rule(exp_list: list[float]):
+    """
+    Generate simple quotient rule. <exp_list> is the list of the exponents.
+    """
+    # return_so_far = 1
+    # for exp in exp_list:
+    #     return_so_far /= x ** exp
+    # return [return_so_far, sympy.simplify(return_so_far)]
+    raise NotImplementedError
+
+
+def power_rule(exp_list: list[float]):
+    """
+    Generate simple power rule. <exp_list> is the list of the exponents.
+    Index 0 is the inner exponent while index 1 is the outer exponent.
+    """
+    # return [(x ** exp_list[0]) ** exp_list[1], sympy.simplify((x ** exp_list[0]) ** exp_list[1])]
+    raise NotImplementedError
 
 
 # TODO: review of inverse functions. Provide random points in domain and range. return the inverse domain and range.
@@ -136,6 +139,10 @@ def log_range(exp_function) -> str:
 
 # TODO: appplciation questions with logs think about later.
 
+
+###############################################################################
+# Question Functions
+###############################################################################
 
 if __name__ == "__main__":
     import doctest

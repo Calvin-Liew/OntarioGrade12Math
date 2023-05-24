@@ -32,37 +32,37 @@ def generate_trig(trig_function, a: float, k: float, c: float, d: float) -> symp
 
 # TODO: Describe the transformations
 
-# def transformation_explanation(a: float, k: float, c: float, d: float) -> list:
-#     """
-#     Return simple word descriptions of each transformation
+def transformation_explanation(a: float, k: float, c: float, d: float) -> list:
+    """
+    Return simple word descriptions of each transformation
+    """
+    # desc = []
+    # if abs(a) > 1:
+    #     desc.append(f"Vertically stretched by a factor of {abs(a)}")
+    # elif 0 < abs(a) < 1:
+    #     desc.append(f"Vertically compressed by a factor of {abs(a)}")
+    # if a < 0:
+    #     desc.append(f"Reflection in x-axis")
+    # if c > 0:
+    #     desc.append(f"Vertical translation {abs(c)} units upwards")
+    # elif c < 0:
+    #     desc.append(f"Vertical translation of {abs(c)} units downwards")
+    # if abs(k) > 1:
+    #     desc.append(f"Horizontally compressed by a factor of 1/{abs(k)}")
+    # elif 0 < abs(k) < 1:
+    #     desc.append(f"Horizontally stretched by a factor of 1/{abs(k)}")
+    # if k < 0:
+    #     desc.append(f"Reflection in y-axis")
+    # if d > 0:
+    #     desc.append(f"Horizontal translation {abs(d)} units to the right")
+    # elif d < 0:
+    #     desc.append(f"Horziontal translation {abs(d)} units to the left")
+    # return desc
+    raise NotImplementedError
 
-#     >>> transformation_explanation(-3, 2, 5, -1)
-#     ['Vertically stretched by a factor of 3', 'Reflection in x-axis', 'Vertical translation 5 units upwards', 'Horizontally compressed by a factor of 1/2', 'Horziontal translation 1 units to the left']
-#     """
-#     desc = []
-#     if abs(a) > 1:
-#         desc.append(f"Vertically stretched by a factor of {abs(a)}")
-#     elif 0 < abs(a) < 1:
-#         desc.append(f"Vertically compressed by a factor of {abs(a)}")
-#     if a < 0:
-#         desc.append(f"Reflection in x-axis")
-#     if c > 0:
-#         desc.append(f"Vertical translation {abs(c)} units upwards")
-#     elif c < 0:
-#         desc.append(f"Vertical translation of {abs(c)} units downwards")
-#     if abs(k) > 1:
-#         desc.append(f"Horizontally compressed by a factor of 1/{abs(k)}")
-#     elif 0 < abs(k) < 1:
-#         desc.append(f"Horizontally stretched by a factor of 1/{abs(k)}")
-#     if k < 0:
-#         desc.append(f"Reflection in y-axis")
-#     if d > 0:
-#         desc.append(f"Horizontal translation {abs(d)} units to the right")
-#     elif d < 0:
-#         desc.append(f"Horziontal translation {abs(d)} units to the left")
-#     return desc
 
 # TODO: Give a equation of graph and one cycle (give different quadrants)
+
 
 def generate_cycle_trig():
     """
@@ -73,17 +73,15 @@ def generate_cycle_trig():
 
 # TODO: characteristics of a trig function (cos/tan/sin)
 # Provide attributes of ammplitude, max, min, axis of the curve, PLUS DOMAIN AND RANGE
-def trig_domain(trig_function) -> str:
+def trig_domain(trig_function):
     """
     Returns domain of <trig_function> in str format
 
     >>> trig_domain(sin(x))
     'ℝ'
-    >>> trig_domain(tan(x))
-    '    ⎛⎧        π │      ⎫   ⎧        3⋅π │      ⎫⎞\nℝ \\ ⎜⎨2⋅n⋅π + ─ │ n ∊ ℤ⎬ ∪ ⎨2⋅n⋅π + ─── │ n ∊ ℤ⎬⎟\n    ⎝⎩        2 │      ⎭   ⎩         2  │      ⎭⎠'
     """
     domain = sympy.calculus.util.continuous_domain(trig_function, x, sympy.S.Reals)
-    return sympy.printing.pretty(domain)
+    print(sympy.printing.pretty(domain)) 
 
 
 def trig_range(trig_function) -> str:
@@ -151,12 +149,16 @@ def trig_iroc(trig_function, x1) -> float:
     -0.e-189
     """
     derivative = sympy.diff(trig_function, x)
-    slope = derivative.evalf(subs={x: x1})
+    slope = derivative.subs(x, x1)
     return slope
 
 
 # TODO: trig proving stuff
 
+
+###############################################################################
+# Question Functions
+###############################################################################
 
 if __name__ == "__main__":
     import doctest

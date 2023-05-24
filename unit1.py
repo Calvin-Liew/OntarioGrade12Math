@@ -11,7 +11,7 @@ import sympy
 from math import isqrt
 from sqlalchemy import create_engine, Column, Integer, String
 from sqlalchemy.orm import declarative_base, sessionmaker
-from sympy import degree, factorial, symbols, simplify, Eq, expand, Add, Mul,  Rational, sqrt, solve, sympify
+from sympy import degree, factorial, symbols, simplify, Eq, expand, Add, Mul,  Rational, sqrt, solve, sympify, Poly, Symbol
 from sympy.abc import x
 from sympy.printing.latex import latex
 
@@ -34,9 +34,6 @@ class Question(Base):
     question = Column(String)
     answer = Column(String)
     graph = Column(String)
-    extra_info_1 = Column(String)
-    extra_info_2 = Column(String)
-    helpful_link = Column(String)
 
     def __repr__(self):
         return "<Questions(question='%s', answer='%s')>" % (
@@ -721,30 +718,23 @@ def quadractic_equation():
     solutions = solve(equation, x)
     return equation, solutions
 
-def complete_the_square(expr):
-    """
-    Takes a quadratic expression in sympy and completes the square.
-    Returns the completed square form.
-    """
-    x = sympy.symbols('x')
-    
-    # Extract the quadratic coefficients
-    quadratic_coeffs = sympy.Poly(expr, x).all_coeffs()
-    a = quadratic_coeffs[2]
-    b = quadratic_coeffs[1]
-    c = quadratic_coeffs[0]
+def find_vertex(expr):
+    x = Symbol('x')
+    # Convert expression to standard form: ax^2 + bx + c
+    standard_form = simplify(expr)
+    a = standard_form.coeff(x, 2)
+    b = standard_form.coeff(x, 1)
+    c = standard_form.coeff(x, 0)
 
-    if a == 0:
-        print("Error: Not a quadratic expression.")
-        return
+    # Calculate the x-coordinate of the vertex: x = -b / (2a)
+    vertex_x = -b / (2 * a)
+    # Calculate the y-coordinate of the vertex: y = f(x)
+    vertex_y = expr.subs(x, vertex_x)
 
-    # Calculate the coefficient for completing the square
-    coefficient = b / (2 * a)
-    
-    # Create the completed square form
-    completed_square = a * (x - coefficient) ** 2 + c - (b ** 2) / (4 * a)
-    
-    return completed_square
+    # Convert to vertex form: a(x - h)^2 + k
+    vertex_form = simplify(a * (x - vertex_x) ** 2 + vertex_y)
+
+    return vertex_form, (vertex_x, vertex_y)
 
 def points_to_string(points):
     """
@@ -1024,16 +1014,38 @@ def finite_differences_continued():
     degree = random.randint(1, 4)
     polynomial = generate_polynomial(degree, coefficent_range)
     points = points_of_polynomial(polynomial)
-    answer = all_differences(degree, points)
+    difference = all_differences(degree, points)[-1]
     co = finite_difference(polynomial)/factorial(degree)
-    print(answer, co)
-    
+    points = points_to_string(points)
+    if co < 0: sign = "+" 
+    else: sign="-"
+    question = f""""What is the leading coefficient and the sign of this polynomial given the table? """
+    answer = f"""To find the leading coefficient, find the constant difference and divide it by the factorial of the degree. 
+    The constant difference is {difference}. {difference}/{degree}! = {co}. Sign is {sign}. """
+    question_to_add = Question(unit=1, chapter=1.2, topic = "constant differences", question=question, answer=answer, graph=points)
+    session.add(question_to_add)
+    session.commit()
 
 def finite_differences_constant():
-    pass
-
+    coefficent_range = (-7, 7)
+    degree = random.randint(2, 4)
+    polynomial = generate_polynomial(degree, coefficent_range)
+    constant_difference = finite_difference(polynomial)
+    co = finite_difference(polynomial)/factorial(degree)
+    question = f"""Find which finite difference is constant and its value of this polynomial: {latex(polynomial)}"""
+    answer = f"""Since the degree of the polynomial is {degree}, the {degree} differences will be constant. To find the 
+    value of the constant difference, multiply the leading coefficient and the factorial of the degree. {degree}!*{co} = {constant_difference}"""
+    question_to_add = Question(unit=1, chapter=1.2, topic="constant differences", question=question, answer=answer, graph=None)
+    session.add(question_to_add)
+    session.commit()
 
 # TODO: transformations of quadractic, vertex, charertistics
+# curr not working
+def quadractic_characteristics():
+    coefficient_range  = (-7, 7)
+    degree = 2
+    polynomial = generate_polynomial(degree,coefficient_range)
+    print(find_vertex(polynomial))
 
 # TODO: Given the graph, end behavior, x-intercepts, global maximia,
 
@@ -1042,8 +1054,6 @@ def characteristics_1():
 
 # TODO: Given image of graph, ask for the end behavior, even or odd, domain and range, symmetry. Table of intervals when function is positive, negative domain and range
 
-
-# TODO: Given 4 equations and 4 graph images. Match them. See if we want to/able to do matching questions.
 
 # TODO: Given equation Ask for degree, sign of leading coefficient, end behaviour, possible number of turning points, x intercepts.
 

@@ -8,7 +8,7 @@ This module contains code for Unit 4 functions
 import sympy
 import random
 from sympy.abc import x
-from sympy import pi
+from sympy import pi, sin, cos, tan, csc, sec, cot
 
 
 # from sympy.solvers.inequalities import reduce_rational_inequalities
@@ -34,67 +34,6 @@ def degree_to_rad(degree: int) -> int:
     pi/2
     """
     return degree * pi / 180
-
-
-def sin(radian) -> sympy.core.numbers:
-    """Evaluates sin function
-
-    >>> sympy.sin(pi / 2)
-    1
-    >>> sympy.sin(pi)
-    0
-    """
-    return sympy.sin(radian)
-
-
-def cos(radian) -> sympy.core.numbers:
-    """Evaluates cos function
-
-    >>> sympy.cos(pi / 2)
-    0
-    >>> sympy.cos(pi)
-    -1
-    """
-    return sympy.cos(radian)
-
-
-def tan(radian) -> sympy.core.numbers:
-    """Evaluates tan function
-
-    >>> tan(0)
-    0
-    >>> tan(pi / 2)
-    zoo
-    """
-    # zoo is complex infinity https://en.wikipedia.org/wiki/Complex_infinity#Complex_analysis
-    return sympy.tan(radian)
-
-
-def csc(radian) -> sympy.core.numbers:
-    """Evaluates csc function
-
-    >>> csc(pi / 6)
-    2
-    """
-    return sympy.csc(radian)
-
-
-def sec(radian) -> sympy.core.numbers:
-    """Evaluates sec function
-
-    >>> sec(pi)
-    -1
-    """
-    return sympy.sec(radian)
-
-
-def cot(radian) -> sympy.core.numbers:
-    """Evaluates sin function
-
-    >>> cot(pi / 4)
-    1
-    """
-    return sympy.cot(radian)
 
 
 def generate_angle():

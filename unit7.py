@@ -26,6 +26,11 @@ This module contains code for Unit 7 functions
 
 # TODO: solving function inequalities word problems. ie f(x) > g(x). 
 
+
+###############################################################################
+# Question Functions
+###############################################################################
+
 if __name__ == "__main__":
     import doctest
 
