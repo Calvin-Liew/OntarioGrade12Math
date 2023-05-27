@@ -11,7 +11,7 @@ import sympy
 from math import isqrt
 from sqlalchemy import create_engine, Column, Integer, String
 from sqlalchemy.orm import declarative_base, sessionmaker
-from sympy import degree, factorial, symbols, simplify, Eq, expand, Add, Mul,  Rational, sqrt, solve, sympify, Poly, Symbol
+from sympy import degree, factorial, symbols, simplify, Eq, expand, Add, Mul,  Rational, sqrt, solve, sympify, Poly, Symbol, factor, diff
 from sympy.abc import x
 from sympy.printing.latex import latex
 
@@ -390,6 +390,12 @@ def finite_difference(polynomial):
     multiplier = factorial(degree)
     return multiplier * leading_coefficent
 
+def count_turning_points(polynomial):
+    x = symbols('x')
+    derivative = diff(polynomial, x)
+    critical_points = solve(derivative, x)
+    turning_points = len(critical_points)
+    return turning_points
 
 def characteristic(polynomial):
     """
@@ -398,27 +404,22 @@ def characteristic(polynomial):
     >>> characteristic(x**2-1)
     x-int: -1, 1
     y-int: -1
-    Domain: ℝ
-    Range: [-1, ∞)
     Turning Points: 1
     """
     x_intercept = x_int(polynomial)
     y_intercept = y_int(polynomial)
-    domain = function_domain(polynomial)
-    range = function_range(polynomial)
-    points = turning_points(polynomial)
+    points = count_turning_points(polynomial)
 
-    return_str = 'x-int: '
+    return_str = 'X-int: '
     for x_point in x_intercept:
         return_str += f'{x_point}, '
     return_str = return_str[:-2]  # Take out last two elements
     return_str = return_str + '\n'
 
     return_str += f'y-int: {y_intercept} \n'
-    return_str += f'Domain: {domain} \n'
-    return_str += f'Range: {range} \nTurning Points: {points}'
+    return_str += f'Turning Points: {points}'
 
-    print(return_str)  # \n does not work for return
+    return return_str# \n does not work for return
 
 
 # TODO: Given variables that transform a function, return the equation, a,k,c,d values
@@ -745,6 +746,23 @@ def points_to_string(points):
     points_string = ", ".join(point_strings)
     return points_string
 
+def create_factorable_polynomial(degree):
+    x = symbols('x')
+    factors = []
+    for _ in range(degree // 2 + 1):
+        factor = x - random.randint(-5, 5)
+        factors.append(factor)
+    coefficient = random.randint(-10, 10)
+    polynomial = coefficient * Mul(*factors)
+    return polynomial
+
+def factor_polynomial(polynomial):
+    x = symbols('x')
+    factored_polynomial = factor(polynomial, x)
+    return factored_polynomial
+
+
+
 
 ###############################################################################
 # Question Functions
@@ -1040,7 +1058,7 @@ def finite_differences_constant():
     session.commit()
 
 # TODO: transformations of quadractic, vertex, charertistics
-# curr not working
+# currently not working
 def quadractic_characteristics():
     coefficient_range  = (-7, 7)
     degree = 2
@@ -1048,22 +1066,28 @@ def quadractic_characteristics():
     print(find_vertex(polynomial))
 
 # TODO: Given the graph, end behavior, x-intercepts, global maximia,
-
+# add other characteristics
 def characteristics_1():
-    pass
+    deg = random.randint(2, 7)
+    unfactored_polynomial = create_factorable_polynomial(deg)
+    try:
+        factored_polynomial = factor_polynomial(unfactored_polynomial)
+        question = f"""Provide the intercepts of this polynomial and graph: {latex(factored_polynomial)}"""
+        answer = characteristic(unfactored_polynomial)
+        question_to_add = Question(unit=1, chapter=1.3, topic="equations and graphs of polynomials", question=question, answer=answer, graph=latex(factored_polynomial))
+        session.add(question_to_add)
+        session.commit()
+    except:
+        return
 
 # TODO: Given image of graph, ask for the end behavior, even or odd, domain and range, symmetry. Table of intervals when function is positive, negative domain and range
 
+def characteristics_2():
+    pass
 
 # TODO: Given equation Ask for degree, sign of leading coefficient, end behaviour, possible number of turning points, x intercepts.
 
 # TODO: Given a image of a graph. Ask for leading coefficient, even or odd degree, end behaviour, symmetry, number of turning points, number x-intercepts, last possible degree
-
-# TODO: Find the value of a leading coefficient given x-differences
-
-# TODO: Given a function find the value of constant finite differences
-
-# TODO: Gvien a table of (points function) find the finite differences
 
 # TODO: Given a factored form of a equation, graph, noting end behavior, leading coefficient, x-intercepts, y-intercepts
 
@@ -1077,13 +1101,7 @@ def characteristics_1():
 
 # TODO: Parent equations, write the transformed equations and graph given transformations
 
-# TODO: Show if graph is even or odd symmetry
-
-# TODO: Show algebarcially if a function is odd or even, minimum maximum number of 0s, finite differences
-
 # TODO: Given graph, write number of x-intercepts, number of turning points, least possible degree, any symmetry, intervals where f(x) <0 or f(x) > 0
-
-# TODO: Given factorable polynomial shown in the form (x-a)(x-b)(x-c), find the details of the graph and graph it
 
 
 if __name__ == "__main__":

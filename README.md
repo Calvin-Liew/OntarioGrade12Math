@@ -38,7 +38,8 @@ Copyright and Usage Information
 * generate_trig, trig_domain, trig_range, trig_aroc, trig_iroc by Wonjae Lee
 
 **Unit 6**
-* exp_domain, exp_range, log_domain, log_range by Wonjae Lee
+* exp_domain, exp_range, log_domain, log_range, product_rule by Wonjae Lee
+* product_rule, quotient_rule, power_rule by Yong Le
 
 **Unit 7**
 

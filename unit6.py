@@ -15,35 +15,50 @@ from sympy import log
 
 # TODO: product law review stuffs
 
-def product_rule(exp_list: list[float]):
+def product_rule(exp_list: list[float]) -> list[str, sympy.Poly]:
     """
-    Generate simple product rule. <exp_list> is the list of the exponents.
+    Returns the expanded and simplified form of the product of a series of powers.
+    The expanded form is a string in latex. <exp_list> is the list of the exponents.
+
+    >>> product_rule([8, 2, 1])
+    ['x^8*x^2*x', x**11]
     """
-    # return_so_far = 1
-    # for exp in exp_list:
-    #     return_so_far *= x ** exp
-    # return [return_so_far, sympy.simplify(return_so_far)]
-    raise NotImplementedError
+    simplified = 1
+    full = ''
+    for exp in exp_list:
+        if full != '':
+            full += '*'
+        full += sympy.latex(x ** exp)
+        simplified *= x ** exp
+    return [full, simplified]
 
 
-def quotient_rule(exp_list: list[float]):
+def quotient_rule(exp_list: list[float]) -> list[str, sympy.Poly]:
     """
-    Generate simple quotient rule. <exp_list> is the list of the exponents.
+    Returns the expanded and simplified form of the quotient of a series of powers.
+    The expanded form is a string in latex. <exp_list> is the list of the exponents.
+    
+    >>> quotient_rule([10, 3, 1])
+    ['x^10/x^3/x', x**6]
     """
-    # return_so_far = 1
-    # for exp in exp_list:
-    #     return_so_far /= x ** exp
-    # return [return_so_far, sympy.simplify(return_so_far)]
-    raise NotImplementedError
+    simplified = x ** exp_list[0]
+    full = sympy.latex(x ** exp_list[0])
+    for exp in exp_list[1:]:
+        full += '/' + sympy.latex(x ** exp)
+        simplified /= x ** exp
+    return [full, simplified]
 
 
-def power_rule(exp_list: list[float]):
+
+def power_rule(exp_list: list[float, float]) -> list[str, sympy.Poly]:
     """
-    Generate simple power rule. <exp_list> is the list of the exponents.
-    Index 0 is the inner exponent while index 1 is the outer exponent.
+    Returns the expanded and simplified form of the a power rule. The expanded
+    form is a string in latex. <exp_list> is the list of the exponents, where
+    index 0 is the inner exponent and index 1 is the outer exponent
     """
-    # return [(x ** exp_list[0]) ** exp_list[1], sympy.simplify((x ** exp_list[0]) ** exp_list[1])]
-    raise NotImplementedError
+    full = f'(x^{exp_list[0]})^{exp_list[1]}'
+    simplified = (x ** exp_list[0]) ** exp_list[1]
+    return [full, simplified]
 
 
 # TODO: review of inverse functions. Provide random points in domain and range. return the inverse domain and range.
