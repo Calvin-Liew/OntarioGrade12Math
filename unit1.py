@@ -14,6 +14,7 @@ from sqlalchemy.orm import declarative_base, sessionmaker
 from sympy import degree, factorial, symbols, simplify, Eq, expand, Add, Mul,  Rational, sqrt, solve, sympify, Poly, Symbol, factor, diff
 from sympy.abc import x
 from sympy.printing.latex import latex
+from fractions import Fraction
 
 # from prettytable import PrettyTable
 
@@ -444,6 +445,10 @@ def transformation_of_function(parent, a: float, k: float, c: float, d: float) -
     0.5*(4*(x-0.7))**3 + 0.3
     """
 
+    a = float_to_fraction(a)
+    k = float_to_fraction(k)
+    d = float_to_fraction(d)
+    c = float_to_fraction(c)
     new_func = parent.subs(x, k * (x - d))  # Horizontal shift and strech
     new_func = new_func + c  # Vertical shift
     new_func = a * new_func  # Vertical strech
@@ -462,26 +467,26 @@ def transformation_explanation(a: float, k: float, c: float, d: float) -> list:
     """
     desc = []
     if abs(a) > 1:
-        desc.append(f"Vertically stretched by a factor of {abs(a)}")
+        desc.append(f"Vertically stretched by a factor of {float_to_fraction(abs(a))}")
     elif 0 < abs(a) < 1:
-        desc.append(f"Vertically compressed by a factor of {abs(a)}")
+        desc.append(f"Vertically compressed by a factor of {float_to_fraction(abs(a))}")
     if a < 0:
         desc.append(f"Reflection in x-axis")
     if c > 0:
-        desc.append(f"Vertical translation {abs(c)} units upwards")
+        desc.append(f"Vertical translation {float_to_fraction(abs(c))} units upwards")
     elif c < 0:
-        desc.append(f"Vertical translation of {abs(c)} units downwards")
+        desc.append(f"Vertical translation of {float_to_fraction(abs(c))} units downwards")
     if abs(k) > 1:
-        desc.append(f"Horizontally compressed by a factor of 1/{abs(k)}")
+        desc.append(f"Horizontally compressed by a factor of 1/{float_to_fraction(abs(k))}")
     elif 0 < abs(k) < 1:
-        desc.append(f"Horizontally stretched by a factor of 1/{abs(k)}")
+        desc.append(f"Horizontally stretched by a factor of 1/{float_to_fraction(abs(k))}")
     if k < 0:
         desc.append(f"Reflection in y-axis")
     if d > 0:
-        desc.append(f"Horizontal translation {abs(d)} units to the right")
+        desc.append(f"Horizontal translation {float_to_fraction(abs(d))} units to the right")
     elif d < 0:
-        desc.append(f"Horziontal translation {abs(d)} units to the left")
-    return desc
+        desc.append(f"Horziontal translation {float_to_fraction(abs(d))} units to the left")
+    return desc 
 
 
 # TODO: return number of x-intercepts, turning points, least possible degree, any symmtery intervals
@@ -762,6 +767,9 @@ def factor_polynomial(polynomial):
     return factored_polynomial
 
 
+def float_to_fraction(number):
+    fraction = Rational(number).limit_denominator()
+    return fraction
 
 
 ###############################################################################
@@ -1081,9 +1089,39 @@ def characteristics_1():
         return
 
 # TODO: Given image of graph, ask for the end behavior, even or odd, domain and range, symmetry. Table of intervals when function is positive, negative domain and range
+# Describe the transformations
+def transformations():
+    parent_functions = [x**2, x**3, x**(1/2), 1/x]
+    some_fracs = [1/2, 1/3, 1/4, -1/2, 1/2, -1/4, 1/5, -1/5, 2/6, 4/5]
+    function = random.choice(parent_functions)
+    a = random.choice([random.randint(-10, -1), random.randint(1, 10), random.choice(some_fracs)])
+    k = random.choice([random.randint(-10, -1), random.randint(1, 10), random.choice(some_fracs)])
+    c = random.choice([random.randint(-10, -1), random.randint(1, 10), random.choice(some_fracs)])
+    d = random.choice([random.randint(-10, -1), random.randint(1, 10), random.choice(some_fracs)])
+    transformed = transformation_of_function(function, a, k , c, d)
+    transformations = transformation_explanation(a, k, c, d)
+    transformations.extend([f"""a = {float_to_fraction(a)} c = {float_to_fraction(c)} d = {float_to_fraction(d)} k = {float_to_fraction(k)}"""])
+    question = f"""Describe the transformations of the following function and find values of a, k, c, d: {latex(transformed)}"""
+    answers = ', '.join(transformations)
+    question_to_add = Question(unit=1, chapter=1.4, topic="transformations of polynomials", question=question, answer=answers)
+    session.add(question_to_add)
+    session.commit()
 
-def characteristics_2():
-    pass
+# Given a description of the transformations of the parent function, write a function of it
+def transformations_2():
+    parent_functions = [x**2, x**3, x**(1/2), 1/x]
+    some_fracs = [1/2, 1/3, 1/4, -1/2, 1/2, -1/4, 1/5, -1/5, 2/6, 4/5]
+    function = random.choice(parent_functions)
+    a = random.choice([random.randint(-10, -1), random.randint(1, 10), random.choice(some_fracs)])
+    k = random.choice([random.randint(-10, -1), random.randint(1, 10), random.choice(some_fracs)])
+    c = random.choice([random.randint(-10, -1), random.randint(1, 10), random.choice(some_fracs)])
+    d = random.choice([random.randint(-10, -1), random.randint(1, 10), random.choice(some_fracs)])
+    transformed = transformation_of_function(function, a, k , c, d)
+    transformations = transformation_explanation(a, k, c, d)
+    print(transformations)
+    
+    
+# TODO: given the parent function and the transformed functions graph
 
 # TODO: Given equation Ask for degree, sign of leading coefficient, end behaviour, possible number of turning points, x intercepts.
 
@@ -1096,8 +1134,6 @@ def characteristics_2():
 # TODO: Write an equation based on images* gotta figure out the details for this one
 
 # TODO: Write a equation based on given transformations
-
-# TODO: Identify a, k, c, d values of equations and explain what they do
 
 # TODO: Parent equations, write the transformed equations and graph given transformations
 

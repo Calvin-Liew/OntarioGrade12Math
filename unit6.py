@@ -7,6 +7,7 @@ This module contains code for Unit 6 functions
 
 import sympy
 import random
+import typing
 from sympy.abc import x
 from sympy import log
 
@@ -56,7 +57,7 @@ def power_rule(exp_list: list[float, float]) -> list[str, sympy.Poly]:
     form is a string in latex. <exp_list> is the list of the exponents, where
     index 0 is the inner exponent and index 1 is the outer exponent
     """
-    full = f'(x^{exp_list[0]})^{exp_list[1]}'
+    full = f'(x^{{{exp_list[0]}}})^{{{exp_list[1]}}}'
     simplified = (x ** exp_list[0]) ** exp_list[1]
     return [full, simplified]
 
@@ -130,7 +131,15 @@ def log_range(exp_function) -> str:
 
 
 # TODO: log laws: product law of logarithms, create simple equation to use product log ie. log11 + log4 = log44 etc. use different bases to make it more unique. need both sides
+def log_product(log1: typing.Tuple[float], log2: typing.Tuple[float]) -> list:
+    """
+    Evaluates the log product law of logarithms.
 
+    Preconditions:
+    - len(log1) == 2
+    - len(log2) == 2
+    """
+    return [sympy.log(log1[0], log1[1]) + sympy.log(log2[0], log2[1]), sympy.logcombine(sympy.log(log1[0], log1[1]), sympy.log(log2[0], log2[1]))]
 # TODO: log laws: quotient law, same thhing as above but with quotient rule ie. log5-log2 = log5/2
 
 # TODO: log rule evaluation. create some equations like log2(4)+log2(8)=5. Need both sides
