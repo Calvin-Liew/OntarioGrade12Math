@@ -1118,9 +1118,13 @@ def transformations_2():
     d = random.choice([random.randint(-10, -1), random.randint(1, 10), random.choice(some_fracs)])
     transformed = transformation_of_function(function, a, k , c, d)
     transformations = transformation_explanation(a, k, c, d)
-    print(transformations)
+    question = f"""Given the transformations of this parent function {latex(function)}, write the transformed equation for this function: {', '.join(transformations)}"""
+    answer = f"""y = {latex(transformed)}"""
+    question_to_add = Question(unit=1, chapter=1.4, topic="transformations of polynomials", question=question, answer=answer)
+    session.add(question_to_add)
+    session.commit()
     
-    
+
 # TODO: given the parent function and the transformed functions graph
 
 # TODO: Given equation Ask for degree, sign of leading coefficient, end behaviour, possible number of turning points, x intercepts.
