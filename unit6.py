@@ -130,21 +130,50 @@ def log_range(exp_function) -> str:
     return sympy.printing.pretty(Range)
 
 
-# TODO: log laws: product law of logarithms, create simple equation to use product log ie. log11 + log4 = log44 etc. use different bases to make it more unique. need both sides
 def log_product(log1: typing.Tuple[float], log2: typing.Tuple[float]) -> list:
     """
-    Evaluates the log product law of logarithms.
+    Evaluates the log product law of logarithms (shows both sides). 
+    log1[0] is the base for the first log and 
+    log1[1] is the argument for the first log.
+    log2[0] is the base for the second log and 
+    log2[1] is the argument for the second log.
 
     Preconditions:
     - len(log1) == 2
     - len(log2) == 2
     """
-    return [sympy.log(log1[0], log1[1]) + sympy.log(log2[0], log2[1]), sympy.logcombine(sympy.log(log1[0], log1[1]), sympy.log(log2[0], log2[1]))]
-# TODO: log laws: quotient law, same thhing as above but with quotient rule ie. log5-log2 = log5/2
+    return [sympy.log(log1[0], log1[1]) + sympy.log(log2[0], log2[1]), sympy.logcombine(sympy.log(log1[0], log1[1]) + sympy.log(log2[0], log2[1]))]
+
+
+def log_quotient(log1: typing.Tuple[float], log2: typing.Tuple[float]) -> list:
+    """
+    Evaluates the log quotient law of logarithms (shows both sides). 
+    log1[0] is the base for the first log and 
+    log1[1] is the argument for the first log.
+    log2[0] is the base for the second log and 
+    log2[1] is the argument for the second log.
+
+    Preconditions:
+    - len(log1) == 2
+    - len(log2) == 2
+    """
+    return [sympy.log(log1[0], log1[1]) - sympy.log(log2[0], log2[1]), sympy.logcombine(sympy.log(log1[0], log1[1]) - sympy.log(log2[0], log2[1]))]
+
 
 # TODO: log rule evaluation. create some equations like log2(4)+log2(8)=5. Need both sides
 
-# TODO: power log rule. power log rule evaluation. create some equation like log3(9)^4 = 8. Need both sides.
+
+def log_power(log1: typing.Tuple[float], power: int) -> list:
+    """
+    Evaluates the log power law of logarithms (shows both sides). 
+    log1[0] is the base for the first log and 
+    log1[1] is the argument for the first log.
+
+    Preconditions:
+    - len(log1) == 2
+    """
+    return [power * sympy.log(log1[0], log1[1]), power * sympy.logcombine(sympy.log(log1[0], log1[1]))]
+
 
 # TODO: change of base rule. create some log equation and do change of base to it. Return both sides. Ie. log5(17) = log17/log5
 

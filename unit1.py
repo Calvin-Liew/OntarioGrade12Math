@@ -772,6 +772,59 @@ def float_to_fraction(number):
     return fraction
 
 
+def generate_random_polynomial_char():
+    degree = random.randint(3, 6)
+    num_roots = 0
+    root_desc = []
+    equation = 1  # Initialize the equation as a symbolic expression
+
+    # Quadrants stuff
+    if degree % 2 == 0:
+        first_quadrant = random.randint(2, 3)
+        if first_quadrant == 2:
+            second_quadrant = 1
+        else:
+            second_quadrant = 4
+            equation *= -1
+    else:
+        first_quadrant = random.randint(2, 3)
+        if first_quadrant == 2:
+            second_quadrant = 4
+            equation *= -1
+        else:
+            second_quadrant = 1
+
+    while num_roots < degree:
+        x = random.randint(1, 3)
+        if x == 1 and num_roots + 1 <= degree:
+            root = random.randint(-10, 10)
+            root_desc.append(f"Root at x = {root}")
+            equation *= (sympy.Symbol('x') - root)  # Multiply the expression with (x - root)
+            num_roots += 1
+        elif x == 2 and num_roots + 2 <= degree:
+            root = random.randint(-10, 10)
+            root_desc.append(f"Double root at x = {root}")
+            equation *= (sympy.Symbol('x') - root)**2  # Multiply the expression with (x - root)**2
+            num_roots += 2
+        elif x == 3 and num_roots + 3 <= degree:
+            root = random.randint(-10, 10)
+            root_desc.append(f"Inflection point at x = {root}")
+            equation *= (sympy.Symbol('x') - root)**3  # Multiply the expression with (x - root)**3
+
+            num_roots += 3
+
+    # Multiply the equation by the variable a at the beginning
+    a = sympy.Symbol('a')
+    equation *= a
+
+    # Convert the symbolic expression to a polynomial equation string
+    equation_str = sympy.latex(equation)
+    # where a > 0
+    return equation_str, root_desc, first_quadrant, second_quadrant
+    
+# Generate equation from graph
+
+
 ###############################################################################
 # Question Functions
 ###############################################################################
@@ -1124,16 +1177,47 @@ def transformations_2():
     session.add(question_to_add)
     session.commit()
     
-
 # TODO: given the parent function and the transformed functions graph
 
+def transformations_3():
+    parent_functions = [x**2, x**3, x**(1/2), 1/x]
+    some_fracs = [1/2, 1/3, 1/4, -1/2, 1/2, -1/4, 1/5, -1/5, 2/6, 4/5]
+    function = random.choice(parent_functions)
+    a = random.choice([random.randint(-10, -1), random.randint(1, 10), random.choice(some_fracs)])
+    k = random.choice([random.randint(-10, -1), random.randint(1, 10), random.choice(some_fracs)])
+    c = random.choice([random.randint(-10, -1), random.randint(1, 10), random.choice(some_fracs)])
+    d = random.choice([random.randint(-10, -1), random.randint(1, 10), random.choice(some_fracs)])
+    transformed = transformation_of_function(function, a, k , c, d)
+    question = f"""Graph this function: {transformed}"""
+    question_to_add = Question(unit=1, chapter=1.4, topic="transformations of polynomial functions: graphing", question=question, answer=None, graph=latex(transformed))
+    session.add(question_to_add)
+    session.commit()
+
+
 # TODO: Given equation Ask for degree, sign of leading coefficient, end behaviour, possible number of turning points, x intercepts.
+
+def characteristics_1():
+    pass
 
 # TODO: Given a image of a graph. Ask for leading coefficient, even or odd degree, end behaviour, symmetry, number of turning points, number x-intercepts, last possible degree
 
 # TODO: Given a factored form of a equation, graph, noting end behavior, leading coefficient, x-intercepts, y-intercepts
 
+# TODO: Given graph, write number of x-intercepts, number of turning points, least possible degree, any symmetry, intervals where f(x) <0 or f(x) > 0
+
+
 # TODO: Write a equation based on  word descriptions, root function and points passed through *gotta figureout details
+
+def test():
+    # Generate random polynomial characteristics
+    equation, inflection_points, inflection_degree, start_quadrant, end_quadrant = generate_random_polynomial_char()
+
+    # Print the generated characteristics
+    print("Equation:", equation)
+    print("Inflection Points:", inflection_points)
+    print("Inflection Degree:", inflection_degree)
+    print("Start Quadrant:", start_quadrant)
+    print("End Quadrant:", end_quadrant)
 
 # TODO: Write an equation based on images* gotta figure out the details for this one
 
@@ -1141,7 +1225,9 @@ def transformations_2():
 
 # TODO: Parent equations, write the transformed equations and graph given transformations
 
-# TODO: Given graph, write number of x-intercepts, number of turning points, least possible degree, any symmetry, intervals where f(x) <0 or f(x) > 0
+
+
+# IROC, AROC
 
 
 if __name__ == "__main__":
