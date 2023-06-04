@@ -777,6 +777,7 @@ def generate_random_polynomial_char():
     num_roots = 0
     root_desc = []
     equation = 1  # Initialize the equation as a symbolic expression
+    negative_coeffcient = False
 
     # Quadrants stuff
     if degree % 2 == 0:
@@ -785,12 +786,12 @@ def generate_random_polynomial_char():
             second_quadrant = 1
         else:
             second_quadrant = 4
-            equation *= -1
+            negative_coeffcient = True
     else:
         first_quadrant = random.randint(2, 3)
         if first_quadrant == 2:
             second_quadrant = 4
-            equation *= -1
+            negative_coeffcient = True
         else:
             second_quadrant = 1
 
@@ -819,8 +820,12 @@ def generate_random_polynomial_char():
 
     # Convert the symbolic expression to a polynomial equation string
     equation_str = sympy.latex(equation)
+    if negative_coeffcient:
+        coefficient = "where a < 0"
+    else:
+        coefficient = "where a > 0"
     # where a > 0
-    return equation_str, root_desc, first_quadrant, second_quadrant
+    return equation_str, coefficient, root_desc, first_quadrant, second_quadrant, degree
     
 # Generate equation from graph
 
@@ -1205,19 +1210,16 @@ def characteristics_1():
 
 # TODO: Given graph, write number of x-intercepts, number of turning points, least possible degree, any symmetry, intervals where f(x) <0 or f(x) > 0
 
-
 # TODO: Write a equation based on  word descriptions, root function and points passed through *gotta figureout details
 
-def test():
+def create_equation_chars():
     # Generate random polynomial characteristics
-    equation, inflection_points, inflection_degree, start_quadrant, end_quadrant = generate_random_polynomial_char()
-
-    # Print the generated characteristics
-    print("Equation:", equation)
-    print("Inflection Points:", inflection_points)
-    print("Inflection Degree:", inflection_degree)
-    print("Start Quadrant:", start_quadrant)
-    print("End Quadrant:", end_quadrant)
+    equation_str, coefficient, root_desc, first_quadrant, second_quadrant, degree= generate_random_polynomial_char()
+    question = f"""Write an polynomial based on the descriptions: Degree: {degree}, {', '.join(root_desc)}, Start quadrant: {first_quadrant} End quadrant: {second_quadrant} """
+    answer = f"""Equation: {equation_str} {coefficient}"""
+    question_to_add = Question(unit=1, chapter=1.4, topic="polynomial properties", question=question, answer=answer)
+    session.add(question_to_add)
+    session.commit()
 
 # TODO: Write an equation based on images* gotta figure out the details for this one
 
