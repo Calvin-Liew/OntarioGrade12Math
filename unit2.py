@@ -177,8 +177,49 @@ def generate_quartic(coefficient_range: typing.Tuple[int, int]):
 
 
 # TODO: rational zero theorem
+def rational_zero(polynomial: sympy.Poly, a: int, b: int) -> bool:
+    """
+    Return whether <b>/<a> is a zero for the polynomial <polynomial>
+
+    Preconditions:
+    - a != 0
+    """
+    return polynomial.subs(x, b/a) == 0
 # TODO: given a polynomial fucntion. a is the leading coffeicnet. b is the constant.
 # The possible factors of a function is any combination of facotrs of b/factors of a.
+
+def find_factors(x: int) -> list[int]:
+    """
+    Return the factors of <x>
+    """
+    factors = set()
+    factors.add(1)
+    factors.add(x)
+    for i in range(2, x//2):
+        if x % i == 0:
+            factors.add(i)
+            factors.add(x//i)
+    factors = list(factors)
+    factors.sort()
+    return factors
+
+def find_polynomial_factors(a: int, b: int) -> list[str]:
+    """
+    Return the possible factors of a polynomial which has the leading coefficient <a>
+    and the constant <b>
+
+    Preconditions:
+    - a != 0
+    """
+    a_factors = find_factors(a)
+    b_factors = find_factors(b)
+    factors = []
+
+    for i in a_factors:
+        for j in b_factors:
+            factors.append(str(j) + '/' + str(i))
+    
+    return factors
 
 # TODO: find possible factors rational zero thereom given a function,
 # return a factor ie. if -2 is a factor then return x + 2
