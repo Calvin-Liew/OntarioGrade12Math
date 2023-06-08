@@ -751,21 +751,10 @@ def points_to_string(points):
     points_string = ", ".join(point_strings)
     return points_string
 
-def create_factorable_polynomial(degree):
-    x = symbols('x')
-    factors = []
-    for _ in range(degree // 2 + 1):
-        factor = x - random.randint(-5, 5)
-        factors.append(factor)
-    coefficient = random.randint(-10, 10)
-    polynomial = coefficient * Mul(*factors)
-    return polynomial
-
 def factor_polynomial(polynomial):
     x = symbols('x')
     factored_polynomial = factor(polynomial, x)
     return factored_polynomial
-
 
 def float_to_fraction(number):
     fraction = Rational(number).limit_denominator()
@@ -816,6 +805,7 @@ def generate_random_polynomial_char():
 
     # Multiply the equation by the variable a at the beginning
     a = sympy.Symbol('a')
+    pure = equation
     equation *= a
 
     # Convert the symbolic expression to a polynomial equation string
@@ -825,9 +815,89 @@ def generate_random_polynomial_char():
     else:
         coefficient = "where a > 0"
     # where a > 0
-    return equation_str, coefficient, root_desc, first_quadrant, second_quadrant, degree
+    return pure, equation, equation_str, coefficient, root_desc, first_quadrant, second_quadrant, degree
     
-# Generate equation from graph
+def analyze_expression(expr):
+    # Find x-intercepts
+    x_intercepts = sympy.solve(expr, sympy.Symbol('x'))
+
+    # Find y-intercepts
+    y_intercept = expr.subs('x', 0)
+
+    # Find the degree of the expression
+    degree = sympy.degree(expr)
+
+    # Find the sign of the leading coefficient
+    leading_coefficient = sympy.LC(expr)
+
+    # Find intervals where the graph is positive/negative
+    intervals_positive = sympy.solveset(sympy.StrictGreaterThan(expr, 0), sympy.Symbol('x'), domain=sympy.S.Reals)
+    intervals_negative = sympy.solveset(sympy.StrictLessThan(expr, 0), sympy.Symbol('x'), domain=sympy.S.Reals)
+
+    # Convert results to LaTeX format
+    x_intercepts_latex = ', '.join(sympy.latex(x) for x in x_intercepts)
+    y_intercept_latex = sympy.latex(y_intercept)
+    degree_latex = sympy.latex(degree)
+    leading_coefficient_latex = sympy.latex(leading_coefficient)
+    intervals_positive_latex = sympy.latex(intervals_positive)
+    intervals_negative_latex = sympy.latex(intervals_negative)
+
+    # Return the results
+    return [
+        f"x_intercepts: {x_intercepts_latex}",
+        f"y_intercept: {y_intercept_latex}",
+        f"degree: {degree_latex}",
+        f"leading coefficient: {leading_coefficient_latex}",
+        f"intervals positive: {intervals_positive_latex}",
+        f"intervals negative: {intervals_negative_latex}"
+    ]
+
+def analyze_expression2(expr):
+    # Find x-intercepts
+    x_intercepts = sympy.solve(expr, sympy.Symbol('x'))
+
+    # Find y-intercepts
+    y_intercept = expr.subs('x', 0)
+
+    # Find the degree of the expression
+    degree = sympy.degree(expr)
+
+    # Find the sign of the leading coefficient
+    leading_coefficient = sympy.LC(expr)
+
+    # Find intervals where the graph is positive/negative
+    intervals_positive = sympy.solveset(sympy.StrictGreaterThan(expr, 0), sympy.Symbol('x'), domain=sympy.S.Reals)
+    intervals_negative = sympy.solveset(sympy.StrictLessThan(expr, 0), sympy.Symbol('x'), domain=sympy.S.Reals)
+
+    # Convert results to LaTeX format
+    x_intercepts_latex = ', '.join(sympy.latex(x) for x in x_intercepts)
+    y_intercept_latex = sympy.latex(y_intercept)
+    degree_latex = sympy.latex(degree)
+    leading_coefficient_latex = 'Positive' if leading_coefficient > 0 else 'Negative'
+    intervals_positive_latex = sympy.latex(intervals_positive)
+    intervals_negative_latex = sympy.latex(intervals_negative)
+
+    # Return the results
+    return [
+        f"x_intercepts: {x_intercepts_latex}",
+        f"y_intercept: {y_intercept_latex}",
+        f"degree: {degree_latex}",
+        f"leading_coefficient sign: {leading_coefficient_latex}",
+        f"intervals positive: {intervals_positive_latex}",
+        f"intervals negative: {intervals_negative_latex}"
+    ]
+
+def solve_leading_coefficient(factored_equation, y_intercept):
+    x = sympy.symbols('x')
+    leading_coefficient = sympy.symbols('a')
+
+    # Substitute y-intercept into the factored equation
+    equation = factored_equation.subs(x, 0) - y_intercept
+
+    # Solve for the leading coefficient
+    solutions = sympy.solve(equation, leading_coefficient)
+
+    return solutions
 
 
 ###############################################################################
@@ -1131,21 +1201,6 @@ def quadractic_characteristics():
     polynomial = generate_polynomial(degree,coefficient_range)
     print(find_vertex(polynomial))
 
-# TODO: Given the graph, end behavior, x-intercepts, global maximia,
-# add other characteristics
-def characteristics_1():
-    deg = random.randint(2, 7)
-    unfactored_polynomial = create_factorable_polynomial(deg)
-    try:
-        factored_polynomial = factor_polynomial(unfactored_polynomial)
-        question = f"""Provide the intercepts of this polynomial and graph: {latex(factored_polynomial)}"""
-        answer = characteristic(unfactored_polynomial)
-        question_to_add = Question(unit=1, chapter=1.3, topic="equations and graphs of polynomials", question=question, answer=answer, graph=latex(factored_polynomial))
-        session.add(question_to_add)
-        session.commit()
-    except:
-        return
-
 # TODO: Given image of graph, ask for the end behavior, even or odd, domain and range, symmetry. Table of intervals when function is positive, negative domain and range
 # Describe the transformations
 def transformations():
@@ -1198,15 +1253,33 @@ def transformations_3():
     session.add(question_to_add)
     session.commit()
 
+# TODO: Given the graph, end behavior, x-intercepts, global maximia,
+# add other characteristics
+# Not working 
+def characteristics_1():
+    polynomial = generate_random_polynomial_char()[0]
+    polynomial = polynomial * random.sample([random.randint(-10, -1), random.randint(1, 10)], 1)[0]
+    characteristics = analyze_expression(polynomial)
+    question = f"""Find the degree, the coefficent, x-intercepts, and the intervals of this function: {latex(polynomial)}"""
+    answer = ", ".join(characteristics)
+    question_to_add = Question(unit=1, chapter=1.4, topic="characteristics of polynomials from equation", question=question, answer=answer, graph=latex(polynomial))
+    session.add(question_to_add)
+    session.commit()
 
+# from graph
+def characteristics_2():
+    polynomial = generate_random_polynomial_char()[0]
+    polynomial = polynomial * random.sample([random.randint(-10, -1), random.randint(1, 10)], 1)[0]
+    characteristics = analyze_expression2(polynomial)
+    answer = ", ".join(characteristics)
+    question = f"""Find the least possible degree, x-intercepts, and the intervals of this function based on the graph"""
+    question_to_add = Question(unit=1, chapter=1.4, topic="characteristics of polynomials from graph", question=question, answer=answer, graph=latex(polynomial))
+    session.add(question_to_add)
+    session.commit()
+    
 # TODO: Given equation Ask for degree, sign of leading coefficient, end behaviour, possible number of turning points, x intercepts.
 
-def characteristics_1():
-    pass
-
 # TODO: Given a image of a graph. Ask for leading coefficient, even or odd degree, end behaviour, symmetry, number of turning points, number x-intercepts, last possible degree
-
-# TODO: Given a factored form of a equation, graph, noting end behavior, leading coefficient, x-intercepts, y-intercepts
 
 # TODO: Given graph, write number of x-intercepts, number of turning points, least possible degree, any symmetry, intervals where f(x) <0 or f(x) > 0
 
@@ -1214,7 +1287,7 @@ def characteristics_1():
 
 def create_equation_chars():
     # Generate random polynomial characteristics
-    equation_str, coefficient, root_desc, first_quadrant, second_quadrant, degree= generate_random_polynomial_char()
+    equation, equation_str, coefficient, root_desc, first_quadrant, second_quadrant, degree= generate_random_polynomial_char()
     question = f"""Write an polynomial based on the descriptions: Degree: {degree}, {', '.join(root_desc)}, Start quadrant: {first_quadrant} End quadrant: {second_quadrant} """
     answer = f"""Equation: {equation_str} {coefficient}"""
     question_to_add = Question(unit=1, chapter=1.4, topic="polynomial properties", question=question, answer=answer)
@@ -1223,13 +1296,37 @@ def create_equation_chars():
 
 # TODO: Write an equation based on images* gotta figure out the details for this one
 
-# TODO: Write a equation based on given transformations
-
-# TODO: Parent equations, write the transformed equations and graph given transformations
-
-
+def create_equation_from_image():
+    equation, equation_solve, equation_str, coefficient, root_desc, first_quadrant, second_quadrant, degree= generate_random_polynomial_char()
+    question = f"""Write an polynomial equation based on the graph shown: """
+    numerator = random.randint(-100, 100)
+    denominator = random.randint(1, 100)
+    rational_number = sympy.Rational(numerator, denominator)
+    equation = equation*rational_number
+    y_intercept = equation.subs(x, 0)
+    while y_intercept == 0:
+        equation, equation_solve, equation_str, coefficient, root_desc, first_quadrant, second_quadrant, degree= generate_random_polynomial_char()
+        numerator = random.randint(-100, 100)
+        denominator = random.randint(1, 100)
+        rational_number = sympy.Rational(numerator, denominator)
+        equation = equation*rational_number
+        y_intercept = equation.subs(x, 0)
+    leading = solve_leading_coefficient(equation_solve, y_intercept)
+    answer = f"""To write the polynomial equation based on the graph, first find the roots of the function and write the possible equation in factored form. Then find the y-intercept or some other point, sub it in and solve for the leading coefficent a. 
+    In factored form, the potential polynomial equation is {equation_str}, where a is the leading coefficent. The y-intercept is {y_intercept}. Plug in (0, {y_intercept}) into the factored form and solve for a which is {leading}. Therefore, the equation 
+    of this polynomial function is {equation}."""
+    question_to_add = Question(unit=1, chapter=1.3, topic="finding polynomial equation from graph", question=question, answer=answer, graph=latex(equation))
+    session.add(question_to_add)
+    session.commit()
 
 # IROC, AROC
+
+def IROC():
+    pass
+
+def AROC():
+    pass
+
 
 
 if __name__ == "__main__":
