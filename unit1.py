@@ -1277,13 +1277,25 @@ def characteristics_2():
     session.add(question_to_add)
     session.commit()
     
-# TODO: Given equation Ask for degree, sign of leading coefficient, end behaviour, possible number of turning points, x intercepts.
+# TODO: Given equation Ask for degree, leading, coefficent end behaviour, possible number of turning points, x intercepts, y-ints.
 
-# TODO: Given a image of a graph. Ask for leading coefficient, even or odd degree, end behaviour, symmetry, number of turning points, number x-intercepts, last possible degree
+def characteristics_3():
+    polynomial = generate_polynomial(random.randint(1, 10), [1, 10])
+    degree = polynomial_degree(polynomial)
+    lc = leading_coeff(polynomial)
+    eb = end_behaviour(polynomial)
+    tp = turning_points(polynomial)
+    x_intercept = x_int(polynomial)
+    y_intercept = y_int(polynomial)
+    answer = f"""{degree}, {lc}, {eb}, {tp}, {x_intercept}, {y_intercept}"""
 
-# TODO: Given graph, write number of x-intercepts, number of turning points, least possible degree, any symmetry, intervals where f(x) <0 or f(x) > 0
+    question = f"""Find the degree, leading coefficient, end behaviour, possible number of turning points, x-intercepts and y-intercept of f(x) = {latex(polynomial)}"""
+    question_to_add = Question(unit=1, chapter=1.4, topic="characteristics of polynomials from graph", question=question, answer=answer, graph=None)
+    session.add(question_to_add)
+    session.commit()
+    
 
-# TODO: Write a equation based on  word descriptions, root function and points passed through *gotta figureout details
+# TODO: Given a image of a graph. Ask for leading coefficient, even or odd degree, end behaviour, symmetry, number of turning points, number x-intercepts, least possible degree intervals where f(x) <0 or f(x) > 0
 
 def create_equation_chars():
     # Generate random polynomial characteristics
@@ -1322,10 +1334,29 @@ def create_equation_from_image():
 # IROC, AROC
 
 def IROC():
-    pass
+    coefficent_range = (-7, 7)
+    degree = random.randint(1, 4)
+    polynomial = generate_polynomial(degree, coefficent_range)
+    x = random.randint(-20, 20)
+    question = f"""Find the instantaneous rate of change at x = {x} of the polynomial: f(x) = {latex(polynomial)}"""
+    instant_rate_change_answer = instant_rate_of_change(polynomial, x)
+    answer = f"""The instantaneous rate of change formula: f(x+0.0001) - f(x) / 0.0001. Applying the formula to {latex(polynomial)} at x = {x}, the instantaneous rate of change is {instant_rate_change_answer} """
+    question_to_add = Question(unit=1, chapter=1.5, topic="instantaneous rate of change", question=question, answer=answer)
+    session.add(question_to_add)
+    session.commit()
 
 def AROC():
-    pass
+    coefficent_range = (-7, 7)
+    degree = random.randint(1, 4)
+    polynomial = generate_polynomial(degree, coefficent_range)
+    x = random.randint(-20, -10)
+    x2 = random.randint(x2, 10)
+    question = f"""Find the average rate of change between x = {x} and x = {x2} of the polynomial: f(x) = {latex(polynomial)}"""
+    average_rate_of_change_answer = average_rate_of_change(polynomial, x)
+    answer = f"""The average rate of change formula: (f(b) - f(a)) / (b - a). Applying the formula to {latex(polynomial)} as a = {x} and b = {x2}, the average rate of change is {average_rate_of_change_answer} """
+    question_to_add = Question(unit=1, chapter=1.5, topic="average rate of change", question=question, answer=answer)
+    session.add(question_to_add)
+    session.commit()
 
 
 

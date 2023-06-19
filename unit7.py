@@ -1,4 +1,4 @@
-"""Math Problem Generator - Unit 7: 
+"""Math Problem Generator - Unit 7:
 
 Description
 ============================================
@@ -121,6 +121,9 @@ def function_compare(polynomial1, inequality, polynomial2) -> str:
 
     Preconditions:
     - inequality in ['<', '>', '<=', '>=']
+
+    >>> function_compare(x, '>', 2*x)
+    '(-∞, 0)'
     """
     if inequality == '<':
         return sympy.printing.pretty(sympy.solveset(polynomial1 < polynomial2, x, sympy.S.Reals))
@@ -136,7 +139,7 @@ def function_compare(polynomial1, inequality, polynomial2) -> str:
 # Question Functions
 ###############################################################################
 
-# TODO: solving function inequalities word problems. ie f(x) > g(x). 
+# TODO: solving function inequalities word problems. ie f(x) > g(x).
 
 if __name__ == "__main__":
     import doctest
