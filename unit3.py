@@ -310,6 +310,13 @@ def evaluate_rational(rational, value) -> sympy.Set:
 # Question Functions
 ###############################################################################
 
+# TODO: Identify characteristics and behaviours
+
+# TODO: Graph the function
+
+# TODO: Solve rational equations and inequalities
+
+# TODO: Applications (Intensity of sound, total resistance)
 
 if __name__ == "__main__":
     import doctest

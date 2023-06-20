@@ -129,6 +129,8 @@ def find_raa(principal_angle: int | sympy.core.numbers.Pi) -> int | sympy.core.n
 # TODO: Trig word problem, kite flying or ladder leaning on wall, or some other scenario that requires someone to look
 # for the distance or heieght etc
 
+# TODO: Trig indentities
+
 if __name__ == "__main__":
     import doctest
 

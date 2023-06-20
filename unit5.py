@@ -160,6 +160,22 @@ def trig_iroc(trig_function, x1) -> float:
 # Question Functions
 ###############################################################################
 
+# TODO: Sketch the graph based on given characteristic
+
+# TODO: Identify characteristic
+
+# TODO: Application (Ladder, sunlight)
+
+# TODO: State key properties
+
+# TODO: Write trig function based on charactersitics
+
+# TODO: Solve trig function
+
+# TODO: AROC IROC
+
+# TODO: Determine interval where function is greater 
+
 if __name__ == "__main__":
     import doctest
 
