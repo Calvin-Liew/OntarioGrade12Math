@@ -4,7 +4,6 @@
 Project by Wonjae Lee, Calvin Liew and Yong Le He
 Copyright and Usage Information
 =================================
-(Idk if we need this)
 
 ```
 
