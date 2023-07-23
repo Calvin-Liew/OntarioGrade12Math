@@ -197,6 +197,26 @@ def log_power(log1: typing.Tuple[float], power: int) -> list:
 # Question Functions
 ###############################################################################
 
+# TODO: Domain and range of log function
+
+# TODO: Exponent laws
+
+# TODO: Solve exponential equation (4^x = 16)
+
+# TODO: Key features of log and exponential equations
+
+# TODO: Solve logarithmic equation
+
+# TODO: Transformations
+
+# TODO: Log laws
+
+# TODO: Simplify log equation
+
+# TODO: solving log equations
+
+# TODO: Applciations of log
+
 if __name__ == "__main__":
     import doctest
 

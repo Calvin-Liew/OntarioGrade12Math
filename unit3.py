@@ -310,8 +310,26 @@ def evaluate_rational(rational, value) -> sympy.Set:
 # Question Functions
 ###############################################################################
 
+# TODO: Domain, range of reciprocol function. 
+
+# TODO: Intercepts of reciprocol function. 
+
+# TODO: Asymptotes of recirpcol functions
+
+# TODO: Sketch the graph then state the attributes
+
+# TODO: Intervals of inc/dec table
+
+# TODO: Sketching recirpocrl graphs 2 (special cases/harder ones)
+
+# TODO: Solving rational equations
+
+# TODO: Solving rational inequalities
+
+# TODO: Applications/Word problems
 
 if __name__ == "__main__":
     import doctest
 
     doctest.testmod(verbose=True)  # Forcing verbose to be true will provide full details of doctests
+ 

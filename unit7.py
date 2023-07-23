@@ -141,6 +141,10 @@ def function_compare(polynomial1, inequality, polynomial2) -> str:
 
 # TODO: solving function inequalities word problems. ie f(x) > g(x).
 
+# TODO: Given f(x) and h(x) find f(h(x)), find the domain and range
+
+# TODO: Piecewise functions
+
 if __name__ == "__main__":
     import doctest
 

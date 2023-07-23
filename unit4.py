@@ -124,10 +124,16 @@ def find_raa(principal_angle: int | sympy.core.numbers.Pi) -> int | sympy.core.n
 
 # TODO: given some random radian find the exact value of sinx or tanx or cosx or cscx secx cotx
 
+# TODO: Convert degree to radian and vice versa
+
+# TODO: Arc, angular velocity solving questions
+
+# TODO: Solving related acute angle from diagram
+
 # TODO: Genrate a equation of a combination of random trig functions and simplfy it in exact values
 
 # TODO: Trig word problem, kite flying or ladder leaning on wall, or some other scenario that requires someone to look
-# for the distance or heieght etc
+# for the distance or heieght etc. Function just need to change the numbers and scenario. 
 
 # TODO: Trig indentities
 
