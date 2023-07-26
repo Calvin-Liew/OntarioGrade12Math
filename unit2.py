@@ -9,10 +9,6 @@ import sympy
 import typing
 from sympy.abc import x
 
-from sympy import symbols, Function, Symbol, solve, expand, solve, Poly
-from sympy.solvers.inequalities import reduce_rational_inequalities
-
-
 def quotient(polynomial1, polynomial2):
     """
     Returns quotient after dividing the two polynomial functions
@@ -263,7 +259,27 @@ def compare(polynomial, inequality, value) -> str:
 # Question Functions
 ###############################################################################
 
+# TODO: Solve with long division
 
+
+
+# TODO: Find the remainder
+
+# TODO: Solve with synthetic division
+
+# TODO: Factor theorem
+
+# TODO: Divide the following polynomails and write the result
+
+# TODO: Determine whether each given value of x is a zero of the given function
+
+# TODO: Factor fully
+
+# TODO: Solve the following polynomials by factoring
+
+# TODO: Write a general factored equation for the family functions based on the given zeros and one point
+
+# TODO: Solve polynomial inequalities
 
 
 if __name__ == "__main__":

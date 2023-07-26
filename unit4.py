@@ -9,9 +9,14 @@ import sympy
 import random
 from sympy.abc import x
 from sympy import pi, sin, cos, tan, csc, sec, cot
-
+from sqlalchemy import create_engine, Column, Integer, String
+from sqlalchemy.orm import declarative_base, sessionmaker
 
 # from sympy.solvers.inequalities import reduce_rational_inequalities
+
+# TODO: Create trig identity database
+
+
 
 
 def rad_to_degree(radian: int | sympy.core.numbers.Pi) -> int:

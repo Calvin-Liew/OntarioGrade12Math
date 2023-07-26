@@ -154,6 +154,7 @@ def trig_iroc(trig_function, x1) -> float:
 
 
 # TODO: trig proving stuff
+# Can use trigsimp method
 
 
 ###############################################################################
