@@ -34,7 +34,8 @@ class Question(Base):
     topic = Column(String)
     question = Column(String)
     answer = Column(String)
-    graph = Column(String)
+    graph_qustion = Column(String)
+    graph_answer = Column(String)
 
     def __repr__(self):
         return "<Questions(question='%s', answer='%s')>" % (
