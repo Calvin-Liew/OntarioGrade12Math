@@ -6,6 +6,7 @@ This module contains code for Unit 2 functions
 """
 import unit1
 import sympy
+import random
 import typing
 from sympy.abc import x
 from sympy import symbols, Function, Symbol, solve, expand, solve, Poly
@@ -287,6 +288,26 @@ def compare(polynomial, inequality, value) -> str:
 # to write the equation of the polynomial given a point or not
 
 
+def replace_random_constant_with_variable(equation, variable_name):
+    # Convert the equation string to a Sympy expression
+    equation_expr = sympy.sympify(equation)
+    
+    # Find all the constants in the expression
+    constants = [const for const in equation_expr.free_symbols if const.is_constant()]
+    
+    if len(constants) == 0:
+        raise ValueError("No constants found in the equation.")
+    
+    # Choose a random constant from the list
+    constant_to_replace = random.choice(constants)
+    
+    # Create a variable with the desired name
+    variable = symbols(variable_name)
+    
+    # Replace the chosen constant with the variable in the expression
+    replaced_expr = equation_expr.subs(constant_to_replace, variable)
+    
+    return replaced_expr, constant_to_replace
 
 
 ###############################################################################
@@ -294,18 +315,40 @@ def compare(polynomial, inequality, value) -> str:
 ###############################################################################
 
 def remainder_theorem():
-    pass
-
-# TODO: Solve with long division
-
-# TODO: Find the remainder
-
-# TODO: Solve with synthetic division
+    degree = random.randint(3, 6)
+    coeffcient_range = (-10, 10)
+    while(coeffcient_range == 0):
+        coeffcient_range = (-10, 10)
+    polynomials = generate_poly_big_small1(degree, coeffcient_range)
+    polynomial1 = polynomials[0]
+    polynomial2 = polynomials[1]
+    question = f"""Use the remainder theorem to find the remiander of {sympy.latex(polynomial2)} ÷ {sympy.latex(polynomial1)}"""
+    remainder_answer = remainder(polynomial2, polynomial1)
+    answer = f"""Find the solution of {sympy.latex(polynomial1)} and plug it in to {sympy.latex(polynomial2)} to find the remainder. Answer: {remainder_answer}"""
+    Question = question = Question(unit=2, chapter=2.1, topic='Remainder Theorem',
+                        question=question, answer=answer)
+    session.add(question)
+    session.commit()
+    
+def remainder_theorem_2():
+    degree = random.randint(3, 6)
+    coeffcient_range = (-10, 10)
+    while(coeffcient_range == 0):
+        coeffcient_range = (-10, 10)
+    polynomials = generate_poly_big_small1(degree, coeffcient_range)
+    polynomial1 = polynomials[0]
+    polynomial2 = polynomials[1]
+    polynomial3 = replace_random_constant_with_variable(polynomial2, 'a')
+    print(polynomial2)
 
 # TODO: Factor theorem
 
 def factor_theorem():
     pass
+
+# TODO: Solve with long division
+
+# TODO: Solve with synthetic division
 
 # TODO: Divide the following polynomails and write the result
 
