@@ -9,7 +9,35 @@ import unit1
 import typing
 import sympy
 from sympy.abc import x
+from sqlalchemy import create_engine, Column, Integer, String
+from sqlalchemy.orm import declarative_base, sessionmaker
 
+
+engine = create_engine("sqlite:///questions.db", echo=True)
+Base = declarative_base()
+
+
+class Question(Base):
+    __tablename__ = "Questions"
+    id = Column(Integer, primary_key=True)
+    unit = Column(Integer)
+    chapter = Column(Integer)
+    topic = Column(String)
+    question = Column(String)
+    answer = Column(String)
+    graph_qustion = Column(String)
+    graph_answer = Column(String)
+
+    def __repr__(self):
+        return "<Questions(question='%s', answer='%s')>" % (
+            self.question,
+            self.answer)
+
+
+Base.metadata.create_all(engine)
+Session = sessionmaker(bind=engine)
+Session.configure(bind=engine)
+session = Session()
 
 def generate_rational(degree1: int, coefficient_range1: typing.Tuple[int, int], degree2: int, coefficient_range2: typing.Tuple[int, int]):
     """
@@ -310,6 +338,23 @@ def evaluate_rational(rational, value) -> sympy.Set:
 # Question Functions
 ###############################################################################
 
+# TODO: Domain, range of reciprocol function. 
+
+# TODO: Intercepts of reciprocol function. 
+
+# TODO: Asymptotes of recirpcol functions
+
+# TODO: Sketch the graph then state the attributes
+
+# TODO: Intervals of inc/dec table
+
+# TODO: Sketching recirpocrl graphs 2 (special cases/harder ones)
+
+# TODO: Solving rational equations
+
+# TODO: Solving rational inequalities
+
+# TODO: Applications/Word problems
 
 if __name__ == "__main__":
     import doctest

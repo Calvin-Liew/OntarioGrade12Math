@@ -11,6 +11,36 @@ from sympy.abc import x
 from sympy import pi, sin, cos, tan, csc, sec, cot
 from sqlalchemy import create_engine, Column, Integer, String
 from sqlalchemy.orm import declarative_base, sessionmaker
+from sqlalchemy import create_engine, Column, Integer, String
+from sqlalchemy.orm import declarative_base, sessionmaker
+
+
+engine = create_engine("sqlite:///questions.db", echo=True)
+Base = declarative_base()
+
+
+class Question(Base):
+    __tablename__ = "Questions"
+    id = Column(Integer, primary_key=True)
+    unit = Column(Integer)
+    chapter = Column(Integer)
+    topic = Column(String)
+    question = Column(String)
+    answer = Column(String)
+    graph_qustion = Column(String)
+    graph_answer = Column(String)
+
+    def __repr__(self):
+        return "<Questions(question='%s', answer='%s')>" % (
+            self.question,
+            self.answer)
+
+
+Base.metadata.create_all(engine)
+Session = sessionmaker(bind=engine)
+Session.configure(bind=engine)
+session = Session()
+
 
 # from sympy.solvers.inequalities import reduce_rational_inequalities
 
@@ -129,12 +159,18 @@ def find_raa(principal_angle: int | sympy.core.numbers.Pi) -> int | sympy.core.n
 
 # TODO: given some random radian find the exact value of sinx or tanx or cosx or cscx secx cotx
 
+# TODO: Convert degree to radian and vice versa
+
+# TODO: Arc, angular velocity solving questions
+
+# TODO: Solving related acute angle from diagram
+
 # TODO: Genrate a equation of a combination of random trig functions and simplfy it in exact values
 
 # TODO: Trig word problem, kite flying or ladder leaning on wall, or some other scenario that requires someone to look
 # for the distance or heieght etc
+# for the distance or heieght etc. Function just need to change the numbers and scenario. 
 
-# TODO: Trig indentities
 
 if __name__ == "__main__":
     import doctest

@@ -9,6 +9,36 @@ import sympy
 import random
 from sympy.abc import x
 from sympy import pi, sin, cos, tan, csc, sec, cot
+from sqlalchemy import create_engine, Column, Integer, String
+from sqlalchemy.orm import declarative_base, sessionmaker
+
+
+engine = create_engine("sqlite:///questions.db", echo=True)
+Base = declarative_base()
+
+
+class Question(Base):
+    __tablename__ = "Questions"
+    id = Column(Integer, primary_key=True)
+    unit = Column(Integer)
+    chapter = Column(Integer)
+    topic = Column(String)
+    question = Column(String)
+    answer = Column(String)
+    graph_qustion = Column(String)
+    graph_answer = Column(String)
+
+    def __repr__(self):
+        return "<Questions(question='%s', answer='%s')>" % (
+            self.question,
+            self.answer)
+
+
+Base.metadata.create_all(engine)
+Session = sessionmaker(bind=engine)
+Session.configure(bind=engine)
+session = Session()
+
 
 
 # TODOS:

@@ -10,6 +10,36 @@ import random
 import typing
 from sympy.abc import x
 import unit1
+from sqlalchemy import create_engine, Column, Integer, String
+from sqlalchemy.orm import declarative_base, sessionmaker
+
+
+engine = create_engine("sqlite:///questions.db", echo=True)
+Base = declarative_base()
+
+
+class Question(Base):
+    __tablename__ = "Questions"
+    id = Column(Integer, primary_key=True)
+    unit = Column(Integer)
+    chapter = Column(Integer)
+    topic = Column(String)
+    question = Column(String)
+    answer = Column(String)
+    graph_qustion = Column(String)
+    graph_answer = Column(String)
+
+    def __repr__(self):
+        return "<Questions(question='%s', answer='%s')>" % (
+            self.question,
+            self.answer)
+
+
+Base.metadata.create_all(engine)
+Session = sessionmaker(bind=engine)
+Session.configure(bind=engine)
+session = Session()
+
 
 
 def generate_combined_sum():
@@ -140,6 +170,10 @@ def function_compare(polynomial1, inequality, polynomial2) -> str:
 ###############################################################################
 
 # TODO: solving function inequalities word problems. ie f(x) > g(x).
+
+# TODO: Given f(x) and h(x) find f(h(x)), find the domain and range
+
+# TODO: Piecewise functions
 
 if __name__ == "__main__":
     import doctest

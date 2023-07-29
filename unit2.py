@@ -8,6 +8,38 @@ import unit1
 import sympy
 import typing
 from sympy.abc import x
+from sympy import symbols, Function, Symbol, solve, expand, solve, Poly
+from sympy.solvers.inequalities import reduce_rational_inequalities
+from sqlalchemy import create_engine, Column, Integer, String
+from sqlalchemy.orm import declarative_base, sessionmaker
+
+
+engine = create_engine("sqlite:///questions.db", echo=True)
+Base = declarative_base()
+
+
+class Question(Base):
+    __tablename__ = "Questions"
+    id = Column(Integer, primary_key=True)
+    unit = Column(Integer)
+    chapter = Column(Integer)
+    topic = Column(String)
+    question = Column(String)
+    answer = Column(String)
+    graph_qustion = Column(String)
+    graph_answer = Column(String)
+
+    def __repr__(self):
+        return "<Questions(question='%s', answer='%s')>" % (
+            self.question,
+            self.answer)
+
+
+Base.metadata.create_all(engine)
+Session = sessionmaker(bind=engine)
+Session.configure(bind=engine)
+session = Session()
+
 
 def quotient(polynomial1, polynomial2):
     """
@@ -255,19 +287,25 @@ def compare(polynomial, inequality, value) -> str:
 # to write the equation of the polynomial given a point or not
 
 
+
+
 ###############################################################################
 # Question Functions
 ###############################################################################
 
+def remainder_theorem():
+    pass
+
 # TODO: Solve with long division
-
-
 
 # TODO: Find the remainder
 
 # TODO: Solve with synthetic division
 
 # TODO: Factor theorem
+
+def factor_theorem():
+    pass
 
 # TODO: Divide the following polynomails and write the result
 

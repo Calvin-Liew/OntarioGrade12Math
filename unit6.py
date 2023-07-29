@@ -9,7 +9,38 @@ import sympy
 import random
 import typing
 from sympy.abc import x
+from sympy.printing.latex import latex
 from sympy import log
+from unit1 import float_to_fraction
+from sqlalchemy import create_engine, Column, Integer, String
+from sqlalchemy.orm import declarative_base, sessionmaker
+
+
+engine = create_engine("sqlite:///questions.db", echo=True)
+Base = declarative_base()
+
+
+class Question(Base):
+    __tablename__ = "Questions"
+    id = Column(Integer, primary_key=True)
+    unit = Column(Integer)
+    chapter = Column(Integer)
+    topic = Column(String)
+    question = Column(String)
+    answer = Column(String)
+    graph_qustion = Column(String)
+    graph_answer = Column(String)
+
+    def __repr__(self):
+        return "<Questions(question='%s', answer='%s')>" % (
+            self.question,
+            self.answer)
+
+
+Base.metadata.create_all(engine)
+Session = sessionmaker(bind=engine)
+Session.configure(bind=engine)
+session = Session()
 
 
 # TODO: exponent stuff
@@ -61,9 +92,6 @@ def power_rule(exp_list: list[float, float]) -> list[str, sympy.Poly]:
     simplified = (x ** exp_list[0]) ** exp_list[1]
     return [full, simplified]
 
-
-# TODO: review of inverse functions. Provide random points in domain and range. return the inverse domain and range.
-
 # TODO: transformations of exponention functions
 
 # TODO: explanation of transformations
@@ -77,13 +105,76 @@ def power_rule(exp_list: list[float, float]) -> list[str, sympy.Poly]:
 
 # TODO: rewrite into log stuff. Generate a exponential equation like 5^2=25 and rewrite in log ie. Log5. Need both sides
 
-# TODO: rewrite into expontential stuff. Ie. log(6)36 = 2, 6^2=36
 
-# TODO: generate simple log equation. ie. log3(81) = x, solve for x need both sides. the base should be unique.
+def log_to_exp(base: float, arg: float) :
+    """
+    Rewrites log to exponential form
 
-# TODO: transformations of log functions.
+    >>> log_to_exp(2, 16)
+    '2^4 = 16'
+    """
+    
+    # return sympy.log.inverse(log(arg, base))
+    exponent = log(arg, base)
+    return f'{base}^{exponent} = {arg}'
 
-# TODO: explanation of transformations
+
+def generate_log(base_range: typing.Tuple[int, int]):
+    """
+    generate simple log equation. ie. log3(81) = x, solve for x need both sides. the base should be unique.
+    """
+    rand_base = random.randint(base_range[0], base_range[1])
+    arg = rand_base ** random.randint(1, 10)
+    ans = log(arg, rand_base)
+    return f'log{rand_base}({arg}) = {ans}'
+
+
+# def transformation_of_log(parent, a: float, k: float, c: float, d: float) -> sympy.Function:
+#     """
+#     Return a function after transformation, given the type of function, and the
+#     constants of transformation:
+#     a: vertical stretch factor
+#     k: horizontal stretch factor
+#     c: vertical shift factor
+#     d: horizontal shift factor
+#     """
+#     a = float_to_fraction(a)
+#     k = float_to_fraction(k)
+#     d = float_to_fraction(d)
+#     c = float_to_fraction(c)
+#     new_func = parent.subs(x, k * (x - d))  # Horizontal shift and strech
+#     new_func = new_func + c  # Vertical shift
+#     new_func = a * new_func  # Vertical strech
+
+#     return new_func
+
+
+# def log_transformation_explanation(a: float, k: float, c: float, d: float) -> list:
+#     """
+#     Return simple word descriptions of each transformation
+#     """
+#     desc = []
+#     if abs(a) > 1:
+#         desc.append(f"Vertically stretched by a factor of {float_to_fraction(abs(a))}")
+#     elif 0 < abs(a) < 1:
+#         desc.append(f"Vertically compressed by a factor of {float_to_fraction(abs(a))}")
+#     if a < 0:
+#         desc.append(f"Reflection in x-axis")
+#     if c > 0:
+#         desc.append(f"Vertical translation {float_to_fraction(abs(c))} units upwards")
+#     elif c < 0:
+#         desc.append(f"Vertical translation of {float_to_fraction(abs(c))} units downwards")
+#     if abs(k) > 1:
+#         desc.append(f"Horizontally compressed by a factor of 1/{float_to_fraction(abs(k))}")
+#     elif 0 < abs(k) < 1:
+#         desc.append(f"Horizontally stretched by a factor of 1/{float_to_fraction(abs(k))}")
+#     if k < 0:
+#         desc.append(f"Reflection in y-axis")
+#     if d > 0:
+#         desc.append(f"Horizontal translation {float_to_fraction(abs(d))} units to the right")
+#     elif d < 0:
+#         desc.append(f"Horziontal translation {float_to_fraction(abs(d))} units to the left")
+#     return desc 
 
 
 def exp_domain(exp_function) -> str:
@@ -177,7 +268,7 @@ def log_power(log1: typing.Tuple[float], power: int) -> list:
 
 # TODO: change of base rule. create some log equation and do change of base to it. Return both sides. Ie. log5(17) = log17/log5
 
-# TODO: Generarate those write as a single log question. crate some sort of euqation with the same base with simple quadractic or linear or root equations turn it into one log.
+# TODO: Generarate those write as a single log question. crate some sort of equation with the same base with simple quadractic or linear or root equations turn it into one log.
 
 # TODO: solving exponetial equations. create some expoential equation such as 100=50(1.03)^2x. try to make it more unique. need the question and the answer.
 
@@ -196,6 +287,26 @@ def log_power(log1: typing.Tuple[float], power: int) -> list:
 ###############################################################################
 # Question Functions
 ###############################################################################
+
+# TODO: Domain and range of log function
+
+# TODO: Exponent laws
+
+# TODO: Solve exponential equation (4^x = 16)
+
+# TODO: Key features of log and exponential equations
+
+# TODO: Solve logarithmic equation
+
+# TODO: Transformations
+
+# TODO: Log laws
+
+# TODO: Simplify log equation
+
+# TODO: solving log equations
+
+# TODO: Applciations of log
 
 if __name__ == "__main__":
     import doctest
