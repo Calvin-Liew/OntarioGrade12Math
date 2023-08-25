@@ -30,7 +30,6 @@ class Question(Base):
     __tablename__ = "Questions"
     id = Column(Integer, primary_key=True)
     unit = Column(Integer)
-    chapter = Column(Integer)
     topic = Column(String)
     question = Column(String)
     answer = Column(String)
@@ -324,7 +323,7 @@ def y_int(polynomial) -> int:
     return polynomial.subs(x, 0)
 
 
-def polynomial_degree(polynomial) -> list[int | float]:
+def polynomial_degree(polynomial):
     """
     Returns the degree of a polynomial.
 
@@ -925,7 +924,7 @@ def function_or_not():
         graph = latex(polynomial)
         question=f"""Is this a function: """
         answer=f"""Yes this passes the vertical line test."""
-        question = Question(unit=1, chapter=1.1, topic="what is a function", question=question, answer=answer, graph=graph)
+        question = Question(unit=1, topic="what is a function", question=question, answer=answer, graph=graph)
         session.add(question)
         session.commit()
     else:
@@ -934,7 +933,7 @@ def function_or_not():
         # not latex ing properly
         question=f"""Is this a function: """
         answer=f"""No this fails the vertical line test."""
-        question = Question(unit=1, chapter=1.1, topic="is this graph a function?", question=question, answer=answer, graph=graph)
+        question = Question(unit=1, topic="what is a function", question=question, answer=answer, graph=graph)
         session.add(question)
         session.commit()
 
@@ -944,14 +943,14 @@ def function_or_not_points():
         points = generate_points(5)
         question = f"""Determine if the following relation is a function: {points}"""
         answer = f"""Yes it is a function as there are unique Xs,passing the vertical line test."""
-        question = Question(unit=1, chapter=1.1, topic="is this relation a function?", question=question, answer=answer)
+        question = Question(unit=1, topic="is this relation a function?", question=question, answer=answer)
         session.add(question)
         session.commit()
     else:
         points = generate_failed_vlt_points(5, 1)
         question = f"""Determine if the following relation is a function: {points}"""
         answer = f"""No it is not a function as there are multiple Xs that are the same, failing the vertical line test."""
-        question = Question(unit=1, chapter=1.1, topic="is this relation a function?", question=question, answer=answer)
+        question = Question(unit=1, topic="is this relation a function?", question=question, answer=answer)
         session.add(question)
         session.commit()
 
@@ -974,7 +973,7 @@ def convert_to_interval_notation_single():
         
     question = f"""Convert this inequality into interval notation: {inequality_latex}"""
     answer = f"""x ∈ {converted}"""
-    question = Question(unit=1, chapter=1.1, topic="interval notation", question=question, answer=answer ,graph=None)
+    question = Question(unit=1, topic="interval notation", question=question, answer=answer ,graph=None)
     session.add(question)
     session.commit()
 
@@ -1006,7 +1005,7 @@ def convert_to_interval_notation_double():
     
     question = f"""Convert this inequality into interval notation: {inequality}"""
     answer = f"""X ∈ {converted}"""
-    question = Question(unit=1, chapter=1.1, topic="interval notation", question=question, answer=answer ,graph=None)
+    question = Question(unit=1, topic="interval notation", question=question, answer=answer ,graph=None)
     session.add(question)
     session.commit()
     
@@ -1017,7 +1016,7 @@ def factoring():
     
     question = f"""Factor: {latex(quadractic)}"""
     answer = f"""{latex(solution)}"""
-    question_to_add = Question(unit=1, chapter=0, topic="factoring quadractic equations", question=question, answer=answer, graph=None)
+    question_to_add = Question(unit=1, topic="factoring quadractic equations", question=question, answer=answer, graph=None)
     session.add(question_to_add)
     session.commit()
     
@@ -1025,7 +1024,7 @@ def solving_quadractic():
     equation, answer = quadractic_equation()
     question = f"""Solve: {latex(equation)}"""
     answer = f"""Answer: x ∈ {latex(answer)}"""
-    question_to_add = Question(unit=1, chapter=0, topic="solving quadratic equations", question=question, answer=answer, graph=None)
+    question_to_add = Question(unit=1, topic="solving quadratic equations", question=question, answer=answer, graph=None)
     session.add(question_to_add)
     session.commit()
     
@@ -1049,7 +1048,7 @@ def degree_and_leading_coff():
     answer = f"""The degree of this function is the highest exponent in the polynomial which is {degree}. 
     Therefore the leading coefficent is the coefficent of the term that is degree {degree} which is {leading}"""
 
-    question = Question(unit=1, chapter=1.1, topic='leading coefficient and degree of polynomial function',
+    question = Question(unit=1, topic='leading coefficient and degree of polynomial function',
                         question=question, answer=answer, graph=None)
     session.add(question)
     session.commit()
@@ -1070,7 +1069,7 @@ def end_behaviour_question():
     end_behaviour_answer = translate_end_behavior(quadrants[q1], quadrants[q2])
     answer = f"""Find where f(x) approaches when x->∞ and x ->-∞. Answer: {end_behaviour_answer}."""
 
-    question = Question(unit=1, chapter=1.1, topic='end behaviour', question=question, answer=answer, graph=None)
+    question = Question(unit=1, topic='end behaviour', question=question, answer=answer, graph=None)
     session.add(question)
     session.commit()
 
@@ -1090,7 +1089,7 @@ def end_behaviour__graph_question():
     end_behaviour_answer = translate_end_behavior(quadrants[q1], quadrants[q2])
     answer = f"""Find where f(x) approaches when x->∞ and x ->-∞. Answer: {end_behaviour_answer}."""
 
-    question = Question(unit=1, chapter=1.1, topic='end behaviour', question=question, answer=answer, graph=polynomial)
+    question = Question(unit=1, topic='end behaviour', question=question, answer=answer, graph=polynomial)
     session.add(question)
     session.commit()
 
@@ -1104,7 +1103,7 @@ def odd_or_even():
     answer = even_or_odd(polynomial)
     polynomial = sympy.latex(polynomial)
     question = f"""Show that the following function is even, odd or neither: {polynomial}"""
-    question = Question(unit=1, chapter=1.1, topic='odd or even', question=question, answer=answer, graph=None)
+    question = Question(unit=1, topic='odd or even', question=question, answer=answer, graph=None)
     session.add(question)
     session.commit()
 
@@ -1129,7 +1128,7 @@ def domain_range():
     range = function_range(function)
     question = f"""What is the domain and range of this function: {latex(function)}"""
     answer = f"Domain: x ∈ {domain} Range: y ∈ {range}"
-    question_to_add = Question(unit=0, chapter=0, topic='domain and range of functions', question=question, answer=answer, graph=None)
+    question_to_add = Question(unit=0, topic='domain and range of functions', question=question, answer=answer, graph=None)
     session.add(question_to_add)
     session.commit()
 
@@ -1177,7 +1176,7 @@ def finite_differences_continued():
     question = f""""What is the leading coefficient and the sign of this polynomial given the table? """
     answer = f"""To find the leading coefficient, find the constant difference and divide it by the factorial of the degree. 
     The constant difference is {difference}. {difference}/{degree}! = {co}. Sign is {sign}. """
-    question_to_add = Question(unit=1, chapter=1.2, topic = "constant differences", question=question, answer=answer, graph=points)
+    question_to_add = Question(unit=1, topic = "constant differences", question=question, answer=answer, graph=points)
     session.add(question_to_add)
     session.commit()
 
@@ -1190,7 +1189,7 @@ def finite_differences_constant():
     question = f"""Find which finite difference is constant and its value of this polynomial: {latex(polynomial)}"""
     answer = f"""Since the degree of the polynomial is {degree}, the {degree} differences will be constant. To find the 
     value of the constant difference, multiply the leading coefficient and the factorial of the degree. {degree}!*{co} = {constant_difference}"""
-    question_to_add = Question(unit=1, chapter=1.2, topic="constant differences", question=question, answer=answer, graph=None)
+    question_to_add = Question(unit=1, topic="constant differences", question=question, answer=answer, graph=None)
     session.add(question_to_add)
     session.commit()
 
@@ -1217,7 +1216,7 @@ def transformations():
     transformations.extend([f"""a = {float_to_fraction(a)} c = {float_to_fraction(c)} d = {float_to_fraction(d)} k = {float_to_fraction(k)}"""])
     question = f"""Describe the transformations of the following function and find values of a, k, c, d: {latex(transformed)}"""
     answers = ', '.join(transformations)
-    question_to_add = Question(unit=1, chapter=1.4, topic="transformations of polynomials", question=question, answer=answers)
+    question_to_add = Question(unit=1, topic="transformations of polynomials", question=question, answer=answers)
     session.add(question_to_add)
     session.commit()
 
@@ -1234,7 +1233,7 @@ def transformations_2():
     transformations = transformation_explanation(a, k, c, d)
     question = f"""Given the transformations of this parent function {latex(function)}, write the transformed equation for this function: {', '.join(transformations)}"""
     answer = f"""y = {latex(transformed)}"""
-    question_to_add = Question(unit=1, chapter=1.4, topic="transformations of polynomials", question=question, answer=answer)
+    question_to_add = Question(unit=1, topic="transformations of polynomials", question=question, answer=answer)
     session.add(question_to_add)
     session.commit()
     
@@ -1250,7 +1249,7 @@ def transformations_3():
     d = random.choice([random.randint(-10, -1), random.randint(1, 10), random.choice(some_fracs)])
     transformed = transformation_of_function(function, a, k , c, d)
     question = f"""Graph this function: {transformed}"""
-    question_to_add = Question(unit=1, chapter=1.4, topic="transformations of polynomial functions: graphing", question=question, answer=None, graph=latex(transformed))
+    question_to_add = Question(unit=1, topic="transformations of polynomial functions: graphing", question=question, answer=None, graph=latex(transformed))
     session.add(question_to_add)
     session.commit()
 
@@ -1263,7 +1262,7 @@ def characteristics_1():
     characteristics = analyze_expression(polynomial)
     question = f"""Find the degree, the coefficent, x-intercepts, and the intervals of this function: {latex(polynomial)}"""
     answer = ", ".join(characteristics)
-    question_to_add = Question(unit=1, chapter=1.4, topic="characteristics of polynomials from equation", question=question, answer=answer, graph=latex(polynomial))
+    question_to_add = Question(unit=1, topic="characteristics of polynomials from equation", question=question, answer=answer, graph=latex(polynomial))
     session.add(question_to_add)
     session.commit()
 
@@ -1291,7 +1290,7 @@ def characteristics_3():
     answer = f"""{degree}, {lc}, {eb}, {tp}, {x_intercept}, {y_intercept}"""
 
     question = f"""Find the degree, leading coefficient, end behaviour, possible number of turning points, x-intercepts and y-intercept of f(x) = {latex(polynomial)}"""
-    question_to_add = Question(unit=1, chapter=1.4, topic="characteristics of polynomials from graph", question=question, answer=answer, graph=None)
+    question_to_add = Question(unit=1, topic="characteristics of polynomials from graph", question=question, answer=answer, graph=None)
     session.add(question_to_add)
     session.commit()
     
@@ -1303,7 +1302,7 @@ def create_equation_chars():
     equation, equation_str, coefficient, root_desc, first_quadrant, second_quadrant, degree= generate_random_polynomial_char()
     question = f"""Write an polynomial based on the descriptions: Degree: {degree}, {', '.join(root_desc)}, Start quadrant: {first_quadrant} End quadrant: {second_quadrant} """
     answer = f"""Equation: {equation_str} {coefficient}"""
-    question_to_add = Question(unit=1, chapter=1.4, topic="polynomial properties", question=question, answer=answer)
+    question_to_add = Question(unit=1, topic="polynomial properties", question=question, answer=answer)
     session.add(question_to_add)
     session.commit()
 
@@ -1328,7 +1327,7 @@ def create_equation_from_image():
     answer = f"""To write the polynomial equation based on the graph, first find the roots of the function and write the possible equation in factored form. Then find the y-intercept or some other point, sub it in and solve for the leading coefficent a. 
     In factored form, the potential polynomial equation is {equation_str}, where a is the leading coefficent. The y-intercept is {y_intercept}. Plug in (0, {y_intercept}) into the factored form and solve for a which is {leading}. Therefore, the equation 
     of this polynomial function is {equation}."""
-    question_to_add = Question(unit=1, chapter=1.3, topic="finding polynomial equation from graph", question=question, answer=answer, graph=latex(equation))
+    question_to_add = Question(unit=1, topic="finding polynomial equation from graph", question=question, answer=answer, graph=latex(equation))
     session.add(question_to_add)
     session.commit()
 
@@ -1342,7 +1341,7 @@ def IROC():
     question = f"""Find the instantaneous rate of change at x = {x} of the polynomial: f(x) = {latex(polynomial)}"""
     instant_rate_change_answer = instant_rate_of_change(polynomial, x)
     answer = f"""The instantaneous rate of change formula: f(x+0.0001) - f(x) / 0.0001. Applying the formula to {latex(polynomial)} at x = {x}, the instantaneous rate of change is {instant_rate_change_answer} """
-    question_to_add = Question(unit=1, chapter=1.5, topic="instantaneous rate of change", question=question, answer=answer)
+    question_to_add = Question(unit=1, topic="instantaneous rate of change", question=question, answer=answer)
     session.add(question_to_add)
     session.commit()
 
@@ -1355,7 +1354,7 @@ def AROC():
     question = f"""Find the average rate of change between x = {x} and x = {x2} of the polynomial: f(x) = {latex(polynomial)}"""
     average_rate_of_change_answer = average_rate_of_change(polynomial, x)
     answer = f"""The average rate of change formula: (f(b) - f(a)) / (b - a). Applying the formula to {latex(polynomial)} as a = {x} and b = {x2}, the average rate of change is {average_rate_of_change_answer} """
-    question_to_add = Question(unit=1, chapter=1.5, topic="average rate of change", question=question, answer=answer)
+    question_to_add = Question(unit=1, topic="average rate of change", question=question, answer=answer)
     session.add(question_to_add)
     session.commit()
 
