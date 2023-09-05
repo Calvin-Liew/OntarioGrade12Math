@@ -398,7 +398,7 @@ def count_turning_points(polynomial):
     turning_points = len(critical_points)
     return turning_points
 
-def characteristic(polynomial):
+def characteristic(polynomial) -> str:
     """
     Returns a basic description about the polynomial function
 

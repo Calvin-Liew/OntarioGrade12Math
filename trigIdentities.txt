@@ -1,1 +1,38 @@
-This a list of trig indentities
+# List of trig identities
+
+# Pythagorean Identities
+\sin^2(x) + \cos^2(x) = 1
+1 + \tan^2(x) = \sec^2(x)
+1 + \cot^2(x) = \csc^2(x)
+
+# Reciprocal Identities
+\csc(x) = \frac{1}{\sin(x)}
+\sec(x) = \frac{1}{\cos(x)}
+\cot(x) = \frac{1}{\tan(x)}
+
+# Quotient Identities
+\tan(x) = \frac{\sin(x)}{\cos(x)}
+\cot(x) = \frac{\cos(x)}{\sin(x)}
+
+# Co-Function Identities
+\sin\left(\frac{\pi}{2} - x\right) = \cos(x)
+\cos\left(\frac{\pi}{2} - x\right) = \sin(x)
+\tan\left(\frac{\pi}{2} - x\right) = \cot(x)
+\sec\left(\frac{\pi}{2} - x\right) = \csc(x)
+\csc\left(\frac{\pi}{2} - x\right) = \sec(x)
+\cot\left(\frac{\pi}{2} - x\right) = \tan(x)
+
+# Angle Sum and Difference Identities
+\sin(x \pm y) = \sin(x)\cos(y) \pm \cos(x)\sin(y)
+\cos(x \pm y) = \cos(x)\cos(y) \mp \sin(x)\sin(y)
+\tan(x \pm y) = \frac{\tan(x) \pm \tan(y)}{1 \mp \tan(x)\tan(y)}
+
+# Double Angle Identities:
+\sin(2x) = 2\sin(x)\cos(x)
+\cos(2x) = \cos^2(x) - \sin^2(x) = 2\cos^2(x) - 1 = 1 - 2\sin^2(x)
+\tan(2x) = \frac{2\tan(x)}{1 - \tan^2(x)}
+
+# Half Angle Identities
+\sin\left(\frac{x}{2}\right) = \pm \sqrt{\frac{1 - \cos(x)}{2}}
+\cos\left(\frac{x}{2}\right) = \pm \sqrt{\frac{1 + \cos(x)}{2}}
+\tan\left(\frac{x}{2}\right) = \pm \sqrt{\frac{1 - \cos(x)}{1 + \cos(x)}}

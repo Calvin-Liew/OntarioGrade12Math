@@ -288,26 +288,23 @@ def compare(polynomial, inequality, value) -> str:
 # to write the equation of the polynomial given a point or not
 
 
-def replace_random_constant_with_variable(equation, variable_name):
-    # Convert the equation string to a Sympy expression
-    equation_expr = sympy.sympify(equation)
+def replace_leading_coefficient_with_variable(eq, variable_name='a'):
+    # Parse the equation
+    eq = sympy.sympify(eq)
     
-    # Find all the constants in the expression
-    constants = [const for const in equation_expr.free_symbols if const.is_constant()]
-    
-    if len(constants) == 0:
-        raise ValueError("No constants found in the equation.")
-    
-    # Choose a random constant from the list
-    constant_to_replace = random.choice(constants)
-    
-    # Create a variable with the desired name
-    variable = symbols(variable_name)
-    
-    # Replace the chosen constant with the variable in the expression
-    replaced_expr = equation_expr.subs(constant_to_replace, variable)
-    
-    return replaced_expr, constant_to_replace
+    if eq.is_polynomial(x):  # Replace 'x' with the appropriate symbol if needed
+        # Get the leading coefficient
+        leading_coeff = eq.as_poly().all_coeffs()[0]
+        
+        # Create a new variable
+        new_var = sympy.symbols(variable_name)
+        
+        # Replace the leading coefficient with the new variable
+        modified_eq = eq - leading_coeff * x**eq.as_poly().degree() + new_var * x**eq.as_poly().degree()
+        
+        return leading_coeff, modified_eq
+    else:
+        raise ValueError("Input equation is not a polynomial.")
 
 
 ###############################################################################
@@ -325,9 +322,9 @@ def remainder_theorem():
     question = f"""Use the remainder theorem to find the remiander of {sympy.latex(polynomial2)} ÷ {sympy.latex(polynomial1)}"""
     remainder_answer = remainder(polynomial2, polynomial1)
     answer = f"""Find the solution of {sympy.latex(polynomial1)} and plug it in to {sympy.latex(polynomial2)} to find the remainder. Answer: {remainder_answer}"""
-    Question = question = Question(unit=2, chapter=2.1, topic='Remainder Theorem',
+    question_to_add = Question(unit=2, topic='Remainder Theorem',
                         question=question, answer=answer)
-    session.add(question)
+    session.add(question_to_add)
     session.commit()
     
 def remainder_theorem_2():
@@ -338,8 +335,13 @@ def remainder_theorem_2():
     polynomials = generate_poly_big_small1(degree, coeffcient_range)
     polynomial1 = polynomials[0]
     polynomial2 = polynomials[1]
-    polynomial3 = replace_random_constant_with_variable(polynomial2, 'a')
-    print(polynomial2)
+    polynomial3 = replace_leading_coefficient_with_variable(polynomial2)
+    remain_answer = remainder(polynomial2, polynomial1)
+    question = f"""If {sympy.latex(polynomial3[1])} is divided by {sympy.latex(polynomial1)}, the remainder is {remain_answer}. Find the value of a. """
+    answer = f"""If the remainder is {remain_answer} then the equation for the variable a by subsituting the solution of {sympy.latex(polynomial2)} into {sympy.latex(polynomial3[1])} and setting it equal to {remain_answer}. Solve for a, a = {sympy.latex(polynomial3[0])}. """
+    question_to_add = Question(unit=2, topic='Remainder Theorem', question=question, answer=answer)
+    session.add(question_to_add)
+    session.commit()
 
 # TODO: Factor theorem
 
