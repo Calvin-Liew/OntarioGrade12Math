@@ -41,16 +41,20 @@ class Question(Base):
             self.question,
             self.answer)
 
+#Base.metadata.drop_all(engine)
 
+# Create the table again
 Base.metadata.create_all(engine)
+
+# Create a session
 Session = sessionmaker(bind=engine)
-Session.configure(bind=engine)
 session = Session()
 
 
 # test = Question(unit=0, chapter=0, topic='test topic', question='test answer', answer='test answer', graph='test graph')
 # session.add(test)
 # session.commit()
+
 
 
 def generate_polynomial(degree: int, coefficient_range: typing.Tuple[int, int]):

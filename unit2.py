@@ -23,7 +23,6 @@ class Question(Base):
     __tablename__ = "Questions"
     id = Column(Integer, primary_key=True)
     unit = Column(Integer)
-    chapter = Column(Integer)
     topic = Column(String)
     question = Column(String)
     answer = Column(String)
@@ -312,7 +311,7 @@ def replace_leading_coefficient_with_variable(eq, variable_name='a'):
 ###############################################################################
 
 def remainder_theorem():
-    degree = random.randint(3, 6)
+    degree = random.randint(2, 4)
     coeffcient_range = (-10, 10)
     while(coeffcient_range == 0):
         coeffcient_range = (-10, 10)
@@ -328,7 +327,7 @@ def remainder_theorem():
     session.commit()
     
 def remainder_theorem_2():
-    degree = random.randint(3, 6)
+    degree = random.randint(2, 4)
     coeffcient_range = (-10, 10)
     while(coeffcient_range == 0):
         coeffcient_range = (-10, 10)
@@ -342,7 +341,7 @@ def remainder_theorem_2():
     question_to_add = Question(unit=2, topic='Remainder Theorem', question=question, answer=answer)
     session.add(question_to_add)
     session.commit()
-
+    
 # TODO: Factor theorem
 
 def factor_theorem():
