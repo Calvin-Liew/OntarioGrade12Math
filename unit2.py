@@ -305,6 +305,23 @@ def replace_leading_coefficient_with_variable(eq, variable_name='a'):
     else:
         raise ValueError("Input equation is not a polynomial.")
 
+def find_leading_coefficient_and_constant(eq):
+    # Parse the equation
+    eq = sympy.sympify(eq)
+    
+    if eq.is_polynomial(x):  # Replace 'x' with the appropriate symbol if needed
+        # Get the coefficients of the polynomial
+        coefficients = eq.as_poly().all_coeffs()
+        
+        # Leading coefficient is the coefficient of the highest-degree term
+        leading_coefficient = coefficients[-1]
+        
+        # Constant term is the coefficient of the term without 'x'
+        constant = coefficients[0] if len(coefficients) > 1 else 0
+        
+        return leading_coefficient, constant
+    else:
+        raise ValueError("Input equation is not a polynomial.")
 
 ###############################################################################
 # Question Functions
@@ -343,10 +360,26 @@ def remainder_theorem_2():
     session.commit()
     
 # TODO: Factor theorem
-
-def factor_theorem():
+# Determine possible factors
+def possible_factors():
+    degree = random.randint(2, 4)
+    coeffcient_range = (-10, 10)
+    while(coeffcient_range == 0):
+        coeffcient_range = (-10, 10)
+    polynomials = generate_poly_big_small1(degree, coeffcient_range)
+    polynomial = polynomials[1]
+    leading_co = find_leading_coefficient_and_constant(polynomial)[0]
+    constant = find_leading_coefficient_and_constant(polynomial)[1]
+    question = f"""Using rational zero theorem, find the possible factors of {sympy.latex(polynomial)}. """
+    answer = f"""To find possible factors of the polynomial, find the factors of the leading coeffcient and factors of the constant term of the polynomial, and create combinations of factors of the constant as the numerator of the fraction and factors of the leading coeffcient as the denominator of the fraction to find possible factors. 
+    In this example, find the factors of the leading coeffcient: {leading_co}, the factors of the constant: {constant}, and create the factors by putting the factors of constants as the numerator and the factors of the leading coeffcient in the denominator. You should get {", ".join(find_polynomial_factors(leading_co, constant))}"""
+    question_to_add = Question(unit=2, topic='Rational Zero Theorem: Find possible factors of polynomial', question=question, answer=answer)
+    session.add(question_to_add)
+    session.commit()
+    
+def find_factors():
     pass
-
+    
 # TODO: Solve with long division
 
 # TODO: Solve with synthetic division
