@@ -211,6 +211,11 @@ def rational_zero(polynomial: sympy.Poly, a: int, b: int) -> bool:
 
     Preconditions:
     - a != 0
+
+    >>> rational_zero(x+2, 1, 2)
+    False
+    >>> rational_zero(x+2, 1, -2)
+    True
     """
     return polynomial.subs(x, b/a) == 0
 # TODO: given a polynomial fucntion. a is the leading coffeicnet. b is the constant.
@@ -219,6 +224,9 @@ def rational_zero(polynomial: sympy.Poly, a: int, b: int) -> bool:
 def find_factors(x: int) -> list[int]:
     """
     Return the factors of <x>
+
+    >>> find_factors(2)
+    [1, 2]
     """
     factors = set()
     factors.add(1)
@@ -231,6 +239,7 @@ def find_factors(x: int) -> list[int]:
     factors.sort()
     return factors
 
+
 def find_polynomial_factors(a: int, b: int) -> list[str]:
     """
     Return the possible factors of a polynomial which has the leading coefficient <a>
@@ -238,6 +247,9 @@ def find_polynomial_factors(a: int, b: int) -> list[str]:
 
     Preconditions:
     - a != 0
+
+    >>> find_polynomial_factors(2, 3)
+    ['1/1', '3/1', '1/2', '3/2']
     """
     a_factors = find_factors(a)
     b_factors = find_factors(b)
@@ -246,8 +258,9 @@ def find_polynomial_factors(a: int, b: int) -> list[str]:
     for i in a_factors:
         for j in b_factors:
             factors.append(str(j) + '/' + str(i))
-    
+
     return factors
+
 
 # TODO: find possible factors rational zero thereom given a function,
 # return a factor ie. if -2 is a factor then return x + 2
@@ -290,17 +303,17 @@ def compare(polynomial, inequality, value) -> str:
 def replace_leading_coefficient_with_variable(eq, variable_name='a'):
     # Parse the equation
     eq = sympy.sympify(eq)
-    
+
     if eq.is_polynomial(x):  # Replace 'x' with the appropriate symbol if needed
         # Get the leading coefficient
         leading_coeff = eq.as_poly().all_coeffs()[0]
-        
+
         # Create a new variable
         new_var = sympy.symbols(variable_name)
-        
+
         # Replace the leading coefficient with the new variable
         modified_eq = eq - leading_coeff * x**eq.as_poly().degree() + new_var * x**eq.as_poly().degree()
-        
+
         return leading_coeff, modified_eq
     else:
         raise ValueError("Input equation is not a polynomial.")
@@ -308,37 +321,33 @@ def replace_leading_coefficient_with_variable(eq, variable_name='a'):
 def find_leading_coefficient_and_constant(eq):
     # Parse the equation
     eq = sympy.sympify(eq)
-    
+
     if eq.is_polynomial(x):  # Replace 'x' with the appropriate symbol if needed
         # Get the coefficients of the polynomial
         coefficients = eq.as_poly().all_coeffs()
-        
+
         # Leading coefficient is the coefficient of the highest-degree term
         leading_coefficient = coefficients[-1]
-        
+
         # Constant term is the coefficient of the term without 'x'
         constant = coefficients[0] if len(coefficients) > 1 else 0
-        
+
         return leading_coefficient, constant
     else:
         raise ValueError("Input equation is not a polynomial.")
-    
-    
-def find_factors(eq):
-    pass
 
 def generate_cube_expression():
     # Define the variable
     X = sympy.symbols('X')
-    
+
     # Randomly choose whether to generate a sum or difference of cubes
     is_sum = random.choice([True, False])
-    
+
     # Randomly generate a non-zero constant in the range [-6, 6]
     constant = random.randint(-6, 6)
     while constant == 0:
         constant = random.randint(-6, 6)
-    
+
     if is_sum:
         # Generate a sum of cubes expression
         a = random.randint(2, 5)  # Ensure "a" is a cube by starting from 2
@@ -349,10 +358,10 @@ def generate_cube_expression():
         a = random.randint(2, 5)  # Ensure "a" is a cube by starting from 2
         b = random.randint(1, 5)
         expression = a**3 * X**3 - b**3
-    
+
     # Multiply the expression by the generated constant
     expression *= constant
-    
+
     return is_sum, expression, constant
 
 def gcd_of_terms(expression):
@@ -385,7 +394,7 @@ def remainder_theorem():
                         question=question, answer=answer)
     session.add(question_to_add)
     session.commit()
-    
+
 def remainder_theorem_2():
     degree = random.randint(2, 4)
     coeffcient_range = (-10, 10)
@@ -401,7 +410,7 @@ def remainder_theorem_2():
     question_to_add = Question(unit=2, topic='Remainder Theorem', question=question, answer=answer)
     session.add(question_to_add)
     session.commit()
-    
+
 # MUST FIX
 # TODO: Factor theorem
 # Determine possible factors
@@ -420,7 +429,7 @@ def possible_factors():
     question_to_add = Question(unit=2, topic='Rational Zero Theorem: Find Possible Factors Of Polynomial', question=question, answer=answer)
     session.add(question_to_add)
     session.commit()
-    
+
 def factor_difference_sum_of_cubes():
     generated_cube = generate_cube_expression()
     is_sum = generated_cube[0]
@@ -438,6 +447,8 @@ def factor_difference_sum_of_cubes():
     session.commit()
 
 # TODO: Solve with long division
+
+
 
 # TODO: Solve with synthetic division
 
