@@ -322,6 +322,38 @@ def find_leading_coefficient_and_constant(eq):
         return leading_coefficient, constant
     else:
         raise ValueError("Input equation is not a polynomial.")
+    
+    
+def find_factors(eq):
+    pass
+
+def generate_cube_expression():
+    # Define the variable
+    X = sympy.symbols('X')
+    
+    # Randomly choose whether to generate a sum or difference of cubes
+    is_sum = random.choice([True, False])
+    
+    # Randomly generate a non-zero constant in the range [-6, 6]
+    constant = random.randint(-6, 6)
+    while constant == 0:
+        constant = random.randint(-6, 6)
+    
+    if is_sum:
+        # Generate a sum of cubes expression
+        a = random.randint(2, 5)  # Ensure "a" is a cube by starting from 2
+        b = random.randint(1, 5)
+        expression = a**3 * X**3 + b**3
+    else:
+        # Generate a difference of cubes expression
+        a = random.randint(2, 5)  # Ensure "a" is a cube by starting from 2
+        b = random.randint(1, 5)
+        expression = a**3 * X**3 - b**3
+    
+    # Multiply the expression by the generated constant
+    expression *= constant
+    
+    return is_sum, expression, constant
 
 ###############################################################################
 # Question Functions
@@ -359,6 +391,7 @@ def remainder_theorem_2():
     session.add(question_to_add)
     session.commit()
     
+# MUST FIX
 # TODO: Factor theorem
 # Determine possible factors
 def possible_factors():
@@ -372,14 +405,15 @@ def possible_factors():
     constant = find_leading_coefficient_and_constant(polynomial)[1]
     question = f"""Using rational zero theorem, find the possible factors of {sympy.latex(polynomial)}. """
     answer = f"""To find possible factors of the polynomial, find the factors of the leading coeffcient and factors of the constant term of the polynomial, and create combinations of factors of the constant as the numerator of the fraction and factors of the leading coeffcient as the denominator of the fraction to find possible factors. 
-    In this example, find the factors of the leading coeffcient: {leading_co}, the factors of the constant: {constant}, and create the factors by putting the factors of constants as the numerator and the factors of the leading coeffcient in the denominator. You should get {", ".join(find_polynomial_factors(leading_co, constant))}"""
-    question_to_add = Question(unit=2, topic='Rational Zero Theorem: Find possible factors of polynomial', question=question, answer=answer)
+    In this example, find the factors of the leading coeffcient: {leading_co}, the factors of the constant: {constant}, and create the factors by putting the factors of constants as the numerator and the factors of the leading coeffcient in the denominator. You should get {", ".join(find_polynomial_factors(leading_co, constant))} as possible factors."""
+    question_to_add = Question(unit=2, topic='Rational Zero Theorem: Find Possible Factors Of Polynomial', question=question, answer=answer)
     session.add(question_to_add)
     session.commit()
     
-def find_factors():
-    pass
+def factor_difference_sum_of_cubes():
     
+    pass
+
 # TODO: Solve with long division
 
 # TODO: Solve with synthetic division
