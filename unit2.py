@@ -355,6 +355,17 @@ def generate_cube_expression():
     
     return is_sum, expression, constant
 
+def gcd_of_terms(expression):
+    # Break the expression into its terms
+    terms = sympy.Add.make_args(expression)
+
+    # Use a loop to find the GCD of the terms
+    gcd_expression = terms[0]
+    for term in terms[1:]:
+        gcd_expression = sympy.gcd(gcd_expression, term)
+
+    return gcd_expression
+
 ###############################################################################
 # Question Functions
 ###############################################################################
@@ -411,8 +422,20 @@ def possible_factors():
     session.commit()
     
 def factor_difference_sum_of_cubes():
-    
-    pass
+    generated_cube = generate_cube_expression()
+    is_sum = generated_cube[0]
+    exp = generated_cube[1]
+    gcf = gcd_of_terms(exp)
+    exp2 = exp / gcf
+    print(gcd_of_terms(exp))
+    question = f"""Factor {sympy.latex(exp)}."""
+    if gcf != 1:
+        answer = f"""Factor the greatest common factor, {gcf}, and factor out -1 if neccessary. Then apply the difference or sum of cubes to the expression inside the brackets, {sympy.latex(exp2)}. Recall the difference of sum or difference of squares formula, a^3 + b^3 = (a + b)(a^2 - ab + b^2) and a^3 - b^3 = (a - b)(a^2 + ab + b^2). Answer: {sympy.latex(sympy.factor(exp))}."""
+    else:
+        answer = f"""Apply the difference or sum of cubes to the expression inside the brackets, {sympy.latex(exp2)}. Recall the difference of sum or difference of squares formula, a^3 + b^3 = (a + b)(a^2 - ab + b^2) and a^3 - b^3 = (a - b)(a^2 + ab + b^2). Answer: {sympy.latex(sympy.factor(exp))}."""
+    question_to_add = Question(unit=2, topic='Factoring Polynomials', question=question, answer=answer)
+    session.add(question_to_add)
+    session.commit()
 
 # TODO: Solve with long division
 
