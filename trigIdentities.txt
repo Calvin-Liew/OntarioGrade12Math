@@ -1,4 +1,4 @@
-# List of trig identities
+# List of Trig Identities in Latex
 
 # Pythagorean Identities
 \sin^2(x) + \cos^2(x) = 1
@@ -36,3 +36,22 @@
 \sin\left(\frac{x}{2}\right) = \pm \sqrt{\frac{1 - \cos(x)}{2}}
 \cos\left(\frac{x}{2}\right) = \pm \sqrt{\frac{1 + \cos(x)}{2}}
 \tan\left(\frac{x}{2}\right) = \pm \sqrt{\frac{1 - \cos(x)}{1 + \cos(x)}}
+
+# Product-to-Sum Identities for Sine:
+\sin(x)\sin(y) = \frac{1}{2}[\cos(x - y) - \cos(x + y)]
+\sin(x)\cos(y) = \frac{1}{2}[\sin(x + y) + \sin(x - y)]
+
+# Sum-to-Product Identities for Sine and Cosine:
+\sin(x) + \sin(y) = 2\sin\left(\frac{x + y}{2}\right)\cos\left(\frac{x - y}{2}\right)
+\sin(x) - \sin(y) = 2\cos\left(\frac{x + y}{2}\right)\sin\left(\frac{y - x}{2}\right)
+\cos(x) + \cos(y) = 2\cos\left(\frac{x + y}{2}\right)\cos\left(\frac{x - y}{2}\right)
+\cos(x) - \cos(y) = -2\sin\left(\frac{x + y}{2}\right)\sin\left(\frac{x - y}{2}\right)
+
+# Triple Angle Identities:
+\sin(3x) = 3\sin(x) - 4\sin^3(x)
+\cos(3x) = 4\cos^3(x) - 3\cos(x)
+
+# Half Angle Identities for Tangent:
+\tan\left(\frac{x}{2}\right) = \frac{1 - \cos(x)}{\sin(x)}
+\tan\left(\frac{x}{2}\right) = \frac{\sin(x)}{1 + \cos(x)}
+
