@@ -448,11 +448,8 @@ def factor_difference_sum_of_cubes():
 
 # TODO: Solve with long division
 
-
-
-# TODO: Solve with synthetic division
-
-# TODO: Divide the following polynomails and write the result
+def div1():
+    pass
 
 # TODO: Determine whether each given value of x is a zero of the given function
 
