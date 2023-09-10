@@ -401,8 +401,6 @@ def remainder_theorem_2():
     session.add(question_to_add)
     session.commit()
 
-# MUST FIX
-# TODO: Factor theorem
 # Determine possible factors
 def possible_factors():
     degree = random.randint(2, 4)
@@ -481,7 +479,7 @@ def check_factors():
 # TODO: Factor fully
 
 def factor_fully():
-    degree = random.randint(2, 4)
+    degree = random.randint(3, 4)
     coeffcient_range = (-10, 10)
     while(coeffcient_range == 0):
         coeffcient_range = (-10, 10)
@@ -491,7 +489,7 @@ def factor_fully():
     print(leading)
     question = f"""Factor fully, using long or synthetic division if needed: {sympy.latex(eq[0])}. """
     answer = f"""Follow the following steps: 1) Factor out the greatest common factor 2) If left with a cubic or greater function to factor, 
-    find possible factors to divide the polynomial using the rational zero theorem 3) Divide using one of the factors 
+    find possible factors to divide the polynomial using the factor theorem 3) Divide using one of the factors 
     is a zero to the polynomial. 4) Keep dividing to factor even further if necessary. Answer: {sympy.factor(eq[0])} """
     question_to_add = Question(unit=2, topic="Factoring Polynomials", question=question, answer=answer)
     session.add(question_to_add)
@@ -500,12 +498,25 @@ def factor_fully():
 
 # TODO: Solve the following polynomials by factoring
 
-
+def solve_by_factor():
+    degree = random.randint(3, 4)
+    coeffcient_range = (-10, 10)
+    while(coeffcient_range == 0):
+        coeffcient_range = (-10, 10)
+    eq = factorable(degree, coeffcient_range)
+    poly = eq[0]
+    sols = eq[1]
+    question = f"""Solve the following polynomial by factoring using factor theorem and long/synthetic division if needed: {sympy.latex(poly)}."""
+    answer = f"""Follow the following steps: 1) Factor out the greatest common factor 2) If left with a cubic or greater function to factor, 
+    find possible factors to divide the polynomial using the factor theorem 3) Divide using one of the factors 
+    is a zero to the polynomial. 4) Keep dividing to factor even further if necessary. Now in fully factored form, you can set y = 0 and solve for x. Answer: x ∈ {sols}"""
+    question_to_add = Question(unit=2, topic="Solving Polynomials By Factoring")
+    session.add(question_to_add)
+    session.commit()
 
 # TODO: Write a general factored equation for the family functions based on the given zeros and one point
 
 # TODO: Solve polynomial inequalities
-
 
 if __name__ == "__main__":
     import doctest
