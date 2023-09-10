@@ -456,8 +456,28 @@ def div1():
 # TODO: Determine whether each given value of x is a zero of the given function
 
 def check_factors():
-    pass
-
+    degree = random.randint(3, 4)
+    coefficent_range = (-10, 10)
+    while(coefficent_range == 0):
+        coefficent_range = (-10, 10)
+    polynomials = factorable(degree, coefficent_range)
+    polynomial = polynomials[0]
+    factors = polynomials[1]
+    factor = factors[0]
+    print(polynomial)
+    num = random.randint(1, 2)
+    if(num == 1):
+        question = f"""Use the remainder theorem or factor theorem to check if the given value of x is a zero of the given polynomial.
+        x = {factor}, y = {sympy.latex(polynomial)}."""
+        answer = f"""Yes {factor} is a solution or zero to the given polynomial {sympy.latex(polynomial)} because when you sub {factor} into the polynomial, y = 0."""
+    else:
+        question = f"""Use the remainder theorem or factor theorem to check if the given value of x is a zero of the given polynomial.
+        x = {factor+random.randint(1, 20)}, y = {sympy.latex(polynomial)}."""
+        answer = f"""Yes {factor} is not a solution or zero to the given polynomial {sympy.latex(polynomial)} because when you {factor} into the polynomial, y is not 0."""
+    question_to_add = Question(unit=2, topic="Checking for Zeros of Polynomial Using Remainder/Factor Theorem")
+    session.add(question_to_add)
+    session.commit()
+    
 # TODO: Factor fully
 
 def factor_fully():
@@ -479,6 +499,8 @@ def factor_fully():
 
 
 # TODO: Solve the following polynomials by factoring
+
+
 
 # TODO: Write a general factored equation for the family functions based on the given zeros and one point
 
