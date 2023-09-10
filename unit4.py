@@ -14,12 +14,14 @@ from sqlalchemy.orm import declarative_base, sessionmaker
 from sqlalchemy import create_engine, Column, Integer, String
 from sqlalchemy.orm import declarative_base, sessionmaker
 
-
 engine = create_engine("sqlite:///questions.db", echo=True)
 Base = declarative_base()
 
 
 class Question(Base):
+    """
+    ...
+    """
     __tablename__ = "Questions"
     id = Column(Integer, primary_key=True)
     unit = Column(Integer)
@@ -43,10 +45,6 @@ session = Session()
 
 
 # from sympy.solvers.inequalities import reduce_rational_inequalities
-
-# TODO: Create trig identity database
-
-
 
 
 def rad_to_degree(radian: int | sympy.core.numbers.Pi) -> int:
@@ -79,10 +77,6 @@ def generate_angle():
                       4 * pi / 3, 3 * pi / 2, 5 * pi / 3, 11 * pi / 6, 2 * pi]
     # 0, 30, 45, 60, 90, 120, 135, 150, 180, 210, 225, 240, 270, 300, 330, 360
     return random.choice(special_angles)
-
-
-# TODO: Provide a simple diagram of an angle? Might be tough
-# Can prob use desmos for this https://www.youtube.com/watch?v=RUm0NevyrlA
 
 
 def rad_to_degree_explain(radian: int | sympy.core.numbers.Pi):
@@ -133,29 +127,31 @@ def find_raa(principal_angle: int | sympy.core.numbers.Pi) -> int | sympy.core.n
     - principal_angle not in [0, 90, 180, 270, 360, pi / 2, pi, 3 * pi / 2, 2 * pi]
     - 0 < principal_angle < 360 or 0 < principal_angle < 2 * pi
     """
-    if isinstance(principal_angle, sympy.core.numbers.Pi):    # When principal angle is in radians
-        if principal_angle < pi / 2:    # Quadrant 1
+    if isinstance(principal_angle, sympy.core.numbers.Pi):  # When principal angle is in radians
+        if principal_angle < pi / 2:  # Quadrant 1
             return principal_angle
-        elif principal_angle > pi / 2 and principal_angle < pi:    # Quadrant 2
+        elif principal_angle > pi / 2 and principal_angle < pi:  # Quadrant 2
             return pi - principal_angle
         elif principal_angle > pi and principal_angle < 3 * pi / 2:
             return principal_angle - pi
-        else:   # Quadrant 4
+        else:  # Quadrant 4
             return 2 * pi - principal_angle
-    else:   # When principal angle is in degrees
-        if principal_angle < 90:    # Quadrant 1
+    else:  # When principal angle is in degrees
+        if principal_angle < 90:  # Quadrant 1
             return principal_angle
-        elif principal_angle > 90 and principal_angle < 180:    # Quadrant 2
+        elif principal_angle > 90 and principal_angle < 180:  # Quadrant 2
             return 180 - principal_angle
         elif principal_angle > 180 and principal_angle < 270:
             return principal_angle - 180
-        else:   # Quadrant 4
+        else:  # Quadrant 4
             return 360 - principal_angle
 
 
 ###############################################################################
 # Question Functions
 ###############################################################################
+
+# TODO: Trig indetities from text file
 
 # TODO: given some random radian find the exact value of sinx or tanx or cosx or cscx secx cotx
 
@@ -169,7 +165,7 @@ def find_raa(principal_angle: int | sympy.core.numbers.Pi) -> int | sympy.core.n
 
 # TODO: Trig word problem, kite flying or ladder leaning on wall, or some other scenario that requires someone to look
 # for the distance or heieght etc
-# for the distance or heieght etc. Function just need to change the numbers and scenario. 
+# for the distance or heieght etc. Function just need to change the numbers and scenario.
 
 
 if __name__ == "__main__":

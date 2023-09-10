@@ -11,7 +11,8 @@ import sympy
 from math import isqrt
 from sqlalchemy import create_engine, Column, Integer, String
 from sqlalchemy.orm import declarative_base, sessionmaker
-from sympy import degree, factorial, symbols, simplify, Eq, expand, Add, Mul,  Rational, sqrt, solve, sympify, Poly, Symbol, factor, diff
+from sympy import degree, factorial, symbols, simplify, Eq, expand, Add, Mul, Rational, sqrt, solve, sympify, Poly, \
+    Symbol, factor, diff
 from sympy.abc import x
 from sympy.printing.latex import latex
 from fractions import Fraction
@@ -41,7 +42,8 @@ class Question(Base):
             self.question,
             self.answer)
 
-#Base.metadata.drop_all(engine)
+
+# Base.metadata.drop_all(engine)
 
 # Create the table again
 Base.metadata.create_all(engine)
@@ -54,7 +56,6 @@ session = Session()
 # test = Question(unit=0, chapter=0, topic='test topic', question='test answer', answer='test answer', graph='test graph')
 # session.add(test)
 # session.commit()
-
 
 
 def generate_polynomial(degree: int, coefficient_range: typing.Tuple[int, int]):
@@ -76,21 +77,23 @@ def generate_polynomial(degree: int, coefficient_range: typing.Tuple[int, int]):
     return expr
 
 
-# TODO: Put a failsafe in case there is no possible factorable function (if it loops 100 times then return false)
 def generate_factorable_polynomial(degree: int, coefficient_range: typing.Tuple[int, int]):
     """
     Generates factorable polynomial where the degree is 2 to 4
+
+    Returns False is there is no possible factorable function
 
     Preconditions:
     - 2 <= degree <= 4
     - coefficient_range != ()
     - coefficient_range[0] <= coefficient_range[1]
     """
-    while True:
+    for _ in range(100):
         possible_function = generate_polynomial(degree, coefficient_range)
         # print(find_discriminant(possible_function))
         if find_discriminant(possible_function) >= 0:
             return possible_function
+    return False
 
 
 def find_discriminant(polynomial) -> int:
@@ -348,15 +351,15 @@ def points_of_polynomial(polynomial) -> list[set]:
     Polynomial is a valid polynomial from <generate_polynomial>
 
     >>> points_of_polynomial(x**2+4)
-    [(-7, 53.000), (-6, 40.000), (-5, 29.000), (-4, 20.000), (-3, 13.000), (-2, 8.0000), (-1, 5.0000), (0, 4.0000), (1, 5.0000),\
-    (2, 8.0000), (3, 13.000), (4, 20.000), (5, 29.000), (6, 40.000), (7, 53.000)]
+    [(-7, 53.000), (-6, 40.000), (-5, 29.000), (-4, 20.000), (-3, 13.000), (-2, 8.0000), (-1, 5.0000), (0, 4.0000),
+    (1, 5.0000), (2, 8.0000), (3, 13.000), (4, 20.000), (5, 29.000), (6, 40.000), (7, 53.000)]
 
     """
     points = []
     for i in range(-7, 8):
         point = (i, polynomial.evalf(5, subs={x: i}))
         points.append(point)
-    return points
+    return points   # Ignore red line
 
 
 def all_differences(degree, points):
@@ -395,12 +398,22 @@ def finite_difference(polynomial):
     multiplier = factorial(degree)
     return multiplier * leading_coefficent
 
+
 def count_turning_points(polynomial):
+    """
+    Returns the number of turning points from <polynomial>
+
+    >>> count_turning_points(x + 1)
+    0
+    >>> count_turning_points(x**3 + x)
+    2
+    """
     x = symbols('x')
     derivative = diff(polynomial, x)
     critical_points = solve(derivative, x)
     turning_points = len(critical_points)
     return turning_points
+
 
 def characteristic(polynomial) -> str:
     """
@@ -416,7 +429,7 @@ def characteristic(polynomial) -> str:
     points = count_turning_points(polynomial)
 
     return_str = 'X-int: '
-    for x_point in x_intercept:
+    for x_point in x_intercept:     # Ignore red line
         return_str += f'{x_point}, '
     return_str = return_str[:-2]  # Take out last two elements
     return_str = return_str + '\n'
@@ -424,11 +437,11 @@ def characteristic(polynomial) -> str:
     return_str += f'y-int: {y_intercept} \n'
     return_str += f'Turning Points: {points}'
 
-    return return_str# \n does not work for return
+    return return_str  # \n does not work for return
 
 
-# TODO: Given variables that transform a function, return the equation, a,k,c,d values
-# This has the same problems with factorable polynomials where the creating the vertex form isn't always equally defined
+# TODO: This has the same problems with factorable polynomials where the creating the vertex form isn't always equally
+#  defined
 # for functions of varying degrees
 def transformation_of_function(parent, a: float, k: float, c: float, d: float) -> sympy.Function:
     """
@@ -460,14 +473,13 @@ def transformation_of_function(parent, a: float, k: float, c: float, d: float) -
     return new_func
 
 
-# TODO: Given some variables of A, K, C, D return text explaining what each does
-
 def transformation_explanation(a: float, k: float, c: float, d: float) -> list:
     """
     Return simple word descriptions of each transformation
 
     >>> transformation_explanation(-3, 2, 5, -1)
-    ['Vertically stretched by a factor of 3', 'Reflection in x-axis', 'Vertical translation 5 units upwards', 'Horizontally compressed by a factor of 1/2', 'Horziontal translation 1 units to the left']
+    ['Vertically stretched by a factor of 3', 'Reflection in x-axis', 'Vertical translation 5 units upwards',
+    'Horizontally compressed by a factor of 1/2', 'Horziontal translation 1 units to the left']
     """
     desc = []
     if abs(a) > 1:
@@ -490,7 +502,7 @@ def transformation_explanation(a: float, k: float, c: float, d: float) -> list:
         desc.append(f"Horizontal translation {float_to_fraction(abs(d))} units to the right")
     elif d < 0:
         desc.append(f"Horziontal translation {float_to_fraction(abs(d))} units to the left")
-    return desc 
+    return desc
 
 
 # TODO: return number of x-intercepts, turning points, least possible degree, any symmtery intervals
@@ -546,6 +558,7 @@ def translate_end_behavior(quadrant1, quadrant2):
     # Return the combined translation
     return f"For {quadrant1} -> {quadrant2}: {translation1} and {translation2}"
 
+
 def interval_notation_single(num, symbol, side):
     if side == "left":
         if symbol == "<":
@@ -566,6 +579,7 @@ def interval_notation_single(num, symbol, side):
         elif symbol == ">=":
             interval = "(-∞, " + str(num) + "]"
     return interval
+
 
 def interval_notation_between(num1, symbol1, num2, symbol2):
     if symbol1 == "<":
@@ -589,6 +603,7 @@ def interval_notation_between(num1, symbol1, num2, symbol2):
     interval = left_interval + right_interval
     return interval
 
+
 def generate_equation_fail_vertical_line_test():
     y = symbols('y')
     a = random.randint(-10, 10)
@@ -598,14 +613,15 @@ def generate_equation_fail_vertical_line_test():
     e = random.randint(-10, 10)
     f = random.randint(-10, 10)
     expression = Add(
-        Mul(a, y**2),
+        Mul(a, y ** 2),
         Mul(b, y),
         c,
-        Mul(d, y**3),
-        Mul(e, y**2),
+        Mul(d, y ** 3),
+        Mul(e, y ** 2),
         Mul(f, y)
     )
     return expression
+
 
 def generate_failed_vlt_points(num_points, same_x_points):
     points = set()
@@ -649,6 +665,7 @@ def generate_points(num_points):
 
     return points
 
+
 def generate_factorable_quadratic(leading_coefficient=1):
     x = symbols('x')
 
@@ -666,7 +683,7 @@ def generate_factorable_quadratic(leading_coefficient=1):
             b *= leading_coefficient
             c *= leading_coefficient
 
-        equation = a * x**2 + b * x + c
+        equation = a * x ** 2 + b * x + c
 
     elif method == 'difference_of_squares':
         # Generate quadratic using Difference of Squares method
@@ -677,7 +694,7 @@ def generate_factorable_quadratic(leading_coefficient=1):
             a *= leading_coefficient
             b *= leading_coefficient
 
-        equation = a * x**2 - b**2
+        equation = a * x ** 2 - b ** 2
 
     else:
         # Generate quadratic using decomposition method
@@ -690,15 +707,16 @@ def generate_factorable_quadratic(leading_coefficient=1):
             b *= leading_coefficient
             c *= leading_coefficient
 
-        equation = a * x**2 + b * x + c
+        equation = a * x ** 2 + b * x + c
 
     return expand(equation)
 
 
 def factor_quadratic_equation(equation):
     factored_equation = sympy.factor(equation)
-    
+
     return factored_equation
+
 
 def is_perfect_square(value):
     root = 1
@@ -708,25 +726,27 @@ def is_perfect_square(value):
         root += 1
     return False
 
-def quadractic_equation():    
+
+def quadractic_equation():
     a = random.randint(1, 10)
     b = random.randint(1, 10)
     c = random.randint(1, 10)
     d = random.randint(1, 10)
 
-    discriminant = b**2 - 4*a*(c-d)
+    discriminant = b ** 2 - 4 * a * (c - d)
 
     while discriminant != 0 and not is_perfect_square(discriminant):
         a = random.randint(1, 10)
         b = random.randint(1, 10)
         c = random.randint(1, 10)
         d = random.randint(1, 10)
-        discriminant = b**2 - 4*a*(c-d)
+        discriminant = b ** 2 - 4 * a * (c - d)
 
     x = symbols('x')
-    equation = Eq(a * x**2 + b * x + c, d)
+    equation = Eq(a * x ** 2 + b * x + c, d)
     solutions = solve(equation, x)
     return equation, solutions
+
 
 def find_vertex(expr):
     x = Symbol('x')
@@ -746,6 +766,7 @@ def find_vertex(expr):
 
     return vertex_form, (vertex_x, vertex_y)
 
+
 def points_to_string(points):
     """
     Converts a list of points into a string representation.
@@ -755,10 +776,12 @@ def points_to_string(points):
     points_string = ", ".join(point_strings)
     return points_string
 
+
 def factor_polynomial(polynomial):
     x = symbols('x')
     factored_polynomial = factor(polynomial, x)
     return factored_polynomial
+
 
 def float_to_fraction(number):
     fraction = Rational(number).limit_denominator()
@@ -798,12 +821,12 @@ def generate_random_polynomial_char():
         elif x == 2 and num_roots + 2 <= degree:
             root = random.randint(-10, 10)
             root_desc.append(f"Double root at x = {root}")
-            equation *= (sympy.Symbol('x') - root)**2  # Multiply the expression with (x - root)**2
+            equation *= (sympy.Symbol('x') - root) ** 2  # Multiply the expression with (x - root)**2
             num_roots += 2
         elif x == 3 and num_roots + 3 <= degree:
             root = random.randint(-10, 10)
             root_desc.append(f"Inflection point at x = {root}")
-            equation *= (sympy.Symbol('x') - root)**3  # Multiply the expression with (x - root)**3
+            equation *= (sympy.Symbol('x') - root) ** 3  # Multiply the expression with (x - root)**3
 
             num_roots += 3
 
@@ -820,7 +843,8 @@ def generate_random_polynomial_char():
         coefficient = "where a > 0"
     # where a > 0
     return pure, equation, equation_str, coefficient, root_desc, first_quadrant, second_quadrant, degree
-    
+
+
 def analyze_expression(expr):
     # Find x-intercepts
     x_intercepts = sympy.solve(expr, sympy.Symbol('x'))
@@ -855,6 +879,7 @@ def analyze_expression(expr):
         f"intervals positive: {intervals_positive_latex}",
         f"intervals negative: {intervals_negative_latex}"
     ]
+
 
 def analyze_expression2(expr):
     # Find x-intercepts
@@ -891,6 +916,7 @@ def analyze_expression2(expr):
         f"intervals negative: {intervals_negative_latex}"
     ]
 
+
 def solve_leading_coefficient(factored_equation, y_intercept):
     x = sympy.symbols('x')
     leading_coefficient = sympy.symbols('a')
@@ -914,9 +940,9 @@ def solve_leading_coefficient(factored_equation, y_intercept):
 
 
 # TODO: Chapter 0
-#Maybe add some more 'chapter 0' questions and answers such as
-#expanding, factoring, exponenet power rules, simplifying, solving 
-#simple quadractic and linear equations, exponent practice, lines
+# Maybe add some more 'chapter 0' questions and answers such as
+# expanding, factoring, exponenet power rules, simplifying, solving
+# simple quadractic and linear equations, exponent practice, lines
 
 # image of a graph that may or may not be function
 def function_or_not():
@@ -926,8 +952,8 @@ def function_or_not():
         coeffcient_range = (-10, 10)
         polynomial = generate_polynomial(degree, coeffcient_range)
         graph = latex(polynomial)
-        question=f"""Is this a function: """
-        answer=f"""Yes this passes the vertical line test."""
+        question = f"""Is this a function: """
+        answer = f"""Yes this passes the vertical line test."""
         question = Question(unit=1, topic="what is a function", question=question, answer=answer, graph=graph)
         session.add(question)
         session.commit()
@@ -935,11 +961,12 @@ def function_or_not():
         equation = generate_equation_fail_vertical_line_test()
         graph = latex(equation)
         # not latex ing properly
-        question=f"""Is this a function: """
-        answer=f"""No this fails the vertical line test."""
+        question = f"""Is this a function: """
+        answer = f"""No this fails the vertical line test."""
         question = Question(unit=1, topic="what is a function", question=question, answer=answer, graph=graph)
         session.add(question)
         session.commit()
+
 
 def function_or_not_points():
     x = random.randint(0, 1)
@@ -958,6 +985,7 @@ def function_or_not_points():
         session.add(question)
         session.commit()
 
+
 def convert_to_interval_notation_single():
     symbol = [">", "<", ">=", "<="]
     symbol_latex = [">", "<", "\geq", "\leq"]
@@ -965,21 +993,22 @@ def convert_to_interval_notation_single():
     num = random.randint(-50, 50)
     side_num = random.randint(0, 1)
     symbol_num = random.randint(0, 3)
-    
+
     inequality_latex = ""
     if side[side_num] == "left":
-        inequality_latex += "x " + symbol_latex[symbol_num] + f"{num}" 
+        inequality_latex += "x " + symbol_latex[symbol_num] + f"{num}"
         converted = interval_notation_single(num, symbol[symbol_num], side[side_num])
-        
+
     else:
         inequality_latex += f"{num} " + symbol_latex[symbol_num] + " x"
         converted = interval_notation_single(num, symbol[symbol_num], side[side_num])
-        
+
     question = f"""Convert this inequality into interval notation: {inequality_latex}"""
     answer = f"""x ∈ {converted}"""
-    question = Question(unit=1, topic="interval notation", question=question, answer=answer ,graph=None)
+    question = Question(unit=1, topic="interval notation", question=question, answer=answer, graph=None)
     session.add(question)
     session.commit()
+
 
 def convert_to_interval_notation_double():
     symbolss = (['<=', '<'], ['>', '>='])
@@ -997,7 +1026,7 @@ def convert_to_interval_notation_double():
         while num_1 == num_2 or num_1 < num_2:
             num_1 = random.randint(-50, 50)
             num_2 = random.randint(-50, 50)
-        
+
     symbol_1_num = random.randint(0, 1)
     symbol_2_num = random.randint(0, 1)
     symbol_1 = symbols[symbol_1_num]
@@ -1006,37 +1035,42 @@ def convert_to_interval_notation_double():
     symbol_2_latex = symbols_latex[symbol_2_num]
     inequality = f"""{num_1} {symbol_1_latex} X {symbol_2_latex} {num_2}"""
     converted = interval_notation_between(num_1, symbol_1, num_2, symbol_2)
-    
+
     question = f"""Convert this inequality into interval notation: {inequality}"""
     answer = f"""X ∈ {converted}"""
-    question = Question(unit=1, topic="interval notation", question=question, answer=answer ,graph=None)
+    question = Question(unit=1, topic="interval notation", question=question, answer=answer, graph=None)
     session.add(question)
     session.commit()
-    
-    
+
+
 def factoring():
     quadractic = generate_factorable_quadratic()
     solution = factor_quadratic_equation(quadractic)
-    
+
     question = f"""Factor: {latex(quadractic)}"""
     answer = f"""{latex(solution)}"""
-    question_to_add = Question(unit=1, topic="factoring quadractic equations", question=question, answer=answer, graph=None)
+    question_to_add = Question(unit=1, topic="factoring quadractic equations", question=question, answer=answer,
+                               graph=None)
     session.add(question_to_add)
     session.commit()
-    
+
+
 def solving_quadractic():
     equation, answer = quadractic_equation()
     question = f"""Solve: {latex(equation)}"""
     answer = f"""Answer: x ∈ {latex(answer)}"""
-    question_to_add = Question(unit=1, topic="solving quadratic equations", question=question, answer=answer, graph=None)
+    question_to_add = Question(unit=1, topic="solving quadratic equations", question=question, answer=answer,
+                               graph=None)
     session.add(question_to_add)
     session.commit()
-    
+
+
 # TODO: fix
 def complete_the_square_problem():
     quadractic = generate_factorable_quadratic()
     completed = complete_the_square(quadractic)
     print(completed)
+
 
 def degree_and_leading_coff():
     # NOTE: This will be unit 1, chapter 1, topic 1,
@@ -1115,33 +1149,35 @@ def odd_or_even():
 # TODO: domain and range of a function
 
 def domain_range():
-    types = [x**2, x**(1/2), 1/x]
+    types = [x ** 2, x ** (1 / 2), 1 / x]
     type_num = random.randint(0, 2)
     function_type = types[type_num]
     a = random.randint(-20, 20)
     d = random.randint(-20, 20)
     c = random.randint(-20, 20)
     k = random.randint(-20, 20)
-    while a == 0 or d == 0 or c == 0 or k==0:
+    while a == 0 or d == 0 or c == 0 or k == 0:
         a = random.randint(-20, 20)
         d = random.randint(-20, 20)
         c = random.randint(-20, 20)
         k = random.randint(-20, 20)
-    function = transformation_of_function(function_type, a, k, c ,d)
+    function = transformation_of_function(function_type, a, k, c, d)
     domain = function_domain(function)
     range = function_range(function)
     question = f"""What is the domain and range of this function: {latex(function)}"""
     answer = f"Domain: x ∈ {domain} Range: y ∈ {range}"
-    question_to_add = Question(unit=0, topic='domain and range of functions', question=question, answer=answer, graph=None)
+    question_to_add = Question(unit=0, topic='domain and range of functions', question=question, answer=answer,
+                               graph=None)
     session.add(question_to_add)
     session.commit()
+
 
 # Points are stored in the graph attribute
 def finite_differences_type_points():
     types = ['linear', 'quadractic', 'neither']
     differences = ['first', 'second', "neither first or second"]
     type_of_graph = random.randint(0, 2)
-    type_of_graph = 0 #delete this
+    type_of_graph = 0  # delete this
     coeffcient_range = (1, 4)
     if types[type_of_graph] == 1:
         degree = 1
@@ -1150,7 +1186,7 @@ def finite_differences_type_points():
         answer = all_differences(1, points)
     elif types[type_of_graph] == 2:
         degree = 2
-        
+
         polynomial = generate_polynomial(degree, coeffcient_range)
         points = points_of_polynomial(polynomial)
         answer = all_differences(1, points)
@@ -1165,7 +1201,8 @@ def finite_differences_type_points():
     question_to_add = Question(unit=0, topic="finite differences", question=question, answer=answer, graph=points)
     session.add(question_to_add)
     session.commit()
-    
+
+
 # degree of polynomial, find the value of leading coefficnet, and sign
 def finite_differences_continued():
     coefficent_range = (-7, 7)
@@ -1173,23 +1210,26 @@ def finite_differences_continued():
     polynomial = generate_polynomial(degree, coefficent_range)
     points = points_of_polynomial(polynomial)
     difference = all_differences(degree, points)[-1]
-    co = finite_difference(polynomial)/factorial(degree)
+    co = finite_difference(polynomial) / factorial(degree)
     points = points_to_string(points)
-    if co < 0: sign = "+" 
-    else: sign="-"
+    if co < 0:
+        sign = "+"
+    else:
+        sign = "-"
     question = f""""What is the leading coefficient and the sign of this polynomial given the table? """
     answer = f"""To find the leading coefficient, find the constant difference and divide it by the factorial of the degree. 
     The constant difference is {difference}. {difference}/{degree}! = {co}. Sign is {sign}. """
-    question_to_add = Question(unit=1, topic = "constant differences", question=question, answer=answer, graph=points)
+    question_to_add = Question(unit=1, topic="constant differences", question=question, answer=answer, graph=points)
     session.add(question_to_add)
     session.commit()
+
 
 def finite_differences_constant():
     coefficent_range = (-7, 7)
     degree = random.randint(2, 4)
     polynomial = generate_polynomial(degree, coefficent_range)
     constant_difference = finite_difference(polynomial)
-    co = finite_difference(polynomial)/factorial(degree)
+    co = finite_difference(polynomial) / factorial(degree)
     question = f"""Find which finite difference is constant and its value of this polynomial: {latex(polynomial)}"""
     answer = f"""Since the degree of the polynomial is {degree}, the {degree} differences will be constant. To find the 
     value of the constant difference, multiply the leading coefficient and the factorial of the degree. {degree}!*{co} = {constant_difference}"""
@@ -1197,78 +1237,87 @@ def finite_differences_constant():
     session.add(question_to_add)
     session.commit()
 
+
 # TODO: transformations of quadractic, vertex, charertistics
 # currently not working
 def quadractic_characteristics():
-    coefficient_range  = (-7, 7)
+    coefficient_range = (-7, 7)
     degree = 2
-    polynomial = generate_polynomial(degree,coefficient_range)
+    polynomial = generate_polynomial(degree, coefficient_range)
     print(find_vertex(polynomial))
+
 
 # TODO: Given image of graph, ask for the end behavior, even or odd, domain and range, symmetry. Table of intervals when function is positive, negative domain and range
 # Describe the transformations
 def transformations():
-    parent_functions = [x**2, x**3, x**(1/2), 1/x]
-    some_fracs = [1/2, 1/3, 1/4, -1/2, 1/2, -1/4, 1/5, -1/5, 2/6, 4/5]
+    parent_functions = [x ** 2, x ** 3, x ** (1 / 2), 1 / x]
+    some_fracs = [1 / 2, 1 / 3, 1 / 4, -1 / 2, 1 / 2, -1 / 4, 1 / 5, -1 / 5, 2 / 6, 4 / 5]
     function = random.choice(parent_functions)
     a = random.choice([random.randint(-10, -1), random.randint(1, 10), random.choice(some_fracs)])
     k = random.choice([random.randint(-10, -1), random.randint(1, 10), random.choice(some_fracs)])
     c = random.choice([random.randint(-10, -1), random.randint(1, 10), random.choice(some_fracs)])
     d = random.choice([random.randint(-10, -1), random.randint(1, 10), random.choice(some_fracs)])
-    transformed = transformation_of_function(function, a, k , c, d)
+    transformed = transformation_of_function(function, a, k, c, d)
     transformations = transformation_explanation(a, k, c, d)
-    transformations.extend([f"""a = {float_to_fraction(a)} c = {float_to_fraction(c)} d = {float_to_fraction(d)} k = {float_to_fraction(k)}"""])
+    transformations.extend([
+                               f"""a = {float_to_fraction(a)} c = {float_to_fraction(c)} d = {float_to_fraction(d)} k = {float_to_fraction(k)}"""])
     question = f"""Describe the transformations of the following function and find values of a, k, c, d: {latex(transformed)}"""
     answers = ', '.join(transformations)
     question_to_add = Question(unit=1, topic="transformations of polynomials", question=question, answer=answers)
     session.add(question_to_add)
     session.commit()
 
+
 # Given a description of the transformations of the parent function, write a function of it
 def transformations_2():
-    parent_functions = [x**2, x**3, x**(1/2), 1/x]
-    some_fracs = [1/2, 1/3, 1/4, -1/2, 1/2, -1/4, 1/5, -1/5, 2/6, 4/5]
+    parent_functions = [x ** 2, x ** 3, x ** (1 / 2), 1 / x]
+    some_fracs = [1 / 2, 1 / 3, 1 / 4, -1 / 2, 1 / 2, -1 / 4, 1 / 5, -1 / 5, 2 / 6, 4 / 5]
     function = random.choice(parent_functions)
     a = random.choice([random.randint(-10, -1), random.randint(1, 10), random.choice(some_fracs)])
     k = random.choice([random.randint(-10, -1), random.randint(1, 10), random.choice(some_fracs)])
     c = random.choice([random.randint(-10, -1), random.randint(1, 10), random.choice(some_fracs)])
     d = random.choice([random.randint(-10, -1), random.randint(1, 10), random.choice(some_fracs)])
-    transformed = transformation_of_function(function, a, k , c, d)
+    transformed = transformation_of_function(function, a, k, c, d)
     transformations = transformation_explanation(a, k, c, d)
     question = f"""Given the transformations of this parent function {latex(function)}, write the transformed equation for this function: {', '.join(transformations)}"""
     answer = f"""y = {latex(transformed)}"""
     question_to_add = Question(unit=1, topic="transformations of polynomials", question=question, answer=answer)
     session.add(question_to_add)
     session.commit()
-    
+
+
 # TODO: given the parent function and the transformed functions graph
 
 def transformations_3():
-    parent_functions = [x**2, x**3, x**(1/2), 1/x]
-    some_fracs = [1/2, 1/3, 1/4, -1/2, 1/2, -1/4, 1/5, -1/5, 2/6, 4/5]
+    parent_functions = [x ** 2, x ** 3, x ** (1 / 2), 1 / x]
+    some_fracs = [1 / 2, 1 / 3, 1 / 4, -1 / 2, 1 / 2, -1 / 4, 1 / 5, -1 / 5, 2 / 6, 4 / 5]
     function = random.choice(parent_functions)
     a = random.choice([random.randint(-10, -1), random.randint(1, 10), random.choice(some_fracs)])
     k = random.choice([random.randint(-10, -1), random.randint(1, 10), random.choice(some_fracs)])
     c = random.choice([random.randint(-10, -1), random.randint(1, 10), random.choice(some_fracs)])
     d = random.choice([random.randint(-10, -1), random.randint(1, 10), random.choice(some_fracs)])
-    transformed = transformation_of_function(function, a, k , c, d)
+    transformed = transformation_of_function(function, a, k, c, d)
     question = f"""Graph this function: {transformed}"""
-    question_to_add = Question(unit=1, topic="transformations of polynomial functions: graphing", question=question, answer=None, graph=latex(transformed))
+    question_to_add = Question(unit=1, topic="transformations of polynomial functions: graphing", question=question,
+                               answer=None, graph=latex(transformed))
     session.add(question_to_add)
     session.commit()
 
+
 # TODO: Given the graph, end behavior, x-intercepts, global maximia,
 # add other characteristics
-# Not working 
+# Not working
 def characteristics_1():
     polynomial = generate_random_polynomial_char()[0]
     polynomial = polynomial * random.sample([random.randint(-10, -1), random.randint(1, 10)], 1)[0]
     characteristics = analyze_expression(polynomial)
     question = f"""Find the degree, the coefficent, x-intercepts, and the intervals of this function: {latex(polynomial)}"""
     answer = ", ".join(characteristics)
-    question_to_add = Question(unit=1, topic="characteristics of polynomials from equation", question=question, answer=answer, graph=latex(polynomial))
+    question_to_add = Question(unit=1, topic="characteristics of polynomials from equation", question=question,
+                               answer=answer, graph=latex(polynomial))
     session.add(question_to_add)
     session.commit()
+
 
 # from graph
 def characteristics_2():
@@ -1277,11 +1326,14 @@ def characteristics_2():
     characteristics = analyze_expression2(polynomial)
     answer = ", ".join(characteristics)
     question = f"""Find the least possible degree, x-intercepts, and the intervals of this function based on the graph"""
-    question_to_add = Question(unit=1, chapter=1.4, topic="characteristics of polynomials from graph", question=question, answer=answer, graph=latex(polynomial))
+    question_to_add = Question(unit=1, chapter=1.4, topic="characteristics of polynomials from graph",
+                               question=question, answer=answer, graph=latex(polynomial))
     session.add(question_to_add)
     session.commit()
-    
-# TODO: Given equation Ask for degree, leading, coefficent end behaviour, possible number of turning points, x intercepts, y-ints.
+
+
+# TODO: Given equation Ask for degree, leading, coefficent end behaviour, possible number of turning points,
+#  x intercepts, y-ints.
 
 def characteristics_3():
     polynomial = generate_polynomial(random.randint(1, 10), [1, 10])
@@ -1293,47 +1345,53 @@ def characteristics_3():
     y_intercept = y_int(polynomial)
     answer = f"""{degree}, {lc}, {eb}, {tp}, {x_intercept}, {y_intercept}"""
 
-    question = f"""Find the degree, leading coefficient, end behaviour, possible number of turning points, x-intercepts and y-intercept of f(x) = {latex(polynomial)}"""
-    question_to_add = Question(unit=1, topic="characteristics of polynomials from graph", question=question, answer=answer, graph=None)
+    question = f"""Find the degree, leading coefficient, end behaviour, possible number of turning points, x-intercepts
+                and y-intercept of f(x) = {latex(polynomial)}"""
+    question_to_add = Question(unit=1, topic="characteristics of polynomials from graph", question=question,
+                               answer=answer, graph=None)
     session.add(question_to_add)
     session.commit()
-    
 
-# TODO: Given a image of a graph. Ask for leading coefficient, even or odd degree, end behaviour, symmetry, number of turning points, number x-intercepts, least possible degree intervals where f(x) <0 or f(x) > 0
+
+# TODO: Given a image of a graph. Ask for leading coefficient, even or odd degree, end behaviour, symmetry,
+#  number of turning points, number x-intercepts, least possible degree intervals where f(x) <0 or f(x) > 0
 
 def create_equation_chars():
     # Generate random polynomial characteristics
-    equation, equation_str, coefficient, root_desc, first_quadrant, second_quadrant, degree= generate_random_polynomial_char()
+    equation, equation_str, coefficient, root_desc, first_quadrant, second_quadrant, degree = generate_random_polynomial_char()
     question = f"""Write an polynomial based on the descriptions: Degree: {degree}, {', '.join(root_desc)}, Start quadrant: {first_quadrant} End quadrant: {second_quadrant} """
     answer = f"""Equation: {equation_str} {coefficient}"""
     question_to_add = Question(unit=1, topic="polynomial properties", question=question, answer=answer)
     session.add(question_to_add)
     session.commit()
 
+
 # TODO: Write an equation based on images* gotta figure out the details for this one
 
 def create_equation_from_image():
-    equation, equation_solve, equation_str, coefficient, root_desc, first_quadrant, second_quadrant, degree= generate_random_polynomial_char()
+    equation, equation_solve, equation_str, coefficient, root_desc, first_quadrant, second_quadrant, degree = generate_random_polynomial_char()
     question = f"""Write an polynomial equation based on the graph shown: """
     numerator = random.randint(-100, 100)
     denominator = random.randint(1, 100)
     rational_number = sympy.Rational(numerator, denominator)
-    equation = equation*rational_number
+    equation = equation * rational_number
     y_intercept = equation.subs(x, 0)
     while y_intercept == 0:
-        equation, equation_solve, equation_str, coefficient, root_desc, first_quadrant, second_quadrant, degree= generate_random_polynomial_char()
+        equation, equation_solve, equation_str, coefficient, root_desc, first_quadrant, second_quadrant, degree = generate_random_polynomial_char()
         numerator = random.randint(-100, 100)
         denominator = random.randint(1, 100)
         rational_number = sympy.Rational(numerator, denominator)
-        equation = equation*rational_number
+        equation = equation * rational_number
         y_intercept = equation.subs(x, 0)
     leading = solve_leading_coefficient(equation_solve, y_intercept)
     answer = f"""To write the polynomial equation based on the graph, first find the roots of the function and write the possible equation in factored form. Then find the y-intercept or some other point, sub it in and solve for the leading coefficent a. 
     In factored form, the potential polynomial equation is {equation_str}, where a is the leading coefficent. The y-intercept is {y_intercept}. Plug in (0, {y_intercept}) into the factored form and solve for a which is {leading}. Therefore, the equation 
     of this polynomial function is {equation}."""
-    question_to_add = Question(unit=1, topic="finding polynomial equation from graph", question=question, answer=answer, graph=latex(equation))
+    question_to_add = Question(unit=1, topic="finding polynomial equation from graph", question=question, answer=answer,
+                               graph=latex(equation))
     session.add(question_to_add)
     session.commit()
+
 
 # IROC, AROC
 
@@ -1349,6 +1407,7 @@ def IROC():
     session.add(question_to_add)
     session.commit()
 
+
 def AROC():
     coefficent_range = (-7, 7)
     degree = random.randint(1, 4)
@@ -1361,7 +1420,6 @@ def AROC():
     question_to_add = Question(unit=1, topic="average rate of change", question=question, answer=answer)
     session.add(question_to_add)
     session.commit()
-
 
 
 if __name__ == "__main__":

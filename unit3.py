@@ -12,12 +12,14 @@ from sympy.abc import x
 from sqlalchemy import create_engine, Column, Integer, String
 from sqlalchemy.orm import declarative_base, sessionmaker
 
-
 engine = create_engine("sqlite:///questions.db", echo=True)
 Base = declarative_base()
 
 
 class Question(Base):
+    """
+    ...
+    """
     __tablename__ = "Questions"
     id = Column(Integer, primary_key=True)
     unit = Column(Integer)
@@ -39,7 +41,9 @@ Session = sessionmaker(bind=engine)
 Session.configure(bind=engine)
 session = Session()
 
-def generate_rational(degree1: int, coefficient_range1: typing.Tuple[int, int], degree2: int, coefficient_range2: typing.Tuple[int, int]):
+
+def generate_rational(degree1: int, coefficient_range1: typing.Tuple[int, int], degree2: int,
+                      coefficient_range2: typing.Tuple[int, int]):
     """
     Generates rational function based on degree and coefficient_range.
     <degree1> and <coefficient_range1> is for the numerator.
@@ -51,7 +55,7 @@ def generate_rational(degree1: int, coefficient_range1: typing.Tuple[int, int], 
     - coefficient_range1[0] <= coefficient_range1[1] and coefficient_range2[0] <= coefficient_range2[1]
     """
     numerator = unit1.generate_polynomial(degree1, coefficient_range1)
-    denominator = unit1.generate_polynomial(degree1, coefficient_range1)
+    denominator = unit1.generate_polynomial(degree2, coefficient_range2)
     return numerator / denominator
 
 
@@ -68,7 +72,8 @@ def generate_rational_linear(constant: int, degree: int, coefficient_range: typi
     return constant / (unit1.generate_polynomial(degree, coefficient_range))
 
 
-def generate_factorable_rational(degree1: int, coefficient_range1: typing.Tuple[int, int], degree2: int, coefficient_range2: typing.Tuple[int, int]):
+def generate_factorable_rational(degree1: int, coefficient_range1: typing.Tuple[int, int], degree2: int,
+                                 coefficient_range2: typing.Tuple[int, int]):
     """
     Generates factorable rational function based on degree and coefficient_range.
     <degree1> and <coefficient_range1> is for the numerator.
@@ -85,12 +90,11 @@ def generate_factorable_rational(degree1: int, coefficient_range1: typing.Tuple[
         numerator *= unit1.generate_polynomial(1, coefficient_range1)
         i1 += 1
     denominator = unit1.generate_polynomial(1, coefficient_range2)
-    while i2 < degree1:
+    while i2 < degree2:
         denominator *= unit1.generate_polynomial(1, coefficient_range2)
         i2 += 1
-    
+
     return numerator / denominator
-    
 
 
 def pos_neg_rational(rational) -> list:
@@ -140,9 +144,6 @@ def rational_range(rational) -> str:
     return sympy.printing.pretty(Range)
 
 
-# TODO: graph of rational function
-
-
 def inc_dec_rational(rational) -> list:
     """
     Returns the intervals where the rational function is increasing or decreasing.
@@ -170,7 +171,7 @@ def vertical_asymptote(rational) -> sympy.Set:
     >>> vertical_asymptote(3/(x**2 - 1))
     {-1, 1}
     """
-    n, d = sympy.fraction(rational)
+    _, d = sympy.fraction(rational)
     return sympy.solveset(d, x, sympy.S.Reals)
 
 
@@ -228,7 +229,7 @@ def attribute(rational):
     h_asympototes = horizontal_asymptote(rational)
 
     return_str = 'x-int: '
-    for x_point in x_intercept:
+    for x_point in x_intercept:     # Ignore red line
         return_str += f'{x_point}, '
     return_str = return_str[:-2]  # Take out last two elements
     return_str = return_str + '\n'
@@ -236,7 +237,7 @@ def attribute(rational):
     return_str += f'y-int: {y_intercept} \n'
 
     return_str += 'VA: '
-    for va in v_asymptotes:
+    for va in v_asymptotes:     # Ignore red line
         return_str += f'{va}, '
     return_str = return_str[:-2]  # Take out last two elements
     return_str = return_str + '\n'
@@ -289,7 +290,8 @@ def generate_oblique1(coefficient_range1: typing.Tuple[int, int], coefficient_ra
     return numerator / denominator
 
 
-def generate_oblique2(degree: int, coefficient_range1: typing.Tuple[int, int], coefficient_range2: typing.Tuple[int, int]):
+def generate_oblique2(degree: int, coefficient_range1: typing.Tuple[int, int],
+                      coefficient_range2: typing.Tuple[int, int]):
     """
     Generates a rational function with a oblique asymptote.
     Numerator has a degree of <degree> + 1 while the denominator has a degree of <degree>.
@@ -338,9 +340,9 @@ def evaluate_rational(rational, value) -> sympy.Set:
 # Question Functions
 ###############################################################################
 
-# TODO: Domain, range of reciprocol function. 
+# TODO: Domain, range of reciprocol function.
 
-# TODO: Intercepts of reciprocol function. 
+# TODO: Intercepts of reciprocol function.
 
 # TODO: Asymptotes of recirpcol functions
 

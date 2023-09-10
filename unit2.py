@@ -20,6 +20,9 @@ Base = declarative_base()
 
 
 class Question(Base):
+    """
+    ...
+    """
     __tablename__ = "Questions"
     id = Column(Integer, primary_key=True)
     unit = Column(Integer)
@@ -55,7 +58,7 @@ def quotient(polynomial1, polynomial2):
     """
     f = polynomial1
     g = polynomial2
-    q, r = sympy.div(f, g, domain='QQ')
+    q, _ = sympy.div(f, g, domain='QQ')
     return q
 
 
@@ -73,11 +76,11 @@ def remainder(polynomial1, polynomial2):
     """
     f = polynomial1
     g = polynomial2
-    q, r = sympy.div(f, g, domain='QQ')
+    _, r = sympy.div(f, g, domain='QQ')
     return r
 
 
-def factorable(degree: int, coefficient_range: typing.Tuple[int, int]) -> typing.Dict:
+def factorable(degree: int, coefficient_range: typing.Tuple[int, int]):
     """
     Returns a polynomial function that is factorable and the answers in the format of:
     {polynomial: [answers]}
@@ -85,7 +88,7 @@ def factorable(degree: int, coefficient_range: typing.Tuple[int, int]) -> typing
     function_so_far = 1
     for _ in range(degree):
         function_so_far *= unit1.generate_polynomial(1, coefficient_range)
-    return {expand(function_so_far): solve(function_so_far)}
+    return expand(function_so_far), solve(function_so_far)
 
 
 def generate_poly_big_small1(degree, coefficient_range: typing.Tuple[int, int]) -> list:
@@ -136,21 +139,10 @@ def find_remainder(big_poly, small_poly):
 # TODO: Generate two functions where the bigger one has a constant K, and with the remainder for questions
 # that ask what the coffeicent is given the constant and the two functions that divide
 
-# NOTE: It would be better if we could actually show the steps to divide the function using long or synthetic divison
-# TODO: synthetic(short) division. Given a polynomial and a bionomial function
-
-# TODO: long division Given a polynomial and a bionomial function
-
-# TODO: factor theorem stuff
-"""Factoor theorem states that x-b is a factor of polynomial P(x) iff P(b) = 0 
-and ax-b is a factor if P(b/a) = 0 """
-
-"""What we could do is, already create some factors given a degree, than expand it and return the full equation"""
-
 
 def is_factor(polynomial: Poly, factor: float) -> bool:
     """
-    Return whether or not <factor> is a factor of the polynomial <polynomial>
+    Return whether <factor> is a factor of the polynomial <polynomial>
 
     >>> is_factor(x**2, 0)
     True
@@ -159,7 +151,7 @@ def is_factor(polynomial: Poly, factor: float) -> bool:
     >>> is_factor(x**2, 1)
     False
     """
-    if (polynomial.subs(x, factor) == 0):
+    if (polynomial.subs(x, factor) == 0):   # Brackets are necessary
         return True
     return False
 
@@ -204,7 +196,6 @@ def generate_quartic(coefficient_range: typing.Tuple[int, int]):
     return sympy.expand(f * g * h * k)
 
 
-# TODO: rational zero theorem
 def rational_zero(polynomial: sympy.Poly, a: int, b: int) -> bool:
     """
     Return whether <b>/<a> is a zero for the polynomial <polynomial>
@@ -218,8 +209,7 @@ def rational_zero(polynomial: sympy.Poly, a: int, b: int) -> bool:
     True
     """
     return polynomial.subs(x, b/a) == 0
-# TODO: given a polynomial fucntion. a is the leading coffeicnet. b is the constant.
-# The possible factors of a function is any combination of facotrs of b/factors of a.
+
 
 def find_factors(x: int) -> list[int]:
     """
@@ -449,11 +439,40 @@ def factor_difference_sum_of_cubes():
 # TODO: Solve with long division
 
 def div1():
-    pass
+    degree = random.randint(2, 4)
+    coeffcient_range = (-10, 10)
+    while(coeffcient_range == 0):
+        coeffcient_range = (-10, 10)
+    polynomials = generate_poly_big_small1(degree, coeffcient_range)
+    polynomial1 = polynomials[0]
+    polynomial2 = polynomials[1]
+    remainder = find_remainder(polynomial2, polynomial1)
+    answer = quotient(polynomial2, polynomial1) + remainder/polynomial1
+    question = f"""Use long or synthetic division to divide the following polynomials. {sympy.latex(polynomial2)} / {sympy.latex(polynomial1)}"""
+    question_to_add = Question(unit=2, topic="Dividing Polynomials By Monomials", question=question, answer=answer)
+    session.add(question_to_add)
+    session.commit()
 
 # TODO: Determine whether each given value of x is a zero of the given function
 
 # TODO: Factor fully
+
+def factor_fully():
+    degree = random.randint(2, 4)
+    coeffcient_range = (-10, 10)
+    while(coeffcient_range == 0):
+        coeffcient_range = (-10, 10)
+    eq = factorable(degree, coeffcient_range)
+    factors = eq[1]
+    leading = find_leading_coefficient_and_constant(eq[0])
+    print(leading)
+    question = f"""Factor fully, using long or synthetic division if needed: {sympy.latex(eq[0])}. """
+    answer = f"""Follow the following steps: 1) Factor out the greatest common factor 2) If left with a cubic or greater function to factor, 
+    find possible factors to divide the polynomial using the rational zero theorem 3) Divide using one of the factors 
+    is a zero to the polynomial. 4) Keep dividing to factor even further if necessary. Answer: {sympy.factor(eq[0])} """
+    print(question)
+    print(answer)
+
 
 # TODO: Solve the following polynomials by factoring
 

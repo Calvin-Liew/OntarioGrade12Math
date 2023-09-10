@@ -12,12 +12,14 @@ from sympy import pi, sin, cos, tan, csc, sec, cot
 from sqlalchemy import create_engine, Column, Integer, String
 from sqlalchemy.orm import declarative_base, sessionmaker
 
-
 engine = create_engine("sqlite:///questions.db", echo=True)
 Base = declarative_base()
 
 
 class Question(Base):
+    """
+    ...
+    """
     __tablename__ = "Questions"
     id = Column(Integer, primary_key=True)
     unit = Column(Integer)
@@ -40,10 +42,7 @@ Session.configure(bind=engine)
 session = Session()
 
 
-
-# TODOS:
-
-# Remember period, cycle, amp
+# TODO: period, cycle, amp
 
 
 def generate_trig(trig_function, a: float, k: float, c: float, d: float) -> sympy.sin | sympy.cos | sympy.tan:
@@ -96,7 +95,7 @@ def transformation_explanation(a: float, k: float, c: float, d: float) -> list:
 
 def generate_cycle_trig():
     """
-    Generates a trigonometry function but it restrict it to one cycle
+    Generates a trigonometry function, but it restricts it to one cycle
     """
     raise NotImplementedError
 
@@ -111,7 +110,7 @@ def trig_domain(trig_function):
     'ℝ'
     """
     domain = sympy.calculus.util.continuous_domain(trig_function, x, sympy.S.Reals)
-    print(sympy.printing.pretty(domain)) 
+    print(sympy.printing.pretty(domain))
 
 
 def trig_range(trig_function) -> str:
@@ -127,56 +126,58 @@ def trig_range(trig_function) -> str:
     return sympy.printing.pretty(Range)
 
 
-def trig_max(trig_function, start, end, step=0.01) -> float:
-    """
-    Returns the max value of <trig_function>.
-    <start> is the start of range and <end> is the end of range.
+# TODO: Fix these three functions
 
-    """
-    max_value = float('-inf')
-
-    for x in range(int(start * 100), int(end * 100), int(step * 100)):
-        x_value = x / 100.0  # Convert back to radians
-        y_value = function(x_value)
-        max_value = max(max_value, y_value)
-    
-    return max_value
-
-
-def trig_min(trig_function, start, end, step=0.01) -> float:
-    """
-    Returns the min value of <trig_function>.
-    <start> is the start of range and <end> is the end of range.
-
-    """
-    min_value = float('inf')
-
-    for x in range(int(start * 100), int(end * 100), int(step * 100)):
-        x_value = x / 100.0  # Convert back to radians
-        y_value = function(x_value)
-        min_value = min(min_value, y_value)
-    
-    return min_value
-
-
-def trig_characteristic1(trig_function) -> str:
-    """
-    Prints the characteristics of <trig_function>.
-    These attributes include amplitude, max, min, axis of the curve, domain and range.
-
-    Preconditions:
-    - trig_function is either a sin, cos or tan function
-    """
-
-    # axis is adding (max + min) / 2
-    max_value = trig_max(trig_function)
-    min_value = trig_min(trig_function)
-    axis_value = (max + min) / 2
-    domain = trig_domain(trig_function)
-    range = trig_domain(trig_function)
-
-    return_str = f'Max: {max_value} \n Min: {min_value} \n Axis: {axis_value} \n Domain: {domain} \n Range: {range}'
-    return return_str
+# def trig_max(trig_function, start, end, step=0.01) -> float:
+#     """
+#     Returns the max value of <trig_function>.
+#     <start> is the start of range and <end> is the end of range.
+#
+#     """
+#     max_value = float('-inf')
+#
+#     for x in range(int(start * 100), int(end * 100), int(step * 100)):
+#         x_value = x / 100.0  # Convert back to radians
+#         y_value = trig_function(x_value)
+#         max_value = max(max_value, y_value)
+#
+#     return max_value
+#
+#
+# def trig_min(trig_function, start, end, step=0.01) -> float:
+#     """
+#     Returns the min value of <trig_function>.
+#     <start> is the start of range and <end> is the end of range.
+#
+#     """
+#     min_value = float('inf')
+#
+#     for x in range(int(start * 100), int(end * 100), int(step * 100)):
+#         x_value = x / 100.0  # Convert back to radians
+#         y_value = function(x_value)
+#         min_value = min(min_value, y_value)
+#
+#     return min_value
+#
+#
+# def trig_characteristic1(trig_function) -> str:
+#     """
+#     Prints the characteristics of <trig_function>.
+#     These attributes include amplitude, max, min, axis of the curve, domain and range.
+#
+#     Preconditions:
+#     - trig_function is either a sin, cos or tan function
+#     """
+#
+#     # axis is adding (max + min) / 2
+#     max_value = trig_max(trig_function)
+#     min_value = trig_min(trig_function)
+#     axis_value = (max + min) / 2
+#     domain = trig_domain(trig_function)
+#     range = trig_domain(trig_function)
+#
+#     return_str = f'Max: {max_value} \n Min: {min_value} \n Axis: {axis_value} \n Domain: {domain} \n Range: {range}'
+#     return return_str
 
 
 # TODO: Characterisitcs of reciproocl trig graphs, domain, range
@@ -246,7 +247,7 @@ def trig_iroc(trig_function, x1) -> float:
 
 # TODO: AROC IROC
 
-# TODO: Determine interval where function is greater 
+# TODO: Determine interval where function is greater
 
 if __name__ == "__main__":
     import doctest

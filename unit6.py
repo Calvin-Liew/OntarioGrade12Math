@@ -15,12 +15,14 @@ from unit1 import float_to_fraction
 from sqlalchemy import create_engine, Column, Integer, String
 from sqlalchemy.orm import declarative_base, sessionmaker
 
-
 engine = create_engine("sqlite:///questions.db", echo=True)
 Base = declarative_base()
 
 
 class Question(Base):
+    """
+    ...
+    """
     __tablename__ = "Questions"
     id = Column(Integer, primary_key=True)
     unit = Column(Integer)
@@ -69,7 +71,7 @@ def quotient_rule(exp_list: list[float]) -> list[str, sympy.Poly]:
     """
     Returns the expanded and simplified form of the quotient of a series of powers.
     The expanded form is a string in latex. <exp_list> is the list of the exponents.
-    
+
     >>> quotient_rule([10, 3, 1])
     ['x^10/x^3/x', x**6]
     """
@@ -79,7 +81,6 @@ def quotient_rule(exp_list: list[float]) -> list[str, sympy.Poly]:
         full += '/' + sympy.latex(x ** exp)
         simplified /= x ** exp
     return [full, simplified]
-
 
 
 def power_rule(exp_list: list[float, float]) -> list[str, sympy.Poly]:
@@ -92,11 +93,13 @@ def power_rule(exp_list: list[float, float]) -> list[str, sympy.Poly]:
     simplified = (x ** exp_list[0]) ** exp_list[1]
     return [full, simplified]
 
+
 # TODO: transformations of exponention functions
 
 # TODO: explanation of transformations
 
-# TODO: generating exponent equations. ex. 4^2x = 16^2x-1. Yeah have fun with this. You gotta think about how to make some nice equations that are easy to solve for x. Make sure they are same base.
+# TODO: generating exponent equations. ex. 4^2x = 16^2x-1. Yeah have fun with this. You gotta think about how to make
+#  some nice equations that are easy to solve for x. Make sure they are same base.
 
 # TODO: more complicated simplifying equatiosn using all three expoent rules.
 
@@ -106,14 +109,14 @@ def power_rule(exp_list: list[float, float]) -> list[str, sympy.Poly]:
 # TODO: rewrite into log stuff. Generate a exponential equation like 5^2=25 and rewrite in log ie. Log5. Need both sides
 
 
-def log_to_exp(base: float, arg: float) :
+def log_to_exp(base: float, arg: float):
     """
     Rewrites log to exponential form
 
     >>> log_to_exp(2, 16)
     '2^4 = 16'
     """
-    
+
     # return sympy.log.inverse(log(arg, base))
     exponent = log(arg, base)
     return f'{base}^{exponent} = {arg}'
@@ -174,7 +177,7 @@ def generate_log(base_range: typing.Tuple[int, int]):
 #         desc.append(f"Horizontal translation {float_to_fraction(abs(d))} units to the right")
 #     elif d < 0:
 #         desc.append(f"Horziontal translation {float_to_fraction(abs(d))} units to the left")
-#     return desc 
+#     return desc
 
 
 def exp_domain(exp_function) -> str:
@@ -223,32 +226,34 @@ def log_range(exp_function) -> str:
 
 def log_product(log1: typing.Tuple[float], log2: typing.Tuple[float]) -> list:
     """
-    Evaluates the log product law of logarithms (shows both sides). 
-    log1[0] is the base for the first log and 
+    Evaluates the log product law of logarithms (shows both sides).
+    log1[0] is the base for the first log and
     log1[1] is the argument for the first log.
-    log2[0] is the base for the second log and 
+    log2[0] is the base for the second log and
     log2[1] is the argument for the second log.
 
     Preconditions:
     - len(log1) == 2
     - len(log2) == 2
     """
-    return [sympy.log(log1[0], log1[1]) + sympy.log(log2[0], log2[1]), sympy.logcombine(sympy.log(log1[0], log1[1]) + sympy.log(log2[0], log2[1]))]
+    return [sympy.log(log1[0], log1[1]) + sympy.log(log2[0], log2[1]),
+            sympy.logcombine(sympy.log(log1[0], log1[1]) + sympy.log(log2[0], log2[1]))]
 
 
 def log_quotient(log1: typing.Tuple[float], log2: typing.Tuple[float]) -> list:
     """
-    Evaluates the log quotient law of logarithms (shows both sides). 
-    log1[0] is the base for the first log and 
+    Evaluates the log quotient law of logarithms (shows both sides).
+    log1[0] is the base for the first log and
     log1[1] is the argument for the first log.
-    log2[0] is the base for the second log and 
+    log2[0] is the base for the second log and
     log2[1] is the argument for the second log.
 
     Preconditions:
     - len(log1) == 2
     - len(log2) == 2
     """
-    return [sympy.log(log1[0], log1[1]) - sympy.log(log2[0], log2[1]), sympy.logcombine(sympy.log(log1[0], log1[1]) - sympy.log(log2[0], log2[1]))]
+    return [sympy.log(log1[0], log1[1]) - sympy.log(log2[0], log2[1]),
+            sympy.logcombine(sympy.log(log1[0], log1[1]) - sympy.log(log2[0], log2[1]))]
 
 
 # TODO: log rule evaluation. create some equations like log2(4)+log2(8)=5. Need both sides
@@ -256,8 +261,8 @@ def log_quotient(log1: typing.Tuple[float], log2: typing.Tuple[float]) -> list:
 
 def log_power(log1: typing.Tuple[float], power: int) -> list:
     """
-    Evaluates the log power law of logarithms (shows both sides). 
-    log1[0] is the base for the first log and 
+    Evaluates the log power law of logarithms (shows both sides).
+    log1[0] is the base for the first log and
     log1[1] is the argument for the first log.
 
     Preconditions:

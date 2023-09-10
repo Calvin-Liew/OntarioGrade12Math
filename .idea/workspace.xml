@@ -6,8 +6,16 @@
   <component name="ChangeListManager">
     <list default="true" id="854ee2b1-e6f4-40b1-ab45-e99e069897bb" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/questions.db" beforeDir="false" afterPath="$PROJECT_DIR$/questions.db" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/unit1.py" beforeDir="false" afterPath="$PROJECT_DIR$/unit1.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/unit2.py" beforeDir="false" afterPath="$PROJECT_DIR$/unit2.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/unit3.py" beforeDir="false" afterPath="$PROJECT_DIR$/unit3.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/unit4.py" beforeDir="false" afterPath="$PROJECT_DIR$/unit4.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/unit5.py" beforeDir="false" afterPath="$PROJECT_DIR$/unit5.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/unit6.py" beforeDir="false" afterPath="$PROJECT_DIR$/unit6.py" afterDir="false" />
+    </list>
+    <list id="0c365f60-9bf4-4894-bcb2-e9a21111d1aa" name="Changes by calvi" comment="">
+      <change beforePath="$PROJECT_DIR$/unit2.py" beforeDir="false" afterPath="$PROJECT_DIR$/unit2.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/unit5.py" beforeDir="false" afterPath="$PROJECT_DIR$/unit5.py" afterDir="false" />
     </list>
     <list id="003add84-11ae-4f85-9180-2fc76824d1ac" name="Changes by calvin" comment="" />
     <option name="SHOW_DIALOG" value="false" />
@@ -17,6 +25,36 @@
   </component>
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+  </component>
+  <component name="LineStatusTrackerManager">
+    <file path="$PROJECT_DIR$/unit2.py">
+      <ranges>
+        <range start1="22" end1="22" start2="22" end2="25" changelist="854ee2b1-e6f4-40b1-ab45-e99e069897bb" />
+        <range start1="57" end1="58" start2="60" end2="61" changelist="854ee2b1-e6f4-40b1-ab45-e99e069897bb" />
+        <range start1="75" end1="76" start2="78" end2="79" changelist="854ee2b1-e6f4-40b1-ab45-e99e069897bb" />
+        <range start1="79" end1="80" start2="82" end2="83" changelist="0c365f60-9bf4-4894-bcb2-e9a21111d1aa" />
+        <range start1="87" end1="88" start2="90" end2="91" changelist="0c365f60-9bf4-4894-bcb2-e9a21111d1aa" />
+        <range start1="138" end1="149" start2="141" end2="141" changelist="0c365f60-9bf4-4894-bcb2-e9a21111d1aa" />
+        <range start1="152" end1="153" start2="144" end2="145" changelist="854ee2b1-e6f4-40b1-ab45-e99e069897bb" />
+        <range start1="161" end1="162" start2="153" end2="154" changelist="854ee2b1-e6f4-40b1-ab45-e99e069897bb" />
+        <range start1="206" end1="207" start2="198" end2="198" changelist="854ee2b1-e6f4-40b1-ab45-e99e069897bb" />
+        <range start1="220" end1="222" start2="211" end2="212" changelist="854ee2b1-e6f4-40b1-ab45-e99e069897bb" />
+        <range start1="451" end1="452" start2="441" end2="454" changelist="0c365f60-9bf4-4894-bcb2-e9a21111d1aa" />
+        <range start1="456" end1="456" start2="458" end2="476" changelist="0c365f60-9bf4-4894-bcb2-e9a21111d1aa" />
+      </ranges>
+    </file>
+    <file path="$PROJECT_DIR$/unit5.py">
+      <ranges>
+        <range start1="14" end1="15" start2="14" end2="14" changelist="854ee2b1-e6f4-40b1-ab45-e99e069897bb" />
+        <range start1="20" end1="20" start2="19" end2="22" changelist="854ee2b1-e6f4-40b1-ab45-e99e069897bb" />
+        <range start1="42" end1="46" start2="44" end2="45" changelist="854ee2b1-e6f4-40b1-ab45-e99e069897bb" />
+        <range start1="98" end1="99" start2="97" end2="98" changelist="854ee2b1-e6f4-40b1-ab45-e99e069897bb" />
+        <range start1="113" end1="114" start2="112" end2="113" changelist="854ee2b1-e6f4-40b1-ab45-e99e069897bb" />
+        <range start1="129" end1="165" start2="128" end2="129" changelist="854ee2b1-e6f4-40b1-ab45-e99e069897bb" />
+        <range start1="166" end1="179" start2="130" end2="180" changelist="854ee2b1-e6f4-40b1-ab45-e99e069897bb" />
+        <range start1="248" end1="249" start2="249" end2="250" changelist="0c365f60-9bf4-4894-bcb2-e9a21111d1aa" />
+      </ranges>
+    </file>
   </component>
   <component name="MarkdownSettingsMigration">
     <option name="stateVersion" value="1" />
@@ -29,26 +67,48 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent"><![CDATA[{
-  "keyToString": {
-    "RunOnceActivity.OpenProjectViewOnStart": "true",
-    "RunOnceActivity.ShowReadmeOnStart": "true",
-    "WebServerToolWindowFactoryState": "false",
-    "codeWithMe.voiceChat.enabledByDefault": "false",
-    "git-widget-placeholder": "main",
-    "node.js.detected.package.eslint": "true",
-    "node.js.detected.package.tslint": "true",
-    "node.js.selected.package.eslint": "(autodetect)",
-    "node.js.selected.package.tslint": "(autodetect)",
-    "settings.editor.selected.configurable": "com.github.copilot.settings.ApplicationConfigurable",
-    "vue.rearranger.settings.migration": "true"
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;WebServerToolWindowFactoryState&quot;: &quot;false&quot;,
+    &quot;codeWithMe.voiceChat.enabledByDefault&quot;: &quot;false&quot;,
+    &quot;git-widget-placeholder&quot;: &quot;main&quot;,
+    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
+    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
+    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
+    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
+    &quot;settings.editor.selected.configurable&quot;: &quot;com.github.copilot.settings.ApplicationConfigurable&quot;,
+    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
   }
-}]]></component>
-  <component name="RunManager" selected="Python.unit2">
+}</component>
+  <component name="RunManager" selected="Python.unit6">
+    <configuration name="unit1" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
+      <module name="OntarioGrade12Math" />
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
+      <option name="IS_MODULE_SDK" value="true" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <EXTENSION ID="PythonCoverageRunConfigurationExtension" runner="coverage.py" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/unit1.py" />
+      <option name="PARAMETERS" value="" />
+      <option name="SHOW_COMMAND_LINE" value="false" />
+      <option name="EMULATE_TERMINAL" value="false" />
+      <option name="MODULE_MODE" value="false" />
+      <option name="REDIRECT_INPUT" value="false" />
+      <option name="INPUT_FILE" value="" />
+      <method v="2" />
+    </configuration>
     <configuration name="unit2" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
       <module name="OntarioGrade12Math" />
       <option name="INTERPRETER_OPTIONS" value="" />
       <option name="PARENT_ENVS" value="true" />
+      <envs>
+        <env name="PYTHONUNBUFFERED" value="1" />
+      </envs>
       <option name="SDK_HOME" value="" />
       <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
       <option name="IS_MODULE_SDK" value="true" />
@@ -64,13 +124,48 @@
       <option name="INPUT_FILE" value="" />
       <method v="2" />
     </configuration>
+    <configuration name="unit3" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
+      <module name="OntarioGrade12Math" />
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
+      <option name="IS_MODULE_SDK" value="true" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <EXTENSION ID="PythonCoverageRunConfigurationExtension" runner="coverage.py" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/unit3.py" />
+      <option name="PARAMETERS" value="" />
+      <option name="SHOW_COMMAND_LINE" value="false" />
+      <option name="EMULATE_TERMINAL" value="false" />
+      <option name="MODULE_MODE" value="false" />
+      <option name="REDIRECT_INPUT" value="false" />
+      <option name="INPUT_FILE" value="" />
+      <method v="2" />
+    </configuration>
+    <configuration name="unit5" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
+      <module name="OntarioGrade12Math" />
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
+      <option name="IS_MODULE_SDK" value="true" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <EXTENSION ID="PythonCoverageRunConfigurationExtension" runner="coverage.py" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/unit5.py" />
+      <option name="PARAMETERS" value="" />
+      <option name="SHOW_COMMAND_LINE" value="false" />
+      <option name="EMULATE_TERMINAL" value="false" />
+      <option name="MODULE_MODE" value="false" />
+      <option name="REDIRECT_INPUT" value="false" />
+      <option name="INPUT_FILE" value="" />
+      <method v="2" />
+    </configuration>
     <configuration name="unit6" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
       <module name="OntarioGrade12Math" />
       <option name="INTERPRETER_OPTIONS" value="" />
       <option name="PARENT_ENVS" value="true" />
-      <envs>
-        <env name="PYTHONUNBUFFERED" value="1" />
-      </envs>
       <option name="SDK_HOME" value="" />
       <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
       <option name="IS_MODULE_SDK" value="true" />
@@ -86,73 +181,13 @@
       <option name="INPUT_FILE" value="" />
       <method v="2" />
     </configuration>
-    <configuration name="unit7" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
-      <module name="OntarioGrade12Math" />
-      <option name="INTERPRETER_OPTIONS" value="" />
-      <option name="PARENT_ENVS" value="true" />
-      <envs>
-        <env name="PYTHONUNBUFFERED" value="1" />
-      </envs>
-      <option name="SDK_HOME" value="" />
-      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
-      <option name="IS_MODULE_SDK" value="true" />
-      <option name="ADD_CONTENT_ROOTS" value="true" />
-      <option name="ADD_SOURCE_ROOTS" value="true" />
-      <EXTENSION ID="PythonCoverageRunConfigurationExtension" runner="coverage.py" />
-      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/unit7.py" />
-      <option name="PARAMETERS" value="" />
-      <option name="SHOW_COMMAND_LINE" value="false" />
-      <option name="EMULATE_TERMINAL" value="false" />
-      <option name="MODULE_MODE" value="false" />
-      <option name="REDIRECT_INPUT" value="false" />
-      <option name="INPUT_FILE" value="" />
-      <method v="2" />
-    </configuration>
-    <configuration name="Doctests in unit1 (1)" type="tests" factoryName="Doctests" temporary="true" nameIsGenerated="true">
-      <module name="OntarioGrade12Math" />
-      <option name="INTERPRETER_OPTIONS" value="" />
-      <option name="PARENT_ENVS" value="true" />
-      <option name="SDK_HOME" value="" />
-      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
-      <option name="IS_MODULE_SDK" value="true" />
-      <option name="ADD_CONTENT_ROOTS" value="true" />
-      <option name="ADD_SOURCE_ROOTS" value="true" />
-      <EXTENSION ID="PythonCoverageRunConfigurationExtension" runner="coverage.py" />
-      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/unit1.py" />
-      <option name="CLASS_NAME" value="" />
-      <option name="METHOD_NAME" value="" />
-      <option name="FOLDER_NAME" value="" />
-      <option name="TEST_TYPE" value="TEST_SCRIPT" />
-      <option name="PATTERN" value="" />
-      <option name="USE_PATTERN" value="false" />
-      <method v="2" />
-    </configuration>
-    <configuration name="Doctests in unit1" type="tests" factoryName="Doctests" temporary="true" nameIsGenerated="true">
-      <module name="OntarioGrade12Math" />
-      <option name="INTERPRETER_OPTIONS" value="" />
-      <option name="PARENT_ENVS" value="true" />
-      <option name="SDK_HOME" value="" />
-      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
-      <option name="IS_MODULE_SDK" value="true" />
-      <option name="ADD_CONTENT_ROOTS" value="true" />
-      <option name="ADD_SOURCE_ROOTS" value="true" />
-      <EXTENSION ID="PythonCoverageRunConfigurationExtension" runner="coverage.py" />
-      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/unit1.py" />
-      <option name="CLASS_NAME" value="" />
-      <option name="METHOD_NAME" value="" />
-      <option name="FOLDER_NAME" value="" />
-      <option name="TEST_TYPE" value="TEST_SCRIPT" />
-      <option name="PATTERN" value="" />
-      <option name="USE_PATTERN" value="false" />
-      <method v="2" />
-    </configuration>
     <recent_temporary>
       <list>
-        <item itemvalue="Python.unit2" />
-        <item itemvalue="Python tests.Doctests in unit1 (1)" />
-        <item itemvalue="Python tests.Doctests in unit1" />
-        <item itemvalue="Python.unit7" />
         <item itemvalue="Python.unit6" />
+        <item itemvalue="Python.unit5" />
+        <item itemvalue="Python.unit3" />
+        <item itemvalue="Python.unit1" />
+        <item itemvalue="Python.unit2" />
       </list>
     </recent_temporary>
   </component>
@@ -166,6 +201,7 @@
       <updated>1683955162370</updated>
       <workItem from="1694189840789" duration="942000" />
       <workItem from="1694190806668" duration="441000" />
+      <workItem from="1694298649518" duration="6328000" />
     </task>
     <servers />
   </component>
@@ -184,7 +220,7 @@
     </option>
   </component>
   <component name="com.intellij.coverage.CoverageDataManagerImpl">
-    <SUITE FILE_PATH="coverage/OntarioGrade12Math$Doctests_in_unit1__1_.coverage" NAME="Doctests in unit1 (1) Coverage Results" MODIFIED="1694190233074" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
     <SUITE FILE_PATH="coverage/OntarioGrade12Math$Doctests_in_unit1.coverage" NAME="Doctests in unit1 Coverage Results" MODIFIED="1694190148817" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
+    <SUITE FILE_PATH="coverage/OntarioGrade12Math$Doctests_in_unit1__1_.coverage" NAME="Doctests in unit1 (1) Coverage Results" MODIFIED="1694190233074" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
   </component>
 </project>
