@@ -455,6 +455,9 @@ def div1():
 
 # TODO: Determine whether each given value of x is a zero of the given function
 
+def check_factors():
+    pass
+
 # TODO: Factor fully
 
 def factor_fully():
@@ -470,8 +473,9 @@ def factor_fully():
     answer = f"""Follow the following steps: 1) Factor out the greatest common factor 2) If left with a cubic or greater function to factor, 
     find possible factors to divide the polynomial using the rational zero theorem 3) Divide using one of the factors 
     is a zero to the polynomial. 4) Keep dividing to factor even further if necessary. Answer: {sympy.factor(eq[0])} """
-    print(question)
-    print(answer)
+    question_to_add = Question(unit=2, topic="Factoring Polynomials", question=question, answer=answer)
+    session.add(question_to_add)
+    session.commit()
 
 
 # TODO: Solve the following polynomials by factoring
