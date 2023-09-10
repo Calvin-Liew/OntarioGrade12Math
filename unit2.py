@@ -510,13 +510,14 @@ def solve_by_factor():
     answer = f"""Follow the following steps: 1) Factor out the greatest common factor 2) If left with a cubic or greater function to factor, 
     find possible factors to divide the polynomial using the factor theorem 3) Divide using one of the factors 
     is a zero to the polynomial. 4) Keep dividing to factor even further if necessary. Now in fully factored form, you can set y = 0 and solve for x. Answer: x ∈ {sols}"""
-    question_to_add = Question(unit=2, topic="Solving Polynomials By Factoring")
+    question_to_add = Question(unit=2, topic="Solving Polynomials By Factoring", question=question, answer=answer)
     session.add(question_to_add)
     session.commit()
 
 # TODO: Write a general factored equation for the family functions based on the given zeros and one point
 
 # TODO: Solve polynomial inequalities
+
 
 if __name__ == "__main__":
     import doctest
