@@ -520,23 +520,60 @@ def solve_by_factor():
 
 def polynomial_inequalities():
     degree = random.randint(3, 4)
-    coeffcient_range = (-10, 10)
-    while(coeffcient_range == 0):
-        coeffcient_range = (-10, 10)
-    eq = factorable(degree, coeffcient_range)
-    poly = eq[0]
-    sols = eq[1]
-    random_num = (-25, 25)
-    inequality_option = (1, 4)
+    coefficient_range = (-10, 10)
+    
+    # Ensure that coefficient_range is not (0, 0)
+    while coefficient_range == (0, 0):
+        coefficient_range = (-10, 10)
+    
+    # Generate a random polynomial equation and its solutions
+    eq, sols = factorable(degree, coefficient_range)
+    
+    # Generate a random number for the inequality comparison
+    random_num = random.randint(-25, 25)
+
+    eqOG = eq
+    eq = eq+random_num
+
+    constant = find_leading_coefficient_and_constant(eq)
+    
+    # Choose a random inequality option (1 to 4)
+    inequality_option = random.randint(1, 4)
+    
     if inequality_option == 1:
-        pass
+        question = sympy.Gt(eq, random_num)
+        question2 = sympy.Gt(eqOG, 0)
+        inequality_symbol = '>'
     elif inequality_option == 2:
-        pass
+        question = sympy.Lt(eq, random_num)
+        question2 = sympy.Lt(eqOG, 0)
+        inequality_symbol = '<'
     elif inequality_option == 3:
-        pass
+        question = sympy.Ge(eq, random_num)
+        question2 = sympy.Ge(eqOG, 0)
+        inequality_symbol = '>='
     else:
-        pass
-    pass
+        question = sympy.Le(eq, random_num)
+        question2 = sympy.Le(eq, 0)
+        inequality_symbol = '<='
+
+    question_format = sympy.latex(question)
+    question_word = f"""Solve the following polynomial inequality: {question_format}"""
+    t = compare(eq, inequality_symbol, random_num)
+    if random_num != 0:
+        answer = f"""First setup up the inequality by bringing the number on the other side to the side of the equation. Then, factor 
+        by doing the greatest common factor, using any factor techniques you have been taught, using factor theorem and long divison. Once
+        you fully factored the equation, find the x-values that will make y = 0 and set up a interval table with all the x-values and compare where the function
+        is positive or negative. Answer: Bring the number the number to the side of the equation: {sympy.latex(question2)}. After factoring the expression: {sympy.latex(sympy.factor(eqOG))}. 
+        Check x-values between x-intercepts to see if its {inequality_symbol} 0 and you will get the answer: x ∈ {t}."""
+    else:
+        answer = f"""Factor by doing the greatest common factor, using any factor techniques you have been taught, using factor theorem and long divison. Once
+        you fully factored the equation, find the x-values that will make y = 0 and set up a interval table with all the x-values and compare where the function
+        is positive or negative. Answer: Bring the number the number to the side of the equation: {sympy.latex(question2)}. After factoring the expression: {sympy.latex(sympy.factor(eqOG))}. 
+        Check x-values between x-intercepts to see if its {inequality_symbol} 0 and you will get the answer: x ∈ {t}."""
+    question_to_add = Question(unit=2, topic="Solving Polynoial Inequalities", question=question_word, answer=answer)
+    session.add(question_to_add)
+    session.commit()
 
 if __name__ == "__main__":
     import doctest
