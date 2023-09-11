@@ -518,6 +518,25 @@ def solve_by_factor():
 
 # TODO: Solve polynomial inequalities
 
+def polynomial_inequalities():
+    degree = random.randint(3, 4)
+    coeffcient_range = (-10, 10)
+    while(coeffcient_range == 0):
+        coeffcient_range = (-10, 10)
+    eq = factorable(degree, coeffcient_range)
+    poly = eq[0]
+    sols = eq[1]
+    random_num = (-25, 25)
+    inequality_option = (1, 4)
+    if inequality_option == 1:
+        pass
+    elif inequality_option == 2:
+        pass
+    elif inequality_option == 3:
+        pass
+    else:
+        pass
+    pass
 
 if __name__ == "__main__":
     import doctest
